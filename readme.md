@@ -34,6 +34,21 @@ Writer Class:
 ---administrator
 ---contributor
 
+Post Class:
+-fields
+--id(unique int)
+--title(string)
+--body(string)
+--date(string)
+--tags(string)
+--category(enum)
+--owner(Write class)
+
+Category Class:
+-fields
+--id(unique int)
+--category(enum)
+
 Unique Class:
 -fields
 --id(unique id)
