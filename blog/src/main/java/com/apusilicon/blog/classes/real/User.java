@@ -1,7 +1,7 @@
 /*
-This class is the basis for the user.
+This class is for anonymous users
  */
-package com.apusilicon.blog.classes;
+package com.apusilicon.blog.classes.real;
 
 /**
  *

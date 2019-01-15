@@ -1,0 +1,24 @@
+/ - home page
+
+/auth - return auth entry page
+--/login/? - login receive security api token
+--/register/? - register user
+--/recover/? - recover user account
+--/logout/? - deactivate api token
+
+/blog - blog list page, post page
+--/submit/post/? - save post
+--/submit/category/? - save post
+--/postcount - return the post count
+--/post/? - return specific post
+--/list/? - return a specified amount of posts
+--/search/? - returns a list where the query is contained in the title
+--/search/tags/? - returns a list where the quert is contained int the tags
+--/search/catagory/? - returns a list where posts contains the categories 
+
+/database - return database page
+--/admin/? - returns a list of database that need to be approved
+--/submit/? - submit laptop
+--/list/? - returns a list of laptops
+--/model/? - display all stats for a laptop model
+
