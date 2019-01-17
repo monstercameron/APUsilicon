@@ -12,7 +12,7 @@ class Login {
     get() {
         return `<div id="${this.id}" class="row m-3">
         <div class="col-sm-8 border rounded shadow mx-auto">
-          <div class="row p-1">
+          <div class="row">
             <button class="btn btn-danger ml-auto" onclick="remove('${
             this.id
             }')">

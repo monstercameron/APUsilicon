@@ -26,9 +26,9 @@ class Post {
 
   get() {
     return `<div id="${this.id}" class="row m-3">
-    <div class="col-sm-${this.size} border p-0 mx-auto bg-dark">
-    <div class="col-sm-1 ml-auto p-1 collapse">
-    <button class="btn btn-danger" onclick="minimizePost('${this.id}')">
+    <div class="col-sm-${this.size} border mx-auto">
+    <div class="col-sm-1 ml-auto p-0 collapse">
+    <button class="btn btn-danger btn-block" onclick="minimizePost('${this.id}')">
     <i class="material-icons"> minimize </i>
     </button>
     </div>

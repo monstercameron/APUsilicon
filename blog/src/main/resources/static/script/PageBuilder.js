@@ -3,6 +3,7 @@ class Pagebuilder {
     constructor() {
         this.id = 'id' + uuid();
         this.root = document.querySelector('body');
+        this.postList = [];
     }
 
     get() {
@@ -32,6 +33,14 @@ class Pagebuilder {
 
     getRoot(){
         return this.id;
+    }
+
+    add(item){
+        this.postList.push(item);
+    }
+
+    getList(){
+        return this.postList;
     }
 
 }

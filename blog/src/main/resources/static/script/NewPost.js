@@ -102,15 +102,15 @@ class NewPost {
         <div class="col-sm-8 border mx-auto rounded shadow">
           <div class="container pb-3">
             <div class="row">
-              <div class="col-sm-1 p-1 ml-auto">
-                <button class="btn btn-danger" onclick="deletePost('${
+              <div class="col-sm-2 ml-auto">
+                <button class="btn btn-danger btn-block" onclick="deletePost('${
                   this.id
                 }')">
                   <i class="material-icons"> close </i>
                 </button>
               </div>
             </div>
-            <div class="row mb-1">
+            <div class="row mb-1 mt-3">
               <input type="file" class="btn btn-primary btn-block" />
             </div>
             <div class="row mb-1">

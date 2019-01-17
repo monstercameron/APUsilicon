@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>template</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+      integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link href="//cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/default.min.css"
+      <link
+      href="https://raw.githubusercontent.com/highlightjs/highlight.js/master/src/styles/nord.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="/blog/src/main/resources/static/style/style.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.1.0/material.min.css"
+    />
+  </head>
+  <body>
+    <!-- ----------------------------------------------------------- -->
+    <nav class="navbar navbar-expand-md bg-dark navbar-dark sticky-top">
+      <!-- Brand -->
+      <a class="navbar-brand" href="#">Navbar</a>
+
+      <!-- Toggler/collapsibe Button -->
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#collapsibleNavbar"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- Navbar links -->
+      <div class="collapse navbar-collapse" id="collapsibleNavbar">
+        <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link" href="#">Link</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Link</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Link</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- templates -->
+    <div class="container-fluid" id="${this.id}">
+      <!-- ----------------------------------------------------------- -->
+      <div id="post" class="col-sm-12 mx-auto border mt-5 mb-5 shadow collapse">
+        <div class="col-sm-12 mt-1 mx-auto">
+          <button class="btn btn-danger">
+            <i class="material-icons"> close </i>
+          </button>
+        </div>
+        <div class="col-sm-12 mt-1 mx-auto">
+          <img
+            src="https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/2020-cadillac-xt6-101-1547353468.jpg?crop=1.00xw:0.918xh;0,0&resize=980:*"
+            width="100%"
+            height="100%"
+          />
+        </div>
+        <div class="col-sm-12 text-center mx-auto">test</div>
+        <div class="col-sm-12 text-center mx-auto">test</div>
+        <div class="col-sm-12 text-center mx-auto">test</div>
+        <div class="col-sm-12 mx-auto">test</div>
+      </div>
+      <!-- ----------------------------------------------------------- -->
+      <div id="post" class="col-sm-8 mx-auto border mt-5 mb-5 shadow collapse">
+        <div class="col-sm-12 mt-1 mx-auto">
+          <button class="btn btn-danger">
+            <i class="material-icons"> close </i>
+          </button>
+        </div>
+        <div class="col-sm-12 text-center mx-auto">Login</div>
+        <div class="col-sm-12 text-center mx-auto">
+          <input type="text" class="form-control" placeholder="Email" />
+        </div>
+        <div class="col-sm-12 text-center mx-auto mt-3">
+          <input type="password" class="form-control" placeholder="Password" />
+        </div>
+        <div class="col-sm-12 text-center mx-auto mt-3 mb-3">
+          <button class="btn btn-primary btn-block">Submit</button>
+        </div>
+      </div>
+      <!-- ----------------------------------------------------------- -->
+      <div id="post" class="col-sm-8 mx-auto border mt-5 mb-5 shadow collapse">
+        <div class="col-sm-12 mt-1 mx-auto">
+          <button class="btn btn-danger">
+            <i class="material-icons"> close </i>
+          </button>
+        </div>
+        <div class="col-sm-12 text-center mx-auto">New Post</div>
+        <div class="col-sm-12 text-center mx-auto mt-3">
+          <input type="file" class="btn btn-primary btn-block" />
+        </div>
+        <div class="col-sm-12 text-center mx-auto mt-3">
+          <select class="form-control">
+            <option value="">Image</option>
+            <option value="">Video</option>
+          </select>
+        </div>
+        <div class="col-sm-12 text-center mx-auto mt-3">
+          <input type="text" class="form-control" placeholder="Heading" />
+        </div>
+        <div class="col-sm-12 text-center mx-auto mt-3">
+          <input type="text" class="form-control" placeholder="Tags" />
+        </div>
+        <div class="col-sm-12 text-center mx-auto mt-3 mb-3">
+          <select class="form-control">
+            <option value="">a</option>
+            <option value="">b</option>
+            <option value="">c</option>
+          </select>
+        </div>
+        <div
+          id="editor"
+          class="col-sm-12 text-center mx-auto mt-3 border"
+          style="height:auto;"
+        ></div>
+        <div class="col-sm-12 text-center mx-auto mt-3 mb-3">
+          <button class="btn btn-primary btn-block">Submit</button>
+        </div>
+      </div>
+      <!-- ----------------------------------------------------------- -->
+      <div id="post" class="col-sm-12 mx-auto border mt-5 mb-5 shadow">
+        <div class="col-sm-12 mt-1 mx-auto">
+          <button class="btn btn-danger">
+            <i class="material-icons"> close </i>
+          </button>
+        </div>
+        <div class="col-sm-12 text-center mx-auto">APUsilicon Database</div>
+        <div class="col-sm-12 text-center mx-auto mt-5 mb-5">
+          <div class="row">
+            <div class="col-sm-1"><input type="checkbox" value="" /> filter</div>
+            <div class="col-sm-1"><input type="checkbox" value="" /> filter</div>
+            <div class="col-sm-1"><input type="checkbox" value="" /> filter</div>
+            <div class="col-sm-1"><input type="checkbox" value="" /> filter</div>
+            <div class="col-sm-1"><input type="checkbox" value="" /> filter</div>
+            <div class="col-sm-1"><input type="checkbox" value="" /> filter</div>
+            <div class="col-sm-1"><input type="checkbox" value="" /> filter</div>
+            <div class="col-sm-1"><input type="checkbox" value="" /> filter</div>
+            <div class="col-sm-1"><input type="checkbox" value="" /> filter</div>
+          </div>
+        </div>
+        <div class="col-sm-12 mx-auto">
+          <table id="example" class="mdl-data-table mb-5" style="width:100%">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Position</th>
+                <th>Office</th>
+                <th>Age</th>
+                <th>Start date</th>
+                <th>Salary</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Tiger Nixon</td>
+                <td>System Architect</td>
+                <td>Edinburgh</td>
+                <td>61</td>
+                <td>2011/04/25</td>
+                <td>$112,000</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <!-- ---------------------------------------------------------------- -->
+  </body>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdn.datatables.net/1.10.19/js/dataTables.material.min.js"></script>
+  <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+  <script src="//cdn.quilljs.com/1.3.6/quill.js"></script>
+  <script>
+
+    var toolbarOptions = [
+      ["bold", "italic", "underline", "strike"], // toggled buttons
+      ["blockquote", "code-block"],
+      [{ header: 1 }, { header: 2 }], // custom button values
+      [{ list: "ordered" }, { list: "bullet" }],
+      [{ script: "sub" }, { script: "super" }], // superscript/subscript
+      [{ indent: "-1" }, { indent: "+1" }], // outdent/indent
+      [{ direction: "rtl" }], // text direction
+      [{ size: ["small", false, "large", "huge"] }], // custom dropdown
+      [{ header: [1, 2, 3, 4, 5, 6, false] }],
+      [{ color: [] }, { background: [] }], // dropdown with defaults from theme
+      [{ font: [] }],
+      [{ align: [] }],
+      ["clean"] // remove formatting button
+    ];
+
+    editorOptions = {
+      modules: {
+        syntax: true,
+        toolbar: this.toolbarOptions
+      },
+      theme: "snow"
+    };
+
+    var quill = new Quill("#editor", editorOptions);
+
+    $(document).ready(function() {
+      $("#example").DataTable({
+        responsive: true,
+        columnDefs: [
+          {
+            targets: [0, 1, 2],
+            className: "mdl-data-table__cell--non-numeric"
+          }
+        ]
+      });
+    });
+
+</script>
+</html>
