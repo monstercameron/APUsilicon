@@ -1,5 +1,5 @@
 const POSTSIZE = {
-  PREVIEW: 7,
+  PREVIEW: 8,
   FULLSCREEN: 12
 };
 
@@ -25,7 +25,7 @@ class Post {
   }
 
   get() {
-    return `<div id="${this.id}" class="row border m-3">
+    return `<div id="${this.id}" class="row m-3">
     <div class="col-sm-${this.size} border p-0 mx-auto bg-dark">
     <div class="col-sm-1 ml-auto p-1 collapse">
     <button class="btn btn-danger" onclick="minimizePost('${this.id}')">

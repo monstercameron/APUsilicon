@@ -50,8 +50,7 @@ function remove(id) {
   });
 }
 
-function test(id) {
-    console.log('test');
+function userLogin(id) {
   postList.forEach(login => {
     if (login.id == id) {
       login.login();
