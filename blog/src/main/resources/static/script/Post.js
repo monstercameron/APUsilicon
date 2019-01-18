@@ -1,115 +1,123 @@
-const POSTSIZE = {
-  PREVIEW: 8,
-  FULLSCREEN: 12
-};
-
 class Post {
-  constructor(webResponse, list = postList) {
-    this.imgSrc = webResponse["imgSrc"];
-    this.heading = webResponse["heading"];
-    this.author = webResponse["author"];
-    this.tags = webResponse["tags"];
-    this.category = webResponse["category"];
-    this.body = webResponse["body"];
-    this.id = "id" + uuid();
-    this.size = POSTSIZE.PREVIEW;
-    list.push(this);
+  constructor(size = POSTSIZE.PREVIEW) {
+    this.id = "PST" + uuid();
+    this.size = size;
+    console.log("Building Post    :" + this.id);
+    this.isFullscreen = false;
   }
-
+  setImgsrc(imgsrc) {
+    this.imgsrc = imgsrc;
+  }
+  setAuthor(author) {
+    this.author = author;
+  }
+  setHeadline(headline) {
+    this.headline = headline;
+  }
+  setDate(date) {
+    this.date = date;
+  }
+  setTags(tags) {
+    this.tags = tags;
+  }
+  setCategory(category) {
+    this.category = category;
+  }
+  setBody(body) {
+    this.body = body;
+  }
   setSize(size) {
     this.size = size;
   }
-
   setRoot(root) {
     this.root = "#" + root;
   }
-
-  get() {
-    return `<div id="${this.id}" class="row m-3">
-    <div class="col-sm-${this.size} border mx-auto">
-    <div class="col-sm-1 ml-auto p-0 collapse">
-    <button class="btn btn-danger btn-block" onclick="minimizePost('${this.id}')">
-    <i class="material-icons"> minimize </i>
-    </button>
-    </div>
-  <img src="${this.imgSrc}" alt="Logo" style="width:100%;" />
-  </div>
-  <div class="col-sm-${this.size} border mx-auto">${this.author}</div>
-  <div class="col-sm-${this.size} border mx-auto">${this.tags}</div>
-  <div class="col-sm-${this.size} border mx-auto">${this.category}</div>
-  <div class="col-sm-${this.size} border mx-auto body-preview">
-  <div class="" style="height: 25px; overflow: hidden;">${this.body}</div>
-  <div class="col-sm-12 text-center"
-  style="position:relative; top:-10%;">
-  <button class="btn btn-danger" onclick="fullScreenPost('${
-    this.id
-  }');">Read More</button>
-  </div>
-  </div>
-  </div>`;
+  getRoot() {
+    return this.root;
   }
-
+  getId() {
+    return this.id;
+  }
   remove() {
     var el = document.querySelector("#" + this.id);
     el.parentNode.removeChild(el);
   }
-
   hide() {
     var el = document.querySelector("#" + this.id);
     el.classList.add("collapse");
   }
-
   insert() {
     document.querySelector(this.root).innerHTML += this.get();
   }
-
-  update() {
-    this.remove();
-    this.insert();
+  getIsFullscreen() {
+    return this.isFullscreen;
   }
-
-  fullscreen() {
-    this.size = POSTSIZE.FULLSCREEN;
-    var el = document.querySelector("#" + this.id);
-    for (let index = 0; index < el.children.length; index++) {
-      //   remove 7 width
-      el.children[index].classList.remove("col-sm-7");
-      //   add 12 width
-      el.children[index].classList.add("col-sm-12");
-      //show minimize
-      if (index == 0) {
-        el.children[index].children[0].classList.remove("collapse");
-      }
-      //remove gradient and read more button
-      if (index == el.children.length - 1) {
-        el.children[index].classList.remove("body-preview");
-        el.children[index].children[0].setAttribute("style", "height: auto;");
-        el.children[index].children[1].classList.add("collapse");
-      }
+  toggleFullscreen() {
+    if (this.isFullscreen) {
+      this.size = POSTSIZE.FULLSCREEN;
+    } else {
+      this.size = POSTSIZE.PREVIEW;
+    }
+    this.isFullscreen = !this.isFullscreen;
+  }
+  getFullscreen() {
+    if (this.isFullscreen != true) {
+      return "";
+    } else {
+      return "collapse";
     }
   }
-
-  minimize() {
-    this.size = POSTSIZE.PREVIEW;
-    var el = document.querySelector("#" + this.id);
-    for (let index = 0; index < el.children.length; index++) {
-      //   remove 7 width
-      el.children[index].classList.remove("col-sm-12");
-      //   add 12 width
-      el.children[index].classList.add("col-sm-7");
-      //show minimize
-      if (index == 0) {
-        el.children[index].children[0].classList.add("collapse");
-      }
-      //remove gradient and read more button
-      if (index == el.children.length - 1) {
-        el.children[index].classList.add("body-preview");
-        el.children[index].children[0].setAttribute(
-          "style",
-          "height: 25px; overflow: hidden;"
-        );
-        el.children[index].children[1].classList.remove("collapse");
-      }
+  getExpandButton() {
+    if (this.isFullscreen) {
+      return "expand_less";
+    } else {
+      return "expand_more";
     }
+  }
+  get() {
+    return `
+    <div id="post" class="col-sm-${
+      this.size
+    } mx-auto border mt-5 mb-5 shadow fields">
+    <div class="col-sm-12 mt-1 mx-auto">
+      <button class="btn btn-danger" onclick="page.toggleFullscreen('${
+        this.id
+      }')">
+        <i class="material-icons"> ${this.getExpandButton()} </i>
+      </button>
+    </div>
+    <div class="col-sm-4 border mt-1 p-0 mx-auto">
+      <img
+        src="${this.imgsrc}"
+        width="100%"
+        style="post-image"
+      />
+    </div>
+    <div class="col-sm-12 text-center mx-auto border-bottom" onclick="page.toggleFullscreen('${
+      this.id
+    }')">${this.headline}</div>
+    <div class="col-sm-12 text-center mx-auto border-bottom">${
+      this.author
+    }</div>
+    <div class="col-sm-12 text-center mx-auto border-bottom">${this.date}</div>
+    <div class="col-sm-12 text-center mx-auto border-bottom">
+    ${this.tags
+      .split(",")
+      .map(tag => {
+        return `<button class="btn btn-outline-secondary m-1">${tag}</button>`;
+      })
+      .join("")}</div>
+      <div class="col-sm-12 text-center mx-auto border-bottom">
+      <button class="btn btn-outline-secondary m-1">${this.category}</button>
+      </div>
+    <div id="${this.id +"-body"}" class="col-sm-12 mx-auto ${this.getFullscreen()}">${
+      this.body
+    }</div>
+  </div>`;
   }
 }
+
+const POSTSIZE = {
+  PREVIEW: 8,
+  FULLSCREEN: 12
+};

@@ -3,81 +3,80 @@
     <title>APUsilicon</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  </head>
-  <link
-    rel="stylesheet"
-    href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
-    integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
-    crossorigin="anonymous"
-  />
-  <link
-    href="https://fonts.googleapis.com/icon?family=Material+Icons"
-    rel="stylesheet"
-  />
-  <link href="//cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet" />
-  <link
-    rel="stylesheet"
-    href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/default.min.css"
     <link
-    href="https://raw.githubusercontent.com/highlightjs/highlight.js/master/src/styles/nord.css"
-    rel="stylesheet"
-  />
-  <link
-    rel="stylesheet"
-    href="/blog/src/main/resources/static/style/style.css"
-  />
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+      integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link href="//cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/default.min.css"
+      <link
+      href="https://raw.githubusercontent.com/highlightjs/highlight.js/master/src/styles/nord.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="/blog/src/main/resources/static/style/style.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Aleo"
+      rel="stylesheet"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/dataTables.material.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+    <script src="//cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script src="/blog/src/main/resources/static/script/functions.js"></script>
+    <script src="/blog/src/main/resources/static/script/NewPost.js"></script>
+    <script src="/blog/src/main/resources/static/script/Post.js"></script>
+    <script src="/blog/src/main/resources/static/script/User.js"></script>
+    <script src="/blog/src/main/resources/static/script/PageBuilder.js"></script>
+    <script src="/blog/src/main/resources/static/script/login.js"></script>
+    <script src="/blog/src/main/resources/static/script/nav.js"></script>
+    <script src="/blog/src/main/resources/static/script/page.js"></script>
+  </head>
   <body></body>
-  <!-- scripts -->
-  <script
-    src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
-    integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
-    crossorigin="anonymous"
-  ></script>
-  <script
-    src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-    crossorigin="anonymous"
-  ></script>
-  <script
-    src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
-    integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
-    crossorigin="anonymous"
-  ></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
-  <script src="//cdn.quilljs.com/1.3.6/quill.js"></script>
-  <script src="/blog/src/main/resources/static/script/functions.js"></script>
-  <script src="/blog/src/main/resources/static/script/NewPost.js"></script>
-  <script src="/blog/src/main/resources/static/script/Post.js"></script>
-  <script src="/blog/src/main/resources/static/script/User.js"></script>
-  <script src="/blog/src/main/resources/static/script/PageBuilder.js"></script>
-  <script src="/blog/src/main/resources/static/script/login.js"></script>
   <script>
 
-    var page = new Pagebuilder();
+    // temp cars
+    var lorem =
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga distinctio dolores sunt corporis ex amet nemo est at impedit similique alias voluptatem porro corrupti, nobis magni unde, eum ipsa culpa";
+   
+    // page
+    var page = new Page();
     page.insert();
-    let postList = page.getList();
-    console.log(page.getList());
+    // nav bar
+    var nav = new Nav();
+    nav.setBrand("APUsilicon");
+    nav.addLink("youtube", "http://www.youtube.com");
+    page.addNav(nav);
+    // new post
+    var post = new Post();
+    post.setSize();
+    post.setImgsrc("https://via.placeholder.com/150");
+    post.setHeadline("This is an example for a headline");
+    post.setAuthor("Monstercameron");
+    post.setDate("1.17.19");
+    post.setTags("tag a,tag b,tag c");
+    post.setCategory("Review");
+    post.setBody(lorem + lorem + lorem);
+    //adding post to page
+    page.addPanel(post);
+    page.update();
 
-    var testWebResponse = {};
-    testWebResponse["imgSrc"] =
-      "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/2020-cadillac-xt6-101-1547353468.jpg?crop=1.00xw:0.918xh;0,0&resize=980:*";
-    testWebResponse["heading"] = "test heading";
-    testWebResponse["author"] = "test author";
-    testWebResponse["tags"] = "taga, tagb";
-    testWebResponse["category"] = "a category";
-    testWebResponse["body"] = " test body ";
-    let testPost = new Post(testWebResponse);
-    testPost.setRoot(page.getRoot());
-    testPost.insert();
-
-    var login = new Login();
-    login.setRoot(page.getRoot());
-    login.insert();
-
-    var newPost = new NewPost();
-    newPost.setRoot(page.getRoot());
-    var response = ["cata", "catb"];
-    newPost.addCategory(response);
-    newPost.insert();
+    nav.addLink("Login", "#", 'page.newLogin');
+    page.update();
   </script>
 </html>
