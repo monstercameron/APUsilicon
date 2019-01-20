@@ -1,152 +1,283 @@
 class NewPost {
-  constructor(list = postList) {
-    this.id = "id" + uuid();
-    this.editorId = "edit" + uuid();
-    this.toolbarOptions = [
-      ["bold", "italic", "underline", "strike"], // toggled buttons
-      ["blockquote", "code-block"],
-      [{ header: 1 }, { header: 2 }], // custom button values
-      [{ list: "ordered" }, { list: "bullet" }],
-      [{ script: "sub" }, { script: "super" }], // superscript/subscript
-      [{ indent: "-1" }, { indent: "+1" }], // outdent/indent
-      [{ direction: "rtl" }], // text direction
-      [{ size: ["small", false, "large", "huge"] }], // custom dropdown
-      [{ header: [1, 2, 3, 4, 5, 6, false] }],
-      [{ color: [] }, { background: [] }], // dropdown with defaults from theme
-      [{ font: [] }],
-      [{ align: [] }],
-      ["clean"] // remove formatting button
-    ];
-    this.highlight = hljs.configure({
-      // optionally configure hljs
-      languages: ["javascript", "ruby", "python"]
-    });
-    this.editorOptions = {
-      modules: {
-        syntax: true,
-        toolbar: this.toolbarOptions
-      },
+  constructor(parent) {
+    this.id = "NPT" + uuid();
+    this.newCategoryId = "CAT" + uuid();
+    this.parent = parent;
+    this.category = ['A','B'];
+    this.postValues = {};
+    this.postValues["head"] = "EDT" + uuid();
+    this.postValues["tags"] = "EDT" + uuid();
+    this.postValues["category"] = "EDT" + uuid();
+    this.title = 'Add New Post';
+    //method chaining
+    return this;
+  }
+  setParent(parent) {
+    this.parent = parent;
+    //method chaining
+    return this;
+  }
+  getparent() {
+    return this.parent;
+  }
+  getId() {
+    return this.id;
+  }
+  setClassList(classList) {
+    this.classList = classList;
+    //method chainin
+    return this;
+  }
+  getClassList() {
+    return this.classList;
+  }
+  initEditor() {
+    this.editor = new Quill("#" + this.editorId, {
       theme: "snow"
-    };
-    this.category = [];
-    list.push(this);
-  }
-
-  remove() {
-    var el = document.querySelector("#" + this.id);
-    el.parentNode.removeChild(el);
-    this.editor = null;
-  }
-
-  setRoot(root) {
-    this.root = "#" + root;
-  }
-
-  insert() {
-    document.querySelector(this.root).innerHTML += this.get();
-    this.editor = new Quill("#" + this.editorId, this.editorOptions);
-  }
-
-  addCategory(response) {
-    response.forEach(cat => {
-      this.category.push(cat);
     });
+    //method chaining
+    return this;
   }
-
-  uploadImage() {
-    var el = document.querySelector("#" + this.id);
-    var data = el.children[0].children[0].children[1].children[0];
-    var file = data.files[0];
-
-    console.log(file);
-
-    var reader = new FileReader();
-
-    if (file) {
-      reader.readAsDataURL(file);
-      //reader.readAsText(file);
+  getHead() {
+    if(typeof this.head === 'undefined')
+      return '';
+    else
+      return this.head;
+  }
+  getHeadVal() {
+    return document.querySelector('#'+this.postValues["head"]).value;
+  }
+  setHead(head) {
+    this.head = head;
+    //method chaining
+    return this;
+  }
+  getAuthor(){
+    return this.author;
+  }
+  setAuthor(author){
+    this.author = author;
+    //method chaining
+    return this;
+  }
+  getTags() {
+    if(typeof this.tags === 'undefined')
+      return '';
+    else
+      return this.tags;
+  }
+  getTagsVal() {
+    return document.querySelector('#'+this.postValues["tags"]).value;
+  }
+  setTags(tags) {
+    this.tags = tags;
+    //method chaining
+    return this;
+  }
+  getCategory() {
+    return this.category;
+  }
+  getCategoryVal() {
+    return document.querySelector('#'+this.postValues["category"]).value;
+  }
+  setTitle(title){
+    this.title = title;
+    return this;
+  }
+  getTitle(){
+    return this.title
+  }
+  setCategory(category) {
+    this.category.push(category);
+    //method chaining
+    return this;
+  }
+  getAllCategories(){
+    //fetch request to category api?
+    //using dummy data returns a list of categories
+    return this.category;
+  }
+  injectNewCategories(){
+    //getting reference to select tag
+    let select = document.querySelector('#'+this.postValues["category"]);
+    
+    //clearing list
+    while(select.hasChildNodes()){
+      select.removeChild(select.lastChild);
     }
-    // fetch("",{
-    //     method: "POST",
-    //     mode: "no-cors",
-    //     headers: {
-    //     "Content-Type": "application/json",
-    //     "test":"test",
-    //     },
-    //     body:reader.result
-    // })
-    //   .then(function(response) {
-    //       console.log(response);
-    //   });
 
-    return reader;
+    //append to select
+    select.innerHTML = this.getAllCategories().map(cat =>{
+      return `<option value="${cat}">${cat}</option>`
+    }).join('')
+
+    //method chaining
+    return this;
   }
+  addNewCategory(){
+    //fetch request to add new cats
+    let category = document.querySelector('#'+this.newCategoryId);
+    console.info('Category added      : '+category.value);
 
-  buildResponse() {
-    var el = document.querySelector("#" + this.id);
-    var data = el.children[0].children[0].children;
-    var response = {};
-    response["imageUrl"] = this.imageSrc;
-    response["mediaType"] = data[2].children[0].value;
-    response["headline"] = data[3].children[0].value;
-    response["author"] = data[4].children[0].value;
-    response["tags"] = data[5].children[0].value;
-    response["category"] = data[6].children[0].value;
-    response["body"] = this.editor.getText(0);
+    //clean up category
+    let cat = category.value.trim().split(' ')[0].trim();
 
-    return response;
+    //add category to list if not empty
+    if(cat != '')
+      this.category.push(cat);
+    
+    //console.log(this.category);
+
+    category.value = '';
+    //method chaining
+    return this;
   }
+  getBody() {
+    return this.body;
+  }
+  getBodyHTML(){
+    return this.editor.root.innerHTML;
+  }
+  setBody(body) {
+    this.body = body;
+    //method chaining
+    return this;
+  }
+  setBodyWait(){
+    if(typeof this.head === 'undefined')
+      this.editor.root.innerHTML = '';
+    else
+      this.editor.root.innerHTML = this.body;
+    //method chaining
+    return this;
+  }
+  buildNewPost(){
+    this.newPost = {};
+    let pass = true;
 
-  get() {
-    return `<div id="${this.id}" class="row m-3">
-        <div class="col-sm-8 border mx-auto rounded shadow">
-          <div class="container pb-3">
-            <div class="row">
-              <div class="col-sm-2 ml-auto">
-                <button class="btn btn-danger btn-block" onclick="deletePost('${
-                  this.id
-                }')">
-                  <i class="material-icons"> close </i>
-                </button>
-              </div>
-            </div>
-            <div class="row mb-1 mt-3">
-              <input type="file" class="btn btn-primary btn-block" />
-            </div>
-            <div class="row mb-1">
-              <select class="form-control" name="" id="">
-                <option selected value="image">Image</option>
-                <option value="video">Video</option>
-              </select>
-            </div>
-            <div class="row mb-1">
-              <input type="text" class="form-control" placeholder="Headline" value"test"/>
-            </div>
-            <div class="row mb-1">
-              <input type="text" class="form-control" placeholder="Author" />
-            </div>
-            <div class="row mb-1">
-              <input type="text" class="form-control" placeholder="Tags" />
-            </div>
-            <div class="row mb-1">
-              <select class="form-control" name="" id="">
-                    ${this.category
-                      .map(cat => {
-                        return `<option value="${cat}">${cat}</option>`;
-                      })
-                      .join("")}
-              </select>
-            </div>
-            <div class="row mb-2">
-              <div id="${
-                this.editorId
-              }" class="w-100" style="height: 256px;"></div>
-            </div>
-            <div class="row mb-1">
-              <button class="btn btn-primary btn-block" onclick="console.log(newPost.uploadImage())">Send</button>
-            </div>
-          </div>
-        </div>
-      </div>`;
+    //these are the only key/value pairs I want to check
+    let keys = ['head', 'tags'];
+    for (let index = 0; index < keys.length; index++) {
+      let field = document.querySelector('#'+this.postValues[keys[index]]);
+
+      //checking if empty
+      if(field.value == ''){
+        console.error(`${keys[index]} empty for    :${this.id}`);
+        this.parent.notify(`${keys[index]} empty for    :${this.id}`);
+        field.classList.add('is-invalid');
+        pass = false;
+      }
+      if(field.value != ''){
+        //resetting inputs
+        field.classList.remove('is-invalid');
+      }
+    }
+
+    //check editor
+    //console.log(this.editor.root.innerHTML);
+    if(this.editor.root.innerHTML == '<p><br></p>'){
+      console.error(`Editor empty for  :${this.id}`);
+      this.parent.notify(`Editor empty for  :${this.id}`);
+      this.editor.focus();
+    }
+
+    this.newPost = {
+      head: this.getHead(),
+      tags: this.getTags(),
+      category: this.getCategory(),
+      body: this.getBody(),
+    };
+    //method chaining
+    return this;
+  }
+  sendNewPost(){
+    this.buildNewPost();
+    //PUT request
+    //method chaining
+    return this;
+  }
+  template() {
+    return `<div
+    class="col-sm-10 mx-auto border shadow rounded p-1 mt-1 mb-5"
+    style="max-width: 1200px;"
+  >
+    <!-- window action -->
+    <div class="col-sm-12 p-0">
+      <div class="col-sm-auto ml-auto p-1">
+        <button class="btn btn-block" style="max-height: 24px;" 
+          onclick="page.removeNewPost(page.getNewPost().getId()).update();">
+          <i class="material-icons"> expand_more </i>
+        </button>
+      </div>
+    </div>
+    <!-- window title -->
+    <div class="text-center mt-1 mb-1" style="font-size: 26px;">
+      ${this.title}
+    </div>
+    <!-- heading -->
+    <div class="mt-1 mb-1">
+      <input
+        id="${this.postValues["head"]}"
+        type="text"
+        class="form-control"
+        placeholder="Add Heading"
+        value="${this.getHead()}"
+      />
+    </div>
+    <!-- tags -->
+    <div class="mt-1 mb-1">
+      <input
+      id="${
+        this.postValues["tags"]
+      }" type="text"
+       class="form-control" 
+       placeholder="Must separate with commas tag, tag, tag" 
+       value="${this.getTags()}"/>
+    </div>
+    <!-- category -->
+    <div class="mt-1 mb-1">
+      <select
+      id="${this.postValues["category"]}" 
+      name=""
+      class="form-control">
+      ${this.getAllCategories().map(cat =>{
+          return `<option value="${cat}">${cat}</option>`
+        }).join('')
+      }
+      </select>
+    </div>
+    <!-- add new category -->
+    <div class="row ml-0 mr-1 mt-1 mb-1">
+        <input id="${this.newCategoryId}" 
+          class="col-sm-10 form-control" 
+          type="text" 
+          placeholder="Add new category, must not contain spaces"
+        />
+        <button 
+          class="col-sm-2 btn btn-block bg-dark text-white" 
+          onclick="page.getNewPost('${this.id}').addNewCategory().injectNewCategories()">
+          <i class="material-icons">
+            add_box
+          </i>
+        </button>
+    </div>
+    <!-- editor -->
+    <div class="mt-1 mb-1">
+      <div id="${this.editorId}" class="" style="height:300px;"></div>
+    </div>
+    <!-- submit -->
+    <div class="text-center">
+      <button 
+        class="btn bg-dark text-white btn-block" 
+        style="font-size:24px;"
+        onclick="page.getNewPost().sendNewPost()"
+      >Save</button>
+    </div>
+  </div>`;
+  }
+  print(){
+    console.info(this)
+    //method chaining
+    return this;
   }
 }

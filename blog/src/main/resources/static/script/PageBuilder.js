@@ -1,120 +1,251 @@
-
 class Pagebuilder {
-    constructor(root = 'body') {
-        this.id = 'id' + uuid();
-        this.root = root;
-        this.panelList = [];
-        console.log("Building Page:     : " + this.id);
+  constructor(root = "body") {
+    this.id = "PAG" + uuid();
+    this.root = root;
+    this.panelList = [];
+    this.admin = null;
+    console.log("Building Page:     : " + this.id);
+    //method chaining
+    return this;
+  }
+  //admin
+  hasAdmin() {
+    // if (this.admin != null) {
+    //   return true;
+    // } else return false;
+    return true;
+  }
+  //page
+  getId() {
+    return this.id;
+  }
+  addTitle(title) {
+    console.info("Adding title '" + title + "' to page.");
+    //code to add title
+    //method chaining
+    return this;
+  }
+  setRoot(root) {
+    this.root = root;
+    //method chaining
+    return this;
+  }
+  getRoot() {
+    return this.root;
+  }
+  //nav
+  addNav(nav) {
+    this.nav = nav;
 
-        //method chaining
-        return this;
+    //method chaining
+    return this;
+  }
+  removeNav(id) {
+    if (this.nav.getId() == id) {
+      console.info("Removing Nav: " + this.nav.getId());
+      this.nav = null;
     }
-    //page
-    getId() {
-        return this.id;
-    }
-    addTitle(title) {
-        console.info('Adding title \'' + title + '\' to page.');
-        //code to add title
-        //method chaining
-        return this;
-    }
-    //nav
-    addNav(nav) {
-        this.nav = nav;
 
-        //method chaining
-        return this;
+    //method chaining
+    return this;
+  }
+  getNav() {
+    return this.nav;
+  }
+  //new post panel
+  addNewPost(newPost) {
+    this.newPost = newPost;
+    //method chaining
+    return this;
+  }
+  getNewPost() {
+    return this.newPost;
+  }
+  removeNewPost(id) {
+    console.info("Removing New Post   :" + id);
+    if (this.newPost.getId() == id) {
+      this.newPost = null;
     }
-    removeNav(id) {
-        if (this.nav.getId() == id) {
-            console.info('Removing Nav: ' + this.nav.getId());
-            this.nav = null;
+    //method chaining
+    return this;
+  }
+  createNewPost() {
+    this.newPost = new NewPost(this).setClassList("row m-0 w-100");
+    //method chaining
+    return this;
+  }
+  editPost(id){
+    console.info('Editing Post        :'+id);
+    let data = this.getPanel(id).buildDict();
+
+    this.newPost = new NewPost(this)
+    .setClassList("row m-0 w-100")
+    .setTitle('Edit')
+    .setHead(data['head'])
+    .setTags(data['tags'])
+    .setCategory(data['category'])
+    .setBody(data['body']);
+
+    //method chaining
+    return this;
+  }
+  //panels
+  addPanel(panel, position) {
+    console.info("Adding Panel to page :" + panel.getId());
+    panel;
+    switch (position) {
+      case 1:
+        console.info("Appending Panel");
+        this.panelList.push(panel);
+        break;
+      case 2:
+        console.info("Prepending Panel");
+        this.panelList.unshift(panel);
+        break;
+    }
+    //method chaining
+    return this;
+  }
+  addPanels(args) {
+    if (Array.isArray(args)) {
+      //if passing in an array of panels
+      for (let index = 0; index < args.length; index++) {
+        this.panelList.push(args[index]);
+      }
+    } else {
+      //if passing in multiple panels as arguments
+      for (let index = 0; index < arguments.length; index++) {
+        this.panelList.push(arguments[index]);
+      }
+    }
+
+    //method chaining
+    return this;
+  }
+  removePanel(id) {
+    console.info("Removing Post    :" + id);
+    this.panelList = this.panelList.filter(item => item.id !== id);
+
+    //method chaining
+    return this;
+  }
+  getPanel(id) {
+    for (let index = 0; index < this.panelList.length; index++) {
+      if (this.panelList[index].getId() == id) {
+        console.info("Retreiving panel    :" + id);
+        return this.panelList[index];
+      }
+    }
+    console.info("Couldnt Retrieve panel: " + id);
+    return null;
+  }
+  getPanelList() {
+    return this.panelList;
+  }
+  //page display
+  clear() {
+    this.html = document.querySelector(this.root);
+    while (this.html.firstChild) {
+      this.html.removeChild(this.html.firstChild);
+    }
+
+    //method chaining
+    return this;
+  }
+  draw() {
+    console.info("Drawing Page        :" + this.id);
+    this.clear();
+    var nav = document.createElement("nav");
+    nav.id = this.nav.getId();
+    let classList = this.nav.getClassList().split(" ");
+    for (let index = 0; index < classList.length; index++) {
+      nav.classList.add(classList[index]);
+    }
+    if (this.nav !== null) {
+      nav.innerHTML = this.nav.template();
+    } else {
+      nav.innerHTML = "Nav Missing. Or default Nav template?";
+    }
+    document.querySelector(this.root).prepend(nav);
+
+    //adding panels
+    //console.log('typeof this.newPost->' + typeof this.newPost);
+    //console.log(this.newPost == null);
+    if (this.newPost != null) {
+      let div = document.createElement("div");
+      //adding to class list
+      let classList = this.newPost.getClassList().split(" ");
+      //console.log(classList);
+      for (let index = 0; index < classList.length; index++) {
+        div.classList.add(classList[index]);
+      }
+      //panel info
+      div.id = this.newPost.getId();
+      div.classList.add("row");
+      div.innerHTML = this.newPost.template();
+      document.querySelector(this.root).append(div);
+      //starting the editor after the html is inplace
+      this.newPost.initEditor();
+      //have to create html before body can be set
+      this.newPost.setBodyWait();
+    } else {
+      for (let index = 0; index < this.panelList.length; index++) {
+        let div = document.createElement("div");
+
+        //adding to class list
+        let classList = this.panelList[index].getClassList().split(" ");
+        //console.log(classList);
+        for (let index = 0; index < classList.length; index++) {
+          div.classList.add(classList[index]);
         }
 
-        //method chaining
-        return this;
+        //panel info
+        div.id = this.panelList[index].getId();
+        div.classList.add("row");
+        div.innerHTML = this.panelList[index].template();
+        document.querySelector(this.root).append(div);
+      }
     }
-    getNav() {
-        return this.nav;
+
+    //method chaining
+    return this;
+  }
+  update() {
+    console.info("Updating Page       :" + this.id);
+    this.clear();
+    this.draw();
+
+    //method chaining
+    return this;
+  }
+  notify(arg) {
+    // Let's check if the browser supports notifications
+    if (!("Notification" in window)) {
+      alert("This browser does not support desktop notification");
     }
-    //panels
-    addPanel(panel, position) {
-        console.info('Adding Panel to page :' + panel.getId());
-        switch (position) {
-            case 1:
-                console.info('Appending Panel');
-                this.panelList.push(panel);
-                break;
-            case 2:
-                console.info('Prepending Panel');
-                this.panelList.unshift(panel);
-                break;
+    // Let's check whether notification permissions have already been granted
+    else if (Notification.permission === "granted") {
+      // If it's okay let's create a notification
+      var notification = new Notification(arg);
+    } // Otherwise, we need to ask the user for permission
+    else if (Notification.permission !== "denied") {
+      Notification.requestPermission().then(function(permission) {
+        // If the user accepts, let's create a notification
+        if (permission === "granted") {
+          var notification = new Notification(arg);
         }
-
-        //method chaining
-        return this;
+      });
     }
-    removePanel(id) {
-        console.info("Removing Post    :" + id);
-        this.panelList = this.panelList.filter(item => item.id !== id);
-
-        //method chaining
-        return this;
-    }
-    getPanel(id) {
-        var panel = null;
-        this.panelList.foreach(item => {
-            if (item.getId() == id) {
-                console.info('Retreiving panel: ' + item.getId());
-                panel = item;
-            }
-        });
-        return panel;
-    }
-    getPanelList() {
-        return this.panelList;
-    }
-    //page display
-    clear() {
-        this.html = document.querySelector(this.root);
-        while (this.html.firstChild) {
-            this.html.removeChild(this.html.firstChild);
-        }
-
-        //method chaining
-        return this;
-    }
-    draw() {
-        //add nav
-        var nav = document.createElement("nav");
-        if (this.nav !== null) {
-            nav.innerHTML = this.nav.template();
-        } else {
-            nav.innerHTML = 'Nav Missing. Or default Nav template?'
-        }
-
-        //adding panels
-        this.panelList.foreach(panel => {
-            var nav = document.createElement("nav");
-            nav.id = panel.id;
-            nav.classList.add('row');
-            nav.innerHTML = panel.template();
-        });
-
-        //method chaining
-        return this;
-    }
-    update() {
-        this.clear();
-        this.draw();
-
-        //method chaining
-        return this;
-    }
+    return this;
+  }
+  print(){
+    console.info(this)
+    //method chaining
+    return this;
+  }
 }
 
 let PANELPOSITION = {
-    TOP: 1,
-    BOTTOM: 2
+  TOP: 1,
+  BOTTOM: 2
 };

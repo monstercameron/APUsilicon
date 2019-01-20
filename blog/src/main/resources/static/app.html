@@ -42,41 +42,45 @@
     <script src="/blog/src/main/resources/static/script/NewPost.js"></script>
     <script src="/blog/src/main/resources/static/script/Post.js"></script>
     <script src="/blog/src/main/resources/static/script/User.js"></script>
-    <script src="/blog/src/main/resources/static/script/PageBuilder.js"></script>
     <script src="/blog/src/main/resources/static/script/login.js"></script>
     <script src="/blog/src/main/resources/static/script/nav.js"></script>
     <script src="/blog/src/main/resources/static/script/page.js"></script>
+    <script src="/blog/src/main/resources/static/script/PageBuilder.js"></script>
   </head>
   <body></body>
   <script>
+    let page = new Pagebuilder();
 
-    // temp cars
-    var lorem =
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga distinctio dolores sunt corporis ex amet nemo est at impedit similique alias voluptatem porro corrupti, nobis magni unde, eum ipsa culpa";
-   
-    // page
-    var page = new Page();
-    page.insert();
-    // nav bar
-    var nav = new Nav();
-    nav.setBrand("APUsilicon");
-    nav.addLink("youtube", "http://www.youtube.com");
-    page.addNav(nav);
-    // new post
-    var post = new Post();
-    post.setSize();
-    post.setImgsrc("https://via.placeholder.com/150");
-    post.setHeadline("This is an example for a headline");
-    post.setAuthor("Monstercameron");
-    post.setDate("1.17.19");
-    post.setTags("tag a,tag b,tag c");
-    post.setCategory("Review");
-    post.setBody(lorem + lorem + lorem);
-    //adding post to page
-    page.addPanel(post);
-    page.update();
+    let nav = new Nav(page, "APUsilicon")
+      .setClassList("navbar navbar-expand-sm bg-dark navbar-dark sticky-top")
+      .addLink("Youtube", "http://www.youtube.com", "blank")
+      .addFunction("NewPost","page.createNewPost().update()");
 
-    nav.addLink("Login", "#", 'page.newLogin');
-    page.update();
+    page.addNav(nav).update();
+
+    // let newPost = new NewPost(page)
+    //   .setClassList('row m-0 w-100');
+
+    // page.addNewPost(newPost).update().update();
+    var testimage1 = 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/image/AppleInc/aos/published/images/m/bp/mbp13touch/space/mbp13touch-space-select-201807?wid=452&hei=420&fmt=jpeg&qlt=95&op_usm=0.5,0.5&.v=1529520060550';
+    var placeholder = 'https://via.placeholder.com/300/000';
+
+    let post = new Post(page)
+      .setheadLine('Test headline')
+      .setClassList('row m-0 w-100')
+      .setAuthor("Monstercameron")
+      .setDate('1/19/2019')
+      .setTags('apu, laptop, brand')
+      .setCategory('news')
+      .setBody('this is the body, will get from restful resource')
+      .setImg(testimage1)
+      .toggleSize();
+    
+    //page.addPanel(post, 1).addPanel(post2, 1).update();
+    //page.addPanels(post).update();
+    page.addPanels(post).createNewPost().update();
+    //page.addPanels([post,post2]).update();
+
+    //console.log(page);
   </script>
 </html>

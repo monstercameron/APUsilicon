@@ -1,61 +1,88 @@
 class Nav {
-  constructor(root = "body") {
+  constructor(parent, brand) {
     this.id = "NAV" + uuid();
-    this.linkDict = {};
-    this.root = root;
-    this.type = "nav";
-    console.info("Building Nav     :" + this.id);
-  }
-  getId(){
-      return this.id;
-  }
-  setBrand(brand) {
+    this.parent = parent;
     this.brand = brand;
+    this.links = {};
+    this.functions = {};
+    console.info("Building Nav       : " + this.id);
+    //method chaining
+    return this;
   }
-  getBrand() {
-    return this.brand;
+  getId() {
+    return this.id;
   }
-  setRoot(root) {
-    this.root = root;
+  setParent() {
+    this.parent = parent;
+    //method chaining
+    return this;
   }
-  getRoot() {
-    return this.root;
+  getParent() {
+    return this.id;
   }
-  addLogo(url) {
-    this.imgsrc = url;
+  setClassList(classes) {
+    this.classList = classes;
+    //method chaining
+    return this;
   }
-  getLogo() {
-    return this.imgsrc;
+  getClassList() {
+    return this.classList;
   }
-  setLogo() {
-    if (this.imgsrc == null || this.imgsrc == "") {
-      return this.brand;
-    } else {
-      return `<img src="${this.imgsrc}" alt="Logo" style="width:40px;">`;
+  addLink(title, url, target = "self") {
+    //console.log(arguments);
+    this.links[title] = { url: url, target: target };
+    //method chaining
+    return this;
+  }
+  addFunction(title, func){
+    this.functions[title] = func; 
+    //method chaining
+    return this;
+  }
+  removeLink(title) {
+    //method chaining
+    return this;
+  }
+  addAdminpanel(){
+    if(this.parent.hasAdmin()){
+      let rv = Object.keys(this.functions).map(func => {
+          return `
+          <a 
+            class="dropdown-item" 
+            href="#"
+            onclick="${this.functions[func]}"
+            >
+            ${func}
+            </a>`;
+      }).join('');
+      return `<li class="nav-item dropdown">
+      <a
+        class="nav-link dropdown-toggle text-white"
+        href="#"
+        id="navbarDropdown"
+        role="button"
+        data-toggle="dropdown"
+        aria-haspopup="true"
+        aria-expanded="false"
+      >
+        Admin
+      </a>
+      <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+        ${rv}
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="#">Logout</a>
+      </div>
+    </li>`;
+
+    }else{
+      return '';
     }
   }
-  addLink(title, url, func) {
-    this.linkDict[title] = url;
-    if (arguments[2] != null) {
-      this.onclick = func + "()";
-    }
-  }
-  getAllLinks() {
-    return Object.values(this.linkDict);
-  }
-  insert() {
-    var nav = document.createElement("obj");
-    nav.innerHTML = this.get();
-    document.querySelector(this.root).prepend(nav);
-  }
-  get() {
+  template() {
     return `
-        <nav id="${
-          this.id
-        }" class="navbar navbar-expand-sm bg-dark navbar-dark sticky-top">
         <!-- Brand -->
         <a class="navbar-brand" href="#">
-        ${this.setLogo()}
+        ${this.brand}
         </a>
   
         <!-- Toggler/collapsibe Button -->
@@ -71,24 +98,26 @@ class Nav {
         <!-- Navbar links -->
         <div class="collapse navbar-collapse" id="collapsibleNavbar">
           <ul class="navbar-nav text-center">
-          ${Object.keys(this.linkDict)
-            .map(link => {
-              return ` <li class="nav-item"><a class="nav-link" href="${
-                this.linkDict[link]
-              }" onclick="${this.onclick}">
-              ${link}
-              </a></li>`;
+          ${Object.keys(this.links)
+            .map(key => {
+              return `
+              <li
+                class="nav-link text-white" 
+                onclick="window.open(
+                  '${this.links[key]["url"]}',
+                  '_${this.links[key]["target"]}'
+                );"
+              >${key}</li>`;
             })
             .join("")}
+            ${this.addAdminpanel()}
           </ul>
             <input class="form-control col-sm-2 ml-auto" type="text" placeholder="Search">
-        </div>
-      </nav>`;
+        </div>`;
   }
-  update() {
-    var el = document.querySelector("#" + this.id);
-    var parent = el.parentNode;
-    parent.removeChild(el);
-    parent.prepend(this.get());
+  print(){
+    console.info(this)
+    //method chaining
+    return this;
   }
 }
