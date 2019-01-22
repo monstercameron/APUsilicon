@@ -5,9 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link
       rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
-      integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
-      crossorigin="anonymous"
+      type="text/css"
+      href="https://cdn.datatables.net/v/bs4-4.1.1/dt-1.10.18/cr-1.5.0/r-2.2.2/datatables.min.css"
     />
     <link
       href="https://fonts.googleapis.com/icon?family=Material+Icons"
@@ -26,16 +25,21 @@
       href="/blog/src/main/resources/static/style/style.css"
     />
     <link
-      href="https://fonts.googleapis.com/css?family=Aleo"
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet"
     />
+    <link
+      rel="stylesheet"
+      href="/blog/src/main/resources/static/style/style.css"
+    />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.19/js/dataTables.material.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script
+      type="text/javascript"
+      src="https://cdn.datatables.net/v/bs4-4.1.1/dt-1.10.18/cr-1.5.0/r-2.2.2/datatables.min.js"
+    ></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
     <script src="//cdn.quilljs.com/1.3.6/quill.js"></script>
     <script src="/blog/src/main/resources/static/script/functions.js"></script>
@@ -46,6 +50,7 @@
     <script src="/blog/src/main/resources/static/script/nav.js"></script>
     <script src="/blog/src/main/resources/static/script/page.js"></script>
     <script src="/blog/src/main/resources/static/script/PageBuilder.js"></script>
+    <script src="/blog/src/main/resources/static/script/database.js"></script>
   </head>
   <body></body>
   <script>
@@ -54,7 +59,7 @@
     let nav = new Nav(page, "APUsilicon")
       .setClassList("navbar navbar-expand-sm bg-dark navbar-dark sticky-top")
       .addLink("Youtube", "http://www.youtube.com", "blank")
-      .addFunction("NewPost","page.createNewPost().update()");
+      .addFunction("NewPost", "page.createNewPost().update()");
 
     page.addNav(nav).update();
 
@@ -62,23 +67,105 @@
     //   .setClassList('row m-0 w-100');
 
     // page.addNewPost(newPost).update().update();
-    var testimage1 = 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/image/AppleInc/aos/published/images/m/bp/mbp13touch/space/mbp13touch-space-select-201807?wid=452&hei=420&fmt=jpeg&qlt=95&op_usm=0.5,0.5&.v=1529520060550';
-    var placeholder = 'https://via.placeholder.com/300/000';
+    var testimage1 =
+      "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/image/AppleInc/aos/published/images/m/bp/mbp13touch/space/mbp13touch-space-select-201807?wid=452&hei=420&fmt=jpeg&qlt=95&op_usm=0.5,0.5&.v=1529520060550";
+    var placeholder = "https://via.placeholder.com/300/000";
 
     let post = new Post(page)
-      .setheadLine('Test headline')
-      .setClassList('row m-0 w-100')
+      .setheadLine("Test headline")
+      .setClassList("row m-0 w-100")
       .setAuthor("Monstercameron")
-      .setDate('1/19/2019')
-      .setTags('apu, laptop, brand')
-      .setCategory('news')
-      .setBody('this is the body, will get from restful resource')
+      .setDate("1/19/2019")
+      .setTags("apu, laptop, brand")
+      .setCategory("news")
+      .setBody("this is the body, will get from restful resource")
       .setImg(testimage1)
       .toggleSize();
-    
+
+    //tests
+    var cols = [
+      { title: "Image", visible: true, width: "200px", className: "text-center" },
+      { title: "View", visible: true, className: "text-center align-middle" },
+      { title: "Brand", visible: true, className: "text-center align-middle" },
+      { title: "SKU", visible: true, className: "text-center align-middle" },
+      { title: "APU", visible: true, className: "text-center align-middle" },
+      { title: "RAM", visible: true, className: "text-center align-middle" },
+      { title: "Storage", visible: true, className: "text-center align-middle" }
+    ];
+    var col = [
+      { title: "Image" },
+      { title: "View" },
+      { title: "Brand" },
+      { title: "SKU" },
+      { title: "APU" },
+      { title: "RAM" },
+      { title: "Storage" }
+    ];
+    var dataSet = [
+      [
+        `<img
+          src="https://via.placeholder.com/300"
+          class="rounded"
+          width="150px"
+          height="150px"
+        />`,
+        `<button class="btn btn-secondary btn-block">Read More</button>`,
+        "HP",
+        "Envy 15",
+        "R7-2700u",
+        "16",
+        "256"
+      ],
+      [
+        `<img
+          src="https://via.placeholder.com/300"
+          class="rounded"
+          width="150px"
+          height="150px"
+        />`,
+        `<button class="btn btn-secondary btn-block">Full Specs</button>`,
+        "HP",
+        "Envy 13",
+        "R5-2500u",
+        "8",
+        "128"
+      ]
+    ];
+    var dataSet2 = [
+      [
+        `<img
+          src="https://via.placeholder.com/300"
+          class="rounded"
+          width="150px"
+          height="150px"
+        />`,
+        `<button class="btn btn-secondary btn-block">Full Specs</button>`,
+        "HP",
+        "Envy 13",
+        "R5-2500u",
+        "8",
+        "128"
+      ]
+    ];
+
+    page
+      .newDb()
+      .getDb()
+      .setClassList("row m-0 w-100")
+      .setCols(cols)
+      .setDataSet(dataSet)
+      .getParent()
+      .update();
+
+    // page
+    //   .getDb()
+    //   .setDataSet(dataSet2)
+    //   .getParent()
+    //   .update();
+
     //page.addPanel(post, 1).addPanel(post2, 1).update();
     //page.addPanels(post).update();
-    page.addPanels(post).createNewPost().update();
+    //page.addPanels(post).createNewPost().update();
     //page.addPanels([post,post2]).update();
 
     //console.log(page);

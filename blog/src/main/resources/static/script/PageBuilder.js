@@ -4,6 +4,7 @@ class Pagebuilder {
     this.root = root;
     this.panelList = [];
     this.admin = null;
+    this.view = VIEW.DATABASE;
     console.log("Building Page:     : " + this.id);
     //method chaining
     return this;
@@ -66,26 +67,57 @@ class Pagebuilder {
     if (this.newPost.getId() == id) {
       this.newPost = null;
     }
+    this.view = VIEW.POSTS;
     //method chaining
     return this;
   }
   createNewPost() {
     this.newPost = new NewPost(this).setClassList("row m-0 w-100");
+    this.view = VIEW.NEWPOST;
     //method chaining
     return this;
   }
-  editPost(id){
-    console.info('Editing Post        :'+id);
+  editPost(id) {
+    console.info("Editing Post        :" + id);
     let data = this.getPanel(id).buildDict();
 
     this.newPost = new NewPost(this)
-    .setClassList("row m-0 w-100")
-    .setTitle('Edit')
-    .setHead(data['head'])
-    .setTags(data['tags'])
-    .setCategory(data['category'])
-    .setBody(data['body']);
+      .setClassList("row m-0 w-100")
+      .setTitle("Edit")
+      .setHead(data["head"])
+      .setTags(data["tags"])
+      .setCategory(data["category"])
+      .setBody(data["body"]);
 
+    //method chaining
+    return this;
+  }
+  //database
+  newDb() {
+    if (this.db == null || typeof this.db === "undefined") {
+      this.db = new DB(this);
+      console.info("DB Instantiated     :" + this.db.getId());
+    } else {
+      console.error("DB is not null nor undefined");
+    }
+    //console.log(this.db);
+    this.view = VIEW.DATABASE;
+    //method chaining
+    return this;
+  }
+  clearDb() {
+    this.db = null;
+  }
+  setDb(db) {
+    this.db = db;
+    //method chaining
+    return this;
+  }
+  getDb() {
+    return this.db;
+  }
+  veiwDB() {
+    this.view = VIEW.DATABASE();
     //method chaining
     return this;
   }
@@ -154,10 +186,18 @@ class Pagebuilder {
   }
   draw() {
     console.info("Drawing Page        :" + this.id);
+    console.info("With View ID        :" + this.view);
+
+    //clearing display
     this.clear();
-    var nav = document.createElement("nav");
+
+    //declaring vars
+    let nav, div, classList;
+
+    //appending nav
+    nav = document.createElement("nav");
     nav.id = this.nav.getId();
-    let classList = this.nav.getClassList().split(" ");
+    classList = this.nav.getClassList().split(" ");
     for (let index = 0; index < classList.length; index++) {
       nav.classList.add(classList[index]);
     }
@@ -168,43 +208,83 @@ class Pagebuilder {
     }
     document.querySelector(this.root).prepend(nav);
 
-    //adding panels
-    //console.log('typeof this.newPost->' + typeof this.newPost);
-    //console.log(this.newPost == null);
-    if (this.newPost != null) {
-      let div = document.createElement("div");
-      //adding to class list
-      let classList = this.newPost.getClassList().split(" ");
-      //console.log(classList);
-      for (let index = 0; index < classList.length; index++) {
-        div.classList.add(classList[index]);
-      }
-      //panel info
-      div.id = this.newPost.getId();
-      div.classList.add("row");
-      div.innerHTML = this.newPost.template();
-      document.querySelector(this.root).append(div);
-      //starting the editor after the html is inplace
-      this.newPost.initEditor();
-      //have to create html before body can be set
-      this.newPost.setBodyWait();
-    } else {
-      for (let index = 0; index < this.panelList.length; index++) {
-        let div = document.createElement("div");
+
+    //drawing view
+    switch (this.view) {
+      case 1:
+        if(this.newPost == null || typeof this.newPost === 'undefined'){
+          this.view = VIEW.POSTS;
+          this.update();
+          break;
+        }
+        //////////////////////////////////////////////////////////
+        //                  new post
+        //////////////////////////////////////////////////////////
+        div = document.createElement("div");
+        //adding to class list
+        classList = this.newPost.getClassList().split(" ");
+        //console.log(classList);
+        for (let index = 0; index < classList.length; index++) {
+          div.classList.add(classList[index]);
+        }
+        //panel info
+        div.id = this.newPost.getId();
+        div.classList.add("row");
+        div.innerHTML = this.newPost.template();
+        document.querySelector(this.root).append(div);
+        //starting the editor after the html is inplace
+        this.newPost.initEditor();
+        //have to create html before body can be set
+        this.newPost.setBodyWait();
+        /////////////////////////////////////////////////////////
+        break;
+      case 2:
+        /////////////////////////////////////////////////////////
+        //                  panels
+        ////////////////////////////////////////////////////////
+        for (let index = 0; index < this.panelList.length; index++) {
+          div = document.createElement("div");
+
+          //adding to class list
+          classList = this.panelList[index].getClassList().split(" ");
+          //console.log(classList);
+          for (let index = 0; index < classList.length; index++) {
+            div.classList.add(classList[index]);
+          }
+
+          //panel info
+          div.id = this.panelList[index].getId();
+          div.classList.add("row");
+          div.innerHTML = this.panelList[index].template();
+          document.querySelector(this.root).append(div);
+        }
+        ////////////////////////////////////////////////////////
+        break;
+      case 3:
+        if(this.db == null || typeof this.db === 'undefined'){
+          this.view = VIEW.POSTS;
+          this.update();
+          break;
+        }
+        ////////////////////////////////////////////////////////
+        //              database table
+        ////////////////////////////////////////////////////////
+        div = document.createElement("div");
 
         //adding to class list
-        let classList = this.panelList[index].getClassList().split(" ");
+        classList = this.getDb().getClassList().split(" ");
         //console.log(classList);
         for (let index = 0; index < classList.length; index++) {
           div.classList.add(classList[index]);
         }
 
         //panel info
-        div.id = this.panelList[index].getId();
-        div.classList.add("row");
-        div.innerHTML = this.panelList[index].template();
+        div.id = this.getDb().getId();
+        div.innerHTML = this.getDb().template();
         document.querySelector(this.root).append(div);
-      }
+        this.getDb().initTable();
+        ////////////////////////////////////////////////////////
+        break;
     }
 
     //method chaining
@@ -238,14 +318,20 @@ class Pagebuilder {
     }
     return this;
   }
-  print(){
-    console.info(this)
+  print() {
+    console.info(this);
     //method chaining
     return this;
   }
 }
 
-let PANELPOSITION = {
+const PANELPOSITION = {
   TOP: 1,
   BOTTOM: 2
+};
+
+const VIEW = {
+  NEWPOST: 1,
+  POSTS: 2,
+  DATABASE: 3
 };

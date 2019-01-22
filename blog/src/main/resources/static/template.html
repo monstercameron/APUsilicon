@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>template</title>
+
     <link
       rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
-      integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
-      crossorigin="anonymous"
+      type="text/css"
+      href="https://cdn.datatables.net/v/bs4-4.1.1/dt-1.10.18/cr-1.5.0/r-2.2.2/datatables.min.css"
     />
     <link
       href="https://fonts.googleapis.com/icon?family=Material+Icons"
@@ -30,21 +30,6 @@
     <link
       href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.css"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="https://cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.1.0/material.min.css"
     />
     <link
       rel="stylesheet"
@@ -128,7 +113,7 @@
     </div>
     <!-- small post -->
     <!-- post -->
-    <div class="row m-0 w-100 ">
+    <div class="row m-0 w-100 collapse">
       <div
         class="row col-sm-10 mx-auto border shadow rounded p-0 mt-3 mb-5"
         style="max-width: 1200px;"
@@ -239,7 +224,7 @@
     </div>
     <!-- newpost -->
     <!-- image picker -->
-    <div class="row m-0 w-100">
+    <div class="row m-0 w-100 collapse">
       <div
         style="background-color: rgba(69, 79, 94, 0.75); position: fixed; top: 0; height: 100%; left: 0; width: 100%;"
       >
@@ -348,11 +333,99 @@
       </div>
     </div>
     <!-- image picker -->
+    <!-- database -->
+    <div class="row m-0 w-100">
+      <div class="col-sm-11 mx-auto border rounded shadow m-2 p-2">
+        <!-- title -->
+        <div class="text-center"><h4>APUsilicon Database</h4></div>
+        <button class="col-sm-2 btn btn-primary text-white mb-1">
+          Add New Device
+        </button>
+        <hr />
+        <button
+          class="col-sm-2 btn btn-primary text-white mb-2"
+          data-toggle="collapse"
+          data-target="#database-filter"
+        >
+          Add/Remove Columns
+        </button>
+        <div
+          id="database-filter"
+          class="collapse col-sm-4 mb-3 border round p-2 bg-dark text-white"
+        >
+          <div><input checked type="checkbox" name="" id="" /> Filter A</div>
+          <div><input checked type="checkbox" name="" id="" /> Filter B</div>
+          <div><input checked type="checkbox" name="" id="" /> Filter C</div>
+          <button class="btn btn-primary btn-block">Apply</button>
+        </div>
+        <table
+          id="example"
+          class="table table-striped table-bordered"
+          style="width:100%"
+        ></table>
+      </div>
+    </div>
+    <!-- database -->
+    <!-- database entry -->
+    <div class="row m-0 w-100">
+      <div class="col-sm-8 mx-auto border rounded shadow m-2 p-2">
+        <!-- window action -->
+        <div class="col-sm-12 p-0">
+          <div class="col-sm-auto ml-auto p-1">
+            <button class="btn btn-block bg-light" style="max-height: 24px;">
+              <i class="material-icons"> expand_more </i>
+            </button>
+          </div>
+        </div>
+        <!-- title -->
+        <div class="text-center mt-3 mb-3"><h3>Database Entry Form</h3></div>
+        <!-- form -->
+        <!-- image selection -->
+        <input
+          type="file"
+          class="form-control bg-secondary text-white mt-1 mb-1"
+          placeholder="Brand"
+        />
+        <!-- brand -->
+        <input type="text" class="form-control mt-1 mb-1" placeholder="Brand" />
+        <!-- family -->
+        <input
+          type="text"
+          class="form-control mt-1 mb-1"
+          placeholder="Family"
+        />
+        <!-- SKU -->
+        <input type="text" class="form-control mt-1 mb-1" placeholder="SKU" />
+        <!-- Apu selection -->
+        <select class="form-control">
+          <option value="" disabled selected>APU</option>
+          <option value="">opt a</option>
+          <option value="">opt a</option>
+        </select>
+        <!-- RAM -->
+        <input type="text" class="form-control mt-1 mb-1" placeholder="RAM" />
+        <!--  -->
+        <input
+          type="text"
+          class="form-control mt-1 mb-1"
+          placeholder="Storage"
+        />
+        <!-- display -->
+        <input
+          type="text"
+          class="form-control mt-1 mb-1"
+          placeholder="Display"
+        />
+        <!-- and more -->
+      </div>
+    </div>
+    <!-- database entry -->
   </body>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://cdn.datatables.net/1.10.19/js/dataTables.material.min.js"></script>
-  <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-  <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+  <script
+    type="text/javascript"
+    src="https://cdn.datatables.net/v/bs4-4.1.1/dt-1.10.18/cr-1.5.0/r-2.2.2/datatables.min.js"
+  ></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
@@ -360,6 +433,79 @@
   <script>
     var quill = new Quill("#editor", {
       theme: "snow"
+    });
+
+    var dataSet = [
+      [
+        `<img
+          src="https://via.placeholder.com/300"
+          class="rounded"
+          width="150px"
+          height="150px"
+        />`,
+        `<button class="btn btn-secondary btn-block">Read More</button>`,
+        "HP",
+        "Envy 15",
+        "R7-2700u",
+        "16",
+        "256"
+      ],
+      [
+        `<img
+          src="https://via.placeholder.com/300"
+          class="rounded"
+          width="150px"
+          height="150px"
+        />`,
+        `<button class="btn btn-secondary btn-block">Full Specs</button>`,
+        "HP",
+        "Envy 13",
+        "R5-2500u",
+        "8",
+        "128"
+      ]
+    ];
+
+    $(document).ready(function() {
+      var table = $("#example").DataTable({
+        data: dataSet,
+        columns: [
+          { title: "Image", width: "200px", className: "text-center" },
+          {
+            title: "View",
+            visible: true,
+            className: "text-center align-middle"
+          },
+          {
+            title: "Brand",
+            visible: true,
+            className: "text-center align-middle"
+          },
+          {
+            title: "SKU",
+            visible: true,
+            className: "text-center align-middle"
+          },
+          {
+            title: "APU",
+            visible: true,
+            className: "text-center align-middle"
+          },
+          {
+            title: "RAM",
+            visible: true,
+            className: "text-center align-middle"
+          },
+          {
+            title: "Storage",
+            visible: true,
+            className: "text-center align-middle"
+          }
+        ],
+        responsive: true
+      });
+
+      console.log(table.columns);
     });
   </script>
 </html>

@@ -10,7 +10,7 @@ class interface {
     //method chaining
     return this;
   }
-  getparent() {
+  getParent() {
     return this.parent;
   }
   getId() {
