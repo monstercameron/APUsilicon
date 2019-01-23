@@ -51,6 +51,7 @@
     <script src="/blog/src/main/resources/static/script/page.js"></script>
     <script src="/blog/src/main/resources/static/script/PageBuilder.js"></script>
     <script src="/blog/src/main/resources/static/script/database.js"></script>
+    <script src="/blog/src/main/resources/static/script/ModelViewer.js"></script>
   </head>
   <body></body>
   <script>
@@ -83,15 +84,6 @@
       .toggleSize();
 
     //tests
-    var cols = [
-      { title: "Image", visible: true, width: "200px", className: "text-center" },
-      { title: "View", visible: true, className: "text-center align-middle" },
-      { title: "Brand", visible: true, className: "text-center align-middle" },
-      { title: "SKU", visible: true, className: "text-center align-middle" },
-      { title: "APU", visible: true, className: "text-center align-middle" },
-      { title: "RAM", visible: true, className: "text-center align-middle" },
-      { title: "Storage", visible: true, className: "text-center align-middle" }
-    ];
     var col = [
       { title: "Image", visible: true, width: "200px", className: "text-center" },
       { title: "View", visible: true, className: "text-center align-middle" },
@@ -108,6 +100,7 @@
           class="rounded"
           width="150px"
           height="150px"
+          onclick="page.newViewer().getViewer().inject();"
         />`,
         `<button class="btn btn-secondary btn-block">Read More</button>`,
         "HP",
@@ -131,23 +124,7 @@
         "128"
       ]
     ];
-    var dataSet2 = [
-      [
-        `<img
-          src="https://via.placeholder.com/300"
-          class="rounded"
-          width="150px"
-          height="150px"
-        />`,
-        `<button class="btn btn-secondary btn-block">Full Specs</button>`,
-        "HP",
-        "Envy 13",
-        "R5-2500u",
-        "8",
-        "128"
-      ]
-    ];
-
+    
     page
       .newDb()
       .getDb()
@@ -160,7 +137,7 @@
     // page
     //   .getDb()
     //   .setDataSet(dataSet2)
-    //   .getParent()
+    //   .getParent()6
     //   .update();
 
     //page.addPanel(post, 1).addPanel(post2, 1).update();

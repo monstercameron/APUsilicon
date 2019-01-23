@@ -121,6 +121,49 @@ class Pagebuilder {
     //method chaining
     return this;
   }
+  //model viewer
+  newViewer(){
+    if(this.viewer == null || typeof this.viewer === 'undefined'){
+      this.viewer = new Viewer().setParent(this);
+    }else{
+      console.error('Viewer instance still alive');
+    }
+    //method chaining
+    return this;
+  }
+  setViewer(modelId){
+    this.viewer.addData(modelId);
+    //method chaining
+    return this;
+  }
+  displayViewer(){
+    //inject viewer, not for fullscreen refresh
+    if(this.viewer == null || typeof this.viewer === 'undefined'){
+      this.viewer.inject();
+    }else{
+      console.error('Viewer instance still alive');
+    }
+    //method chaining
+    return this;
+  }
+  getViewer(){
+    //inject viewer, not for fullscreen refresh
+    if(this.viewer == null){
+      console.error('Viewer is Null');
+    }
+    if(typeof this.viewer === 'undefined'){
+      console.error('Viewer is Undefined');
+    }
+    //return viewer instance
+    return this.viewer;
+  }
+  destroyViewer(){
+    //nulling viewer object
+    this.viewer.remove();
+    this.viewer = null;
+    //method chaining
+    return this;
+  }
   //panels
   addPanel(panel, position) {
     console.info("Adding Panel to page :" + panel.getId());
