@@ -93,13 +93,13 @@
       { title: "Storage", visible: true, className: "text-center align-middle" }
     ];
     var col = [
-      { title: "Image" },
-      { title: "View" },
-      { title: "Brand" },
-      { title: "SKU" },
-      { title: "APU" },
-      { title: "RAM" },
-      { title: "Storage" }
+      { title: "Image", visible: true, width: "200px", className: "text-center" },
+      { title: "View", visible: true, className: "text-center align-middle" },
+      { title: "Brand", visible: true, className: "text-center align-middle" },
+      { title: "SKU", visible: true, className: "text-center align-middle" },
+      { title: "APU", visible: true, className: "text-center align-middle" },
+      { title: "RAM", visible: true, className: "text-center align-middle" },
+      { title: "Storage", visible: true, className: "text-center align-middle" }
     ];
     var dataSet = [
       [
@@ -152,7 +152,7 @@
       .newDb()
       .getDb()
       .setClassList("row m-0 w-100")
-      .setCols(cols)
+      .setCols(col)
       .setDataSet(dataSet)
       .getParent()
       .update();

@@ -3,7 +3,6 @@ class DB {
     this.id = "TBL" + uuid();
     this.tableId = "TBL" + uuid();
     this.parent = parent;
-
     //method chaining
     return this;
   }
@@ -62,9 +61,6 @@ class DB {
     //console.log(this.columns);        
     for (let index = 0; index < this.columns.length; index++) {
         //travering the list of filters
-        //console.log(this.filterList[this.filters[index]]);
-        //setting the status if the filters in the column definition obj
-        //this.columns[index].visible = document.querySelector('#'+this.filterList[this.filters[index]]).checked;
         this.table.column(index).visible(document.querySelector('#'+this.filterList[index].id).checked);
     }
     //redraw table only
@@ -75,7 +71,9 @@ class DB {
   getDataSet() {
     return data;
   }
-  addRow() {}
+  addRow() {
+    //to be implemented
+  }
   template() {
       console.log(this.columns);
     return `
