@@ -198,13 +198,13 @@ class NewPost {
   }
   template() {
     return `<div
-    class="col-sm-10 mx-auto border shadow rounded p-1 mt-1 mb-5"
+    class="col-sm-8 mx-auto border shadow rounded p-1 mt-1 mb-5"
     style="max-width: 1200px;"
   >
     <!-- window action -->
     <div class="col-sm-12 p-0">
       <div class="col-sm-auto ml-auto p-1">
-        <button class="btn btn-block" style="max-height: 24px;" 
+        <button class="btn btn-block bg-light" style="max-height: 24px;" 
           onclick="page.removeNewPost(page.getNewPost().getId()).update();">
           <i class="material-icons"> expand_more </i>
         </button>

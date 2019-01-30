@@ -89,6 +89,12 @@ class Pagebuilder {
       .setCategory(data["category"])
       .setBody(data["body"]);
 
+    this.view = VIEW.NEWPOST;
+    //method chaining
+    return this;
+  }
+  viewPanels() {
+    this.view = VIEW.POSTS;
     //method chaining
     return this;
   }
@@ -116,48 +122,61 @@ class Pagebuilder {
   getDb() {
     return this.db;
   }
-  veiwDB() {
-    this.view = VIEW.DATABASE();
+  veiwDb() {
+    this.view = VIEW.DATABASE;
     //method chaining
     return this;
   }
+  viewDbEntry() {
+    this.dbentry = new DatabaseForm(this);
+    this.view = VIEW.DATABASEENTRY;
+    //method chaining
+    return this;
+  }
+  getDbEntryForm() {
+    return this.dbentry;
+  }
+  removeDbEntryForm(){
+    this.view = VIEW.POSTS;
+    return this;
+  }
   //model viewer
-  newViewer(){
-    if(this.viewer == null || typeof this.viewer === 'undefined'){
+  newViewer() {
+    if (this.viewer == null || typeof this.viewer === "undefined") {
       this.viewer = new Viewer().setParent(this);
-    }else{
-      console.error('Viewer instance still alive');
+    } else {
+      console.error("Viewer instance still alive");
     }
     //method chaining
     return this;
   }
-  setViewer(modelId){
+  setViewer(modelId) {
     this.viewer.addData(modelId);
     //method chaining
     return this;
   }
-  displayViewer(){
+  displayViewer() {
     //inject viewer, not for fullscreen refresh
-    if(this.viewer == null || typeof this.viewer === 'undefined'){
+    if (this.viewer == null || typeof this.viewer === "undefined") {
       this.viewer.inject();
-    }else{
-      console.error('Viewer instance still alive');
+    } else {
+      console.error("Viewer instance still alive");
     }
     //method chaining
     return this;
   }
-  getViewer(){
+  getViewer() {
     //inject viewer, not for fullscreen refresh
-    if(this.viewer == null){
-      console.error('Viewer is Null');
+    if (this.viewer == null) {
+      console.error("Viewer is Null");
     }
-    if(typeof this.viewer === 'undefined'){
-      console.error('Viewer is Undefined');
+    if (typeof this.viewer === "undefined") {
+      console.error("Viewer is Undefined");
     }
     //return viewer instance
     return this.viewer;
   }
-  destroyViewer(){
+  destroyViewer() {
     //nulling viewer object
     this.viewer.remove();
     this.viewer = null;
@@ -251,11 +270,10 @@ class Pagebuilder {
     }
     document.querySelector(this.root).prepend(nav);
 
-
     //drawing view
     switch (this.view) {
       case 1:
-        if(this.newPost == null || typeof this.newPost === 'undefined'){
+        if (this.newPost == null || typeof this.newPost === "undefined") {
           this.view = VIEW.POSTS;
           this.update();
           break;
@@ -304,7 +322,7 @@ class Pagebuilder {
         ////////////////////////////////////////////////////////
         break;
       case 3:
-        if(this.db == null || typeof this.db === 'undefined'){
+        if (this.db == null || typeof this.db === "undefined") {
           this.view = VIEW.POSTS;
           this.update();
           break;
@@ -315,7 +333,9 @@ class Pagebuilder {
         div = document.createElement("div");
 
         //adding to class list
-        classList = this.getDb().getClassList().split(" ");
+        classList = this.getDb()
+          .getClassList()
+          .split(" ");
         //console.log(classList);
         for (let index = 0; index < classList.length; index++) {
           div.classList.add(classList[index]);
@@ -326,6 +346,37 @@ class Pagebuilder {
         div.innerHTML = this.getDb().template();
         document.querySelector(this.root).append(div);
         this.getDb().initTable();
+        ////////////////////////////////////////////////////////
+        break;
+      case 4:
+        ////////////////////////////////////////////////////////
+        //              database entry
+        ////////////////////////////////////////////////////////
+        if (typeof this.dbentry === "undefined") {
+          this.dbentry = new DatabaseForm();
+        }
+        div = document.createElement("div");
+
+        //adding to class list
+        classList = this.getDb()
+          .getClassList()
+          .split(" ");
+        //console.log(classList);
+        for (let index = 0; index < classList.length; index++) {
+          div.classList.add(classList[index]);
+        }
+
+        //panel info
+        div.id = this.dbentry.getId();
+        div.innerHTML = this.dbentry.template();
+        document.querySelector(this.root).append(div);
+        ////////////////////////////////////////////////////////
+        break;
+        case 5:
+        ////////////////////////////////////////////////////////
+        //              database entry
+        ////////////////////////////////////////////////////////
+
         ////////////////////////////////////////////////////////
         break;
     }
@@ -376,5 +427,7 @@ const PANELPOSITION = {
 const VIEW = {
   NEWPOST: 1,
   POSTS: 2,
-  DATABASE: 3
+  DATABASE: 3,
+  DATABASEENTRY: 4,
+  EDITPOST: 5
 };

@@ -79,9 +79,20 @@ class DB {
     return `
       <div class="col-sm-11 mx-auto border rounded shadow m-2 p-2">
         <!-- title -->
+        <!-- window action -->
+        <div class="col-sm-12 p-0">
+          <div class="col-sm-auto ml-auto p-1">
+            <button 
+            class="btn btn-block bg-light" style="max-height: 24px;"
+            onclick="page.removeDbEntryForm().update()">
+              <i class="material-icons"> expand_more </i>
+            </button>
+          </div>
+        </div>
         <div class="text-center"><h4>APUsilicon Database</h4></div>
         <button
           class="col-sm-2 btn btn-primary text-white mb-1"
+          onclick="page.viewDbEntry().update()"
         >
           Add New Device
         </button>

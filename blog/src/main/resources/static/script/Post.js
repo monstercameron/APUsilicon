@@ -99,7 +99,7 @@ class Post {
       return `
       <div class="col-sm-auto ml-auto p-1">
         <button 
-          class="btn btn-block" 
+          class="btn btn-block bg-light" 
           style="max-height: 28px;"
           onclick="page.editPost('${this.id}').update()"
         >
@@ -149,7 +149,7 @@ class Post {
         <div class="col-sm-12 p-0">
           ${this.editOption()}
           <div class="col-sm-auto ml-auto p-1">
-            <button class="btn btn-block" style="max-height: 24px;" onclick="page.getPanel('${
+            <button class="btn btn-block bg-light" style="max-height: 24px;" onclick="page.getPanel('${
               this.id
             }').toggleSize().getParent().update()">
               <i class="material-icons"> expand_more </i>
@@ -178,11 +178,11 @@ class Post {
           <div class="col-sm-12 border-bottom mb-2 pt-3" style="text-transform: capitalize;">${this.author} | ${this.date}</div>
           <!-- category and tags -->
           <div class="col-sm-12 border-bottom mb-2 pb-1" style="text-transform: capitalize;">
-           <button class="btn btn-secondary bg-dark ml-1" style="text-transform: capitalize;">${this.category.trim()}</button>
+           <button class="btn btn-outline-secondary ml-1" style="text-transform: capitalize;">${this.category.trim()}</button>
           ${this.tags
             .split(",")
             .map(tag => {
-              return `<button class="btn btn-secondary bg-dark ml-1 mb-1" style="text-transform: capitalize;">${tag.trim()}</button>`;
+              return `<button class="btn btn-outline-secondary ml-1 mb-1" style="text-transform: capitalize;">${tag.trim()}</button>`;
             })
             .join('')}
           </div>
