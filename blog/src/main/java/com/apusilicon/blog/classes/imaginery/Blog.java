@@ -22,7 +22,6 @@ public class Blog {
     private String titleImage, title, date, tags, category, preview, body;
     
     @ManyToOne
-    @NotNull
     private Owner owner;
 
     public Blog() {
@@ -82,6 +81,14 @@ public class Blog {
 
     public void setBody(String body) {
         this.body = body;
+    }
+
+    public Owner getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Owner owner) {
+        this.owner = owner;
     }
 
     @Override

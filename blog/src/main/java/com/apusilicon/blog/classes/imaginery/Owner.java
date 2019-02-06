@@ -36,7 +36,6 @@ public class Owner {
     private Role role;
     
     @OneToMany
-    @NotNull
     private List<Blog> blogs;
 
     public Owner() {
@@ -83,7 +82,7 @@ public class Owner {
         return "Owner{" + "id=" + id + ", name=" + name + ", hash=" + hash + ", email=" + email + '}';
     }
     
-    private enum Role{
+    public enum Role{
         ADMIN, CONTRIBUTER, DBUSER
     }
     
