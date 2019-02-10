@@ -1,7 +1,13 @@
 package com.apusilicon.blog.classes.imaginery;
 
+import java.io.Serializable;
+import java.util.UUID;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
@@ -13,18 +19,29 @@ import javax.validation.constraints.NotNull;
  */
 
 @Entity
-public class Blog {
+public class Blog implements Serializable{
     
     @Id
-    private int Id;
+    @GeneratedValue
+    private int id;
         
     @NotNull
-    private String titleImage, title, date, tags, category, preview, body;
+    private String titleImage, title, date, tags, category, preview, hash;;
     
+    @NotNull
+    @Lob
+    @Column(columnDefinition="LONGTEXT")
+    private String body;
+
     @ManyToOne
     private Owner owner;
 
     public Blog() {
+        this.hash = UUID.randomUUID().toString();
+    }
+
+    public String getHash(){
+        return this.hash;
     }
 
     public String getTitleImage() {
@@ -93,7 +110,7 @@ public class Blog {
 
     @Override
     public String toString() {
-        return "Blog{" + "titleImage=" + titleImage + ", title=" + title + ", date=" + date + ", tags=" + tags + ", category=" + category + ", preview=" + preview + ", body=" + body + ", owner=" + owner + '}';
+        return "Blog{" + ",hash=" + hash + ",titleImage=" + titleImage + ", title=" + title + ", date=" + date + ", tags=" + tags + ", category=" + category + ", preview=" + preview + ", body=" + body + ", owner=" + owner + '}';
     }
     
 }

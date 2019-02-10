@@ -1,6 +1,7 @@
 package com.apusilicon.blog.data;
+import java.util.ArrayList;
+
 import com.apusilicon.blog.classes.imaginery.Blog;
-import java.util.List;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,5 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 @Transactional
 public interface BlogDao extends CrudRepository<Blog, Integer> {
-    public Blog findFirstByCategory(String category);
+    public ArrayList<Blog> findFirstByCategory(String category);
+    public ArrayList<Blog> findFirstByHash(String hash);
+    public ArrayList<Blog> findByTagsContaining(String tag);
 }

@@ -20,6 +20,18 @@ class Post {
   getId() {
     return this.id;
   }
+  getHash(){
+    return this.hash;
+  }
+  setHash(hash){
+    this.hash = hash;
+    //method chaining
+    return this;
+  }
+  setRemote(remote){
+    this.remote = remote;
+    return this;
+  }
   setClassList(classList) {
     this.classList = classList;
     //method chainin
@@ -83,14 +95,15 @@ class Post {
     return this;
   }
   buildDict(){
-    console.info('building Post         :'+this.id);
+    console.info('building Post       :'+this.id);
     let obj = {
       head: this.headLine,
       author: this.author,
       date: this.date,
       tags: this.tags,
       category: this.category,
-      body: this.body
+      body: this.body,
+      hash: this.hash
     };
     return obj;
   }

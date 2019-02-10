@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>API tester</title>
+</head>
+
+<body>
+
+    <input type="text" placeholder="API endpoint" id="uri" value="http://localhost:8080/">
+    <br>
+    <select name="endpoints" id="endpoints">
+        <option value="blog/all">blog/all</option>
+        <option value="blog/add">blog/add</option>
+        <option value="blog/edit">blog/edit</option>
+        <option selected value="blog/findbyhash">blog/findbyhash</option>
+    </select>
+    <br>
+    <input type="text" placeholder="header key" id="header1key" value="hash">
+    <input type="text" placeholder="header 1" id="header1value" value="9831b642-b9e2-42f4-9530-c0bb7037b649">
+    <br>
+    <button id="myButton">send</button>
+
+</body>
+<script>
+    document.getElementById("myButton").addEventListener("click", function () {
+        send();
+    });
+
+    let buildHeaders = () => {
+        let dict = {};
+        let header1key = document.querySelector('#header1key').value;
+        let header1value = document.querySelector('#header1value').value;
+
+        dict[header1key] = header1value
+
+        return dict;
+    }
+    let send = () => {
+        let url = document.querySelector('#uri').value;
+        let endpoint = document.querySelector('#endpoints').value;
+        let headers = buildHeaders();
+
+        console.info(url + endpoint);
+        console.info(headers);
+
+        fetch(url + endpoint, {
+                method: 'post',
+                headers: headers,
+                body: ''
+            })
+            .then(response => Promise.all([response, response.json()]))
+            .then(([response, json]) => {
+                if (!response.ok) {
+                    throw new Error(json.message);
+                }
+                console.log(json)
+            })
+            .catch(exception => {
+                var errorMap = new Map([
+                    [TypeError, "There was a problem fetching the response."],
+                    [SyntaxError, "There was a problem parsing the response."],
+                    [Error, exception.message]
+                ]).get(exception.constructor);
+            });
+
+    }
+</script>
+
+</html>
