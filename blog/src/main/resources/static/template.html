@@ -80,7 +80,7 @@
       </div>
     </nav>
     <!-- post small -->
-    <div class="row m-0 w-100 collapse">
+    <div class="row m-0 w-100 ">
       <div
         class="row col-sm-4 mx-auto shadow rounded p-0 mt-2 mb-1"
         style="max-width: 400px;"
@@ -113,7 +113,7 @@
     </div>
     <!-- small post -->
     <!-- post -->
-    <div class="row m-0 w-100 collapse">
+    <div class="row m-0 w-100">
       <div
         class="row col-sm-10 mx-auto border shadow rounded p-0 mt-3 mb-5"
         style="max-width: 1200px;"
@@ -367,7 +367,7 @@
     </div>
     <!-- database -->
     <!-- database entry -->
-    <div class="row m-0 w-100">
+    <div class="row m-0 w-100 collapse">
       <div class="col-sm-8 mx-auto border rounded shadow m-2 p-2">
         <!-- window action -->
         <div class="col-sm-12 p-0">
@@ -421,47 +421,64 @@
     </div>
     <!-- database entry -->
     <!-- db info panel -->
-    <div class="collapse"
+    <div
+      class="collapse"
       style="position: fixed; top:0; left:0; height: 100%; width: 100%; background-color: rgba(140, 150, 179, 0.75); overflow: hidden;"
     >
       <div
         class="border bg-light shadow rounded col-sm-8 mx-auto mb-2"
-        style="height:90%; margin-top:60px;">
+        style="height:90%; margin-top:60px;"
+      >
         <!-- window handler -->
         <div class="row p-1 col-sm-2 mx-auto">
           <button class="btn btn-block bg-light">
-              <i class="material-icons">keyboard_backspace</i>                  
+            <i class="material-icons">keyboard_backspace</i>
           </button>
         </div>
         <!-- inner window scroll -->
         <div
-          class="m-0"  
+          class="m-0"
           style="overflow-y: scroll; overflow-x: hidden; height:90%; margin-top:75px"
         >
-        <!-- device image -->
-        <div class="row p-1 bg-secondary">
+          <!-- device image -->
+          <div class="row p-1 bg-secondary">
             <div class="mt-2 mb-2 mx-auto">
-                <img
+              <img
                 src="https://via.placeholder.com/300"
                 class="rounded shadow"
                 width="300px"
                 height="300px"
               />
             </div>
+          </div>
+          <!-- brand -->
+          <div class="row pt-3">
+            <!-- key -->
+            <div class="col-sm-2 text-center"><strong>Brand</strong></div>
+            <!-- value -->
+            <div class="col-sm-10 text-center">HP</div>
+          </div>
+          <hr />
         </div>
-        <!-- brand -->
-        <div class="row pt-3">
-          <!-- key -->
-          <div class="col-sm-2 text-center"><strong>Brand</strong></div>
-          <!-- value -->
-          <div class="col-sm-10 text-center">HP</div>
-        </div>
-        <hr>
-      </div>
-      <!-- end inner window scroll -->
+        <!-- end inner window scroll -->
       </div>
     </div>
     <!-- db info panel -->
+    <!-- pagination-->
+    <div class="row m-0 w-100">
+      <div class="mx-auto col-sm-auto p-0 m-0">
+        <nav aria-label="Page navigation">
+          <ul class="pagination">
+            <li class="page-item">
+              <a class="page-link" href="#">Previous</a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+    <!--pagination -->
   </body>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script
@@ -546,7 +563,6 @@
       //   ],
       //   responsive: true
       //});
-
       //console.log(table.columns);
     });
   </script>

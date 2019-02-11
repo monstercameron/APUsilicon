@@ -91,11 +91,19 @@ class Nav {
   getSearch() {
     return this.search;
   }
+  setSearchType(type){
+    this.searchType = type;
+    return this;
+  }
+  getSearchType(){
+    return this.searchType;
+  }
   filterPage(e) {
     this.search = e.value;
-    console.log(this.query);
+    //console.log(this.search);
     let requests = new RequestMan(this.getParent());
-    requests.fetchBlogs(this.search);
+    this.parent.setPageNumber(0);
+    requests.fetchBlogs(this.search, 'tag');
     //method chaining
     return this;
   }

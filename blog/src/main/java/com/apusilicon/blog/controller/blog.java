@@ -6,11 +6,15 @@ import com.apusilicon.blog.classes.imaginery.Blog;
 import com.apusilicon.blog.classes.imaginery.Owner;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -39,10 +43,22 @@ public class blog {
 
     @CrossOrigin
     @ResponseBody
-    @RequestMapping(value = "/all", method = RequestMethod.GET)
-    public ArrayList<Blog> allBlogs(
-                                    @RequestParam(defaultValue="") String filter) {
-        return blogSafe.findByTagsContaining(filter);
+    @RequestMapping(value = "/all/{pageno}", method = RequestMethod.GET)
+    public Page<Blog> allBlogs(
+                                    @RequestParam(defaultValue="") String filter,
+                                    @RequestParam(defaultValue="") String type,
+                                    @RequestParam(defaultValue="10") int pageSize,
+                                    @PathVariable("pageno") int pageno) {
+        
+        switch(type){
+            case "tag":
+                return blogSafe.findByTagsContaining(filter, PageRequest.of(pageno, pageSize));
+            case "category":
+                return blogSafe.findByCategoryContaining(filter, PageRequest.of(pageno, pageSize));
+            default:
+            System.out.println("default");
+                return blogSafe.findAll(PageRequest.of(pageno,pageSize));
+        }
     }
 
     @CrossOrigin
@@ -62,12 +78,19 @@ public class blog {
         Blog blog = new Blog();
         blog.setBody(body);
         blog.setTags(request.getHeader("tags"));
-        blog.setTitle(request.getHeader("title"));
-        blog.setTitleImage(image);
+        blog.setTitle(request.getHeader("head"));
         blog.setDate(request.getHeader("aDate"));
         blog.setCategory(request.getHeader("category"));
         blog.setPreview("preview");
         blog.setOwner(owner);
+
+        if(request.getHeader("image") == null){
+            //use default image
+            blog.setTitleImage(image);
+        }else{
+            //use specified image
+            blog.setTitleImage(request.getHeader("image"));
+        }
 
         System.out.println(blog);
 
@@ -84,6 +107,7 @@ public class blog {
         Blog blog = blogSafe.findFirstByHash(request.getHeader("hash")).get(0);
         blog.setBody(body);
         blog.setTags(request.getHeader("tags"));
+        blog.setTitleImage(request.getHeader("image"));
         blog.setTitle(request.getHeader("head"));
         blog.setDate(request.getHeader("aDate"));
         blog.setCategory(request.getHeader("category"));

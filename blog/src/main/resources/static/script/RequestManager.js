@@ -13,7 +13,7 @@ class RequestMan {
     getParent() {
         return this.parent;
     }
-    buildPost = (blogs) => {
+    buildPost(blogs){
         let panels = [];
         //console.log(blogs);
         for (let index = 0; index < blogs.length; index++) {
@@ -36,7 +36,6 @@ class RequestMan {
         }
         return panels;
     }
-
     sendPost(action, data) {
         console.info('Saving Blog Post');
         fetch('http://localhost:8080/blog/' + action, {
@@ -44,6 +43,7 @@ class RequestMan {
                 headers: {
                     "Content-type": "application/json",
                     "head": data["head"],
+                    "image": data["image"],
                     "author": data["author"],
                     "aDate": getCurrentDate(),
                     "tags": data["tags"],
@@ -69,19 +69,21 @@ class RequestMan {
             });
         return this;
     }
-
-    fetchBlogs(filter = '') {
+    fetchBlogs(filter = '', type = '') {
         console.info("Request Filter      :" + filter);
-        fetch(`http://localhost:8080/blog/all?filter=${filter}`)
+        fetch(`http://localhost:8080/blog/all/${this.parent.getPageNumber()}?filter=${filter}&type=${type}&pageSize=${this.parent.getPageSize()}`)
             .then(function (response) {
                 return response.json();
             }).then((myJson) => {
                 // let blogs = JSON.stringify(myJson)
-                console.log("filtered response from server:");
-                console.log(myJson);
+                //console.log("filtered response from server:");
+                //console.log(myJson);
                 this.parent.removeAllPanels();
-                this.parent.addPanels(this.buildPost(myJson))
+                this.parent.addPanels(this.buildPost(myJson.content));
+                this.parent.setPageCount(myJson.totalPages);
+                this.parent.update();
                 this.parent.getNav().searchFocus();
+                console.info("page count --> "+this.parent.getPageNumber());
             });
         return this;
     }

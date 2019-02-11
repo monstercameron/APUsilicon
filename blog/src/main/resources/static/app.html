@@ -31,6 +31,7 @@
   <script src="/blog/src/main/resources/static/script/ModelViewer.js"></script>
   <script src="/blog/src/main/resources/static/script/DatabaseForm.js"></script>
   <script src="/blog/src/main/resources/static/script/RequestManager.js"></script>
+  <script src="/blog/src/main/resources/static/script/pagination.js"></script>
 </head>
 
 <body></body>
@@ -38,7 +39,7 @@
   let page = new Pagebuilder();
 
   let nav = new Nav(page, "APUsilicon")
-    .setClassList("navbar navbar-expand-sm bg-dark navbar-dark sticky-top")
+    .setClassList("navbar navbar-expand-sm bg-dark navbar-dark col-sm-12 sticky-top")
     .addLink("Youtube", "http://www.youtube.com", "blank")
     .addFunction("New Post", "page.createNewPost().update()")
     .addFunction("New DB", "page.viewDbEntry().update()")
@@ -49,8 +50,8 @@
   //fetch panels from api server, applies filter from nav
   page.fetchPanels();
 
-  // let requests = new RequestMan(page);
-  // requests.fetchBlogs("");
+  let requests = new RequestMan(page);
+  requests.fetchBlogs("");
 
   // let newPost = new NewPost(page)
   //   .setClassList('row m-0 w-100');

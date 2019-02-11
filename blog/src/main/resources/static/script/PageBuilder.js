@@ -5,6 +5,8 @@ class Pagebuilder {
     this.panelList = [];
     this.admin = null;
     this.view = VIEW.POSTS;
+    this.pageSize = 5;
+    this.pageNo = 0;
     console.log("Building Page:     : " + this.id);
     //method chaining
     return this;
@@ -75,7 +77,9 @@ class Pagebuilder {
     return this;
   }
   createNewPost() {
-    this.newPost = new NewPost(this).setClassList("row m-0 w-100");
+    this.newPost = new NewPost(this)
+      .setClassList("row m-0 w-100")
+      .setAction(ACTION.ADD);
     this.view = VIEW.NEWPOST;
     //method chaining
     return this;
@@ -91,6 +95,7 @@ class Pagebuilder {
       .setClassList("row m-0 w-100")
       .setTitle("Edit")
       .setHead(data["head"])
+      .setImage(data["image"])
       .setTags(data["tags"])
       .setCategory(data["category"])
       .setBody(data["body"])
@@ -99,7 +104,8 @@ class Pagebuilder {
 
     this.newPost = editPost;
 
-    console.error(editPost);
+    console.info('edited post')
+    console.info(editPost);
 
     this.view = VIEW.NEWPOST;
     //method chaining
@@ -256,13 +262,41 @@ class Pagebuilder {
     return this.panelList;
   }
   fetchPanels() {
-    let requests = new RequestMan(page);
-    requests.fetchBlogs(this.nav.getSearch());
+    let requests = new RequestMan(this);
+    requests.fetchBlogs(this.nav.getSearch(), this.nav.getSearchType());
   }
   //page display
+  setPageSize(size) {
+    this.pageSize = size;
+    //method chaining
+    return this;
+  }
+  getPageSize() {
+    return this.pageSize;
+  }
+  setPageNumber(no) {
+    this.pageNo = no;
+    //method chaining
+    return this;
+  }
+  getPageNumber() {
+    return this.pageNo;
+  }
+  setPageCount(count) {
+    this.pageCount = count;
+    //method chaining
+    return this;
+  }
+  getPageCount() {
+    return this.pageCount;
+  }
   setView(view) {
     this.view = view;
-    this.nav.setSearch('');
+    this.nav.setSearch("");
+    this.setPageNumber(0);
+    let requests = new RequestMan(page);
+    requests.fetchBlogs();
+
     return this;
   }
   clear() {
@@ -302,7 +336,9 @@ class Pagebuilder {
     switch (this.view) {
       case 1:
         if (this.newPost == null || typeof this.newPost === "undefined") {
-          console.error('this.newPost is undefined or null, redirecting to panels.')
+          console.error(
+            "this.newPost is undefined or null, redirecting to panels."
+          );
           this.view = VIEW.POSTS;
           this.update();
           break;
@@ -347,11 +383,19 @@ class Pagebuilder {
           div.innerHTML = this.panelList[index].template();
           document.querySelector(this.root).append(div);
         }
+
+        let pagination = new Pagination(this);
+
+        let pages = document.createElement("div");
+        pages.id = pagination.getId();
+        pages.innerHTML = pagination.template();
+        document.querySelector(this.root).append(pages);
+
         ////////////////////////////////////////////////////////
         break;
       case 3:
         if (this.db == null || typeof this.db === "undefined") {
-          console.error('DB is Null.')
+          console.error("DB is Null.");
           this.view = VIEW.POSTS;
           this.update();
           break;
@@ -432,7 +476,7 @@ class Pagebuilder {
       var notification = new Notification(arg);
     } // Otherwise, we need to ask the user for permission
     else if (Notification.permission !== "denied") {
-      Notification.requestPermission().then(function (permission) {
+      Notification.requestPermission().then(function(permission) {
         // If the user accepts, let's create a notification
         if (permission === "granted") {
           var notification = new Notification(arg);
@@ -462,6 +506,6 @@ const VIEW = {
 };
 
 const ACTION = {
-  EDIT: 'edit',
-  ADD: 'add'
-}
+  EDIT: "edit",
+  ADD: "add"
+};

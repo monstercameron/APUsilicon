@@ -6,6 +6,7 @@ class NewPost {
     this.category = ['A', 'B'];
     this.postValues = {};
     this.postValues["head"] = "EDT" + uuid();
+    this.postValues["image"] = "EDT" + uuid();
     this.postValues["tags"] = "EDT" + uuid();
     this.postValues["category"] = "EDT" + uuid();
     this.title = 'Add New Post';
@@ -72,6 +73,17 @@ class NewPost {
     this.author = author;
     //method chaining
     return this;
+  }
+  getImage() {
+    return this.image;
+  }
+  setImage(image) {
+    this.image = image;
+    //method chaining
+    return this;
+  }
+  getImageVal(){
+    return document.querySelector('#' + this.postValues["image"]).value;
   }
   getTags() {
     if (typeof this.tags === 'undefined')
@@ -150,7 +162,7 @@ class NewPost {
   }
   getBodyHTML() {
     let body = this.editor.root.innerHTML;
-    console.log(body);
+    //log(body);
     return body;
   }
   setBody(body) {
@@ -174,6 +186,7 @@ class NewPost {
       head: this.getHeadVal(),
       tags: this.getTagsVal(),
       category: this.getCategoryVal(),
+      image: this.getImageVal(),
       hash: this.hash
     };
     return obj;
@@ -253,6 +266,16 @@ class NewPost {
         class="form-control"
         placeholder="Add Heading"
         value="${this.getHead()}"
+      />
+    </div>
+    <!-- image -->
+    <div class="mt-1 mb-1">
+      <input
+        id="${this.postValues["image"]}"
+        type="text"
+        class="form-control"
+        placeholder="Add Heading"
+        value="${this.getImage()}"
       />
     </div>
     <!-- tags -->
