@@ -6,7 +6,6 @@ import com.apusilicon.blog.classes.imaginery.Blog;
 import com.apusilicon.blog.classes.imaginery.Owner;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
