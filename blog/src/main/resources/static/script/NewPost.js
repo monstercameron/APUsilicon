@@ -3,7 +3,7 @@ class NewPost {
     this.id = "NPT" + uuid();
     this.newCategoryId = "CAT" + uuid();
     this.parent = parent;
-    this.category = ['A', 'B'];
+    this.category = [];
     this.postValues = {};
     this.postValues["head"] = "EDT" + uuid();
     this.postValues["image"] = "EDT" + uuid();
@@ -75,6 +75,8 @@ class NewPost {
     return this;
   }
   getImage() {
+    if(typeof this.image === 'undefined')
+      return '';
     return this.image;
   }
   setImage(image) {
@@ -117,24 +119,31 @@ class NewPost {
     //method chaining
     return this;
   }
-  getAllCategories() {
-    //fetch request to category api?
-    //using dummy data returns a list of categories
-    return this.category;
+   getAllCategories(selectId) {
+     //clearing current cat data
+     this.category = [];
+    //fetch request to category api
+    fetch('http://localhost:8080/category/')
+    .then((response) => response.json())
+    .then((data) => {
+      //console.log(data);
+      let select = document.querySelector('#'+selectId);
+      for (let index = 0; index < data.length; index++) {
+        var option = document.createElement("option");
+        option.text = data[index].category;
+        select.add(option);
+        this.category.push(data[index].category)
+      }
+    });
   }
   injectNewCategories() {
     //getting reference to select tag
     let select = document.querySelector('#' + this.postValues["category"]);
+    
+    var option = document.createElement("option");
+    option.text = this.category.slice(-1)[0];
 
-    //clearing list
-    while (select.hasChildNodes()) {
-      select.removeChild(select.lastChild);
-    }
-
-    //append to select
-    select.innerHTML = this.getAllCategories().map(cat => {
-      return `<option value="${cat}">${cat}</option>`
-    }).join('')
+    select.add(option);
 
     //method chaining
     return this;
@@ -148,8 +157,11 @@ class NewPost {
     let cat = category.value.trim().split(' ')[0].trim();
 
     //add category to list if not empty
-    if (cat != '')
+    if (cat != ''){
       this.category.push(cat);
+      fetch(`http://localhost:8080/category/add?category=${cat}`)
+      .then((response) => console.log(response));
+    }
 
     //console.log(this.category);
 
@@ -295,10 +307,7 @@ class NewPost {
       id="${this.postValues["category"]}" 
       name=""
       class="form-control">
-      ${this.getAllCategories().map(cat =>{
-          return `<option value="${cat}">${cat}</option>`
-        }).join('')
-      }
+      ${this.getAllCategories(this.postValues["category"])}
       </select>
     </div>
     <!-- add new category -->

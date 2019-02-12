@@ -87,7 +87,7 @@ class Pagebuilder {
   editPost(id) {
     console.info("Editing Post        :" + id);
     let data = this.getPanel(id).buildDict();
-    console.log(data);
+    //console.log(data);
 
     this.newPost = null;
 
@@ -104,8 +104,8 @@ class Pagebuilder {
 
     this.newPost = editPost;
 
-    console.info('edited post')
-    console.info(editPost);
+    // console.info('edited post')
+    // console.info(editPost);
 
     this.view = VIEW.NEWPOST;
     //method chaining
