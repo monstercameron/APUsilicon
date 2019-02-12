@@ -3,9 +3,10 @@ class NewPost {
     this.id = "NPT" + uuid();
     this.newCategoryId = "CAT" + uuid();
     this.parent = parent;
-    this.category = ['A','B'];
+    this.category = ['A', 'B'];
     this.postValues = {};
     this.postValues["head"] = "EDT" + uuid();
+    this.postValues["image"] = "EDT" + uuid();
     this.postValues["tags"] = "EDT" + uuid();
     this.postValues["category"] = "EDT" + uuid();
     this.title = 'Add New Post';
@@ -23,6 +24,19 @@ class NewPost {
   getId() {
     return this.id;
   }
+  getHash(){
+    return this.hash;
+  }
+  setHash(hash){
+    this.hash = hash;
+    //method chaining
+    return this;
+  }
+  setAction(action){
+    this.action = action;
+    //method chaining
+    return this;
+  }
   setClassList(classList) {
     this.classList = classList;
     //method chainin
@@ -39,35 +53,46 @@ class NewPost {
     return this;
   }
   getHead() {
-    if(typeof this.head === 'undefined')
+    if (typeof this.head === 'undefined')
       return '';
     else
       return this.head;
   }
   getHeadVal() {
-    return document.querySelector('#'+this.postValues["head"]).value;
+    return document.querySelector('#' + this.postValues["head"]).value;
   }
   setHead(head) {
     this.head = head;
     //method chaining
     return this;
   }
-  getAuthor(){
+  getAuthor() {
     return this.author;
   }
-  setAuthor(author){
+  setAuthor(author) {
     this.author = author;
     //method chaining
     return this;
   }
+  getImage() {
+    return this.image;
+  }
+  setImage(image) {
+    this.image = image;
+    //method chaining
+    return this;
+  }
+  getImageVal(){
+    return document.querySelector('#' + this.postValues["image"]).value;
+  }
   getTags() {
-    if(typeof this.tags === 'undefined')
+    if (typeof this.tags === 'undefined')
       return '';
     else
       return this.tags;
   }
   getTagsVal() {
-    return document.querySelector('#'+this.postValues["tags"]).value;
+    return document.querySelector('#' + this.postValues["tags"]).value;
   }
   setTags(tags) {
     this.tags = tags;
@@ -78,13 +103,13 @@ class NewPost {
     return this.category;
   }
   getCategoryVal() {
-    return document.querySelector('#'+this.postValues["category"]).value;
+    return document.querySelector('#' + this.postValues["category"]).value;
   }
-  setTitle(title){
+  setTitle(title) {
     this.title = title;
     return this;
   }
-  getTitle(){
+  getTitle() {
     return this.title
   }
   setCategory(category) {
@@ -92,40 +117,40 @@ class NewPost {
     //method chaining
     return this;
   }
-  getAllCategories(){
+  getAllCategories() {
     //fetch request to category api?
     //using dummy data returns a list of categories
     return this.category;
   }
-  injectNewCategories(){
+  injectNewCategories() {
     //getting reference to select tag
-    let select = document.querySelector('#'+this.postValues["category"]);
-    
+    let select = document.querySelector('#' + this.postValues["category"]);
+
     //clearing list
-    while(select.hasChildNodes()){
+    while (select.hasChildNodes()) {
       select.removeChild(select.lastChild);
     }
 
     //append to select
-    select.innerHTML = this.getAllCategories().map(cat =>{
+    select.innerHTML = this.getAllCategories().map(cat => {
       return `<option value="${cat}">${cat}</option>`
     }).join('')
 
     //method chaining
     return this;
   }
-  addNewCategory(){
+  addNewCategory() {
     //fetch request to add new cats
-    let category = document.querySelector('#'+this.newCategoryId);
-    console.info('Category added      : '+category.value);
+    let category = document.querySelector('#' + this.newCategoryId);
+    console.info('Category added      : ' + category.value);
 
     //clean up category
     let cat = category.value.trim().split(' ')[0].trim();
 
     //add category to list if not empty
-    if(cat != '')
+    if (cat != '')
       this.category.push(cat);
-    
+
     //console.log(this.category);
 
     category.value = '';
@@ -135,47 +160,65 @@ class NewPost {
   getBody() {
     return this.body;
   }
-  getBodyHTML(){
-    return this.editor.root.innerHTML;
+  getBodyHTML() {
+    let body = this.editor.root.innerHTML;
+    //log(body);
+    return body;
   }
   setBody(body) {
     this.body = body;
     //method chaining
     return this;
   }
-  setBodyWait(){
-    if(typeof this.head === 'undefined')
+  setBodyWait() {
+    if (typeof this.head === 'undefined')
       this.editor.root.innerHTML = '';
     else
       this.editor.root.innerHTML = this.body;
     //method chaining
     return this;
   }
-  buildNewPost(){
+  buildDict() {
+    console.info('building Post         :' + this.id);
+    let obj = {
+      author: this.author,
+      body: this.getBodyHTML(),
+      //body: this.getBodyHTML().hexEncode(),
+      head: this.getHeadVal(),
+      tags: this.getTagsVal(),
+      category: this.getCategoryVal(),
+      image: this.getImageVal(),
+      hash: this.hash
+    };
+    return obj;
+  }
+  validateNewPost() {
     this.newPost = {};
     let pass = true;
 
     //these are the only key/value pairs I want to check
     let keys = ['head', 'tags'];
     for (let index = 0; index < keys.length; index++) {
-      let field = document.querySelector('#'+this.postValues[keys[index]]);
+      let field = document.querySelector('#' + this.postValues[keys[index]]);
 
       //checking if empty
-      if(field.value == ''){
+      if (field.value == '') {
         console.error(`${keys[index]} empty for    :${this.id}`);
         this.parent.notify(`${keys[index]} empty for    :${this.id}`);
         field.classList.add('is-invalid');
         pass = false;
       }
-      if(field.value != ''){
+      if (field.value != '') {
         //resetting inputs
         field.classList.remove('is-invalid');
       }
+
+      return pass;
     }
 
     //check editor
     //console.log(this.editor.root.innerHTML);
-    if(this.editor.root.innerHTML == '<p><br></p>'){
+    if (this.editor.root.innerHTML == '<p><br></p>') {
       console.error(`Editor empty for  :${this.id}`);
       this.parent.notify(`Editor empty for  :${this.id}`);
       this.editor.focus();
@@ -190,10 +233,12 @@ class NewPost {
     //method chaining
     return this;
   }
-  sendNewPost(){
-    this.buildNewPost();
-    //PUT request
-    //method chaining
+  sendNewPost() {
+    if (this.validateNewPost()) {
+      requests = new RequestMan();
+      requests.sendPost(this.action,this.buildDict());
+    }else
+      console.error("Can Not Save New Post, There Are Still Errors, Enable Notifications To See Errors.");
     return this;
   }
   template() {
@@ -222,6 +267,16 @@ class NewPost {
         class="form-control"
         placeholder="Add Heading"
         value="${this.getHead()}"
+      />
+    </div>
+    <!-- image -->
+    <div class="mt-1 mb-1">
+      <input
+        id="${this.postValues["image"]}"
+        type="text"
+        class="form-control"
+        placeholder="Add Heading"
+        value="${this.getImage()}"
       />
     </div>
     <!-- tags -->
@@ -266,7 +321,7 @@ class NewPost {
       <div id="${this.editorId}" class="" style="height:300px;"></div>
     </div>
     <!-- submit -->
-    <div class="text-center">
+    <div class="">
       <button 
         class="btn bg-dark text-white btn-block" 
         style="font-size:24px;"
@@ -275,7 +330,7 @@ class NewPost {
     </div>
   </div>`;
   }
-  print(){
+  print() {
     console.info(this)
     //method chaining
     return this;

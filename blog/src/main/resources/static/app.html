@@ -1,151 +1,161 @@
 <html>
-  <head>
-    <title>APUsilicon</title>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="https://cdn.datatables.net/v/bs4-4.1.1/dt-1.10.18/cr-1.5.0/r-2.2.2/datatables.min.css"
-    />
-    <link
-      href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      rel="stylesheet"
-    />
-    <link href="//cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet" />
-    <link
-      rel="stylesheet"
-      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/default.min.css"
-      <link
-      href="https://raw.githubusercontent.com/highlightjs/highlight.js/master/src/styles/nord.css"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="/blog/src/main/resources/static/style/style.css"
-    />
-    <link
-      href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="/blog/src/main/resources/static/style/style.css"
-    />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script
-      type="text/javascript"
-      src="https://cdn.datatables.net/v/bs4-4.1.1/dt-1.10.18/cr-1.5.0/r-2.2.2/datatables.min.js"
-    ></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
-    <script src="//cdn.quilljs.com/1.3.6/quill.js"></script>
-    <script src="/blog/src/main/resources/static/script/functions.js"></script>
-    <script src="/blog/src/main/resources/static/script/NewPost.js"></script>
-    <script src="/blog/src/main/resources/static/script/Post.js"></script>
-    <script src="/blog/src/main/resources/static/script/User.js"></script>
-    <script src="/blog/src/main/resources/static/script/login.js"></script>
-    <script src="/blog/src/main/resources/static/script/nav.js"></script>
-    <script src="/blog/src/main/resources/static/script/page.js"></script>
-    <script src="/blog/src/main/resources/static/script/PageBuilder.js"></script>
-    <script src="/blog/src/main/resources/static/script/database.js"></script>
-    <script src="/blog/src/main/resources/static/script/ModelViewer.js"></script>
-    <script src="/blog/src/main/resources/static/script/DatabaseForm.js"></script>
-  </head>
-  <body></body>
-  <script>
-    let page = new Pagebuilder();
 
-    let nav = new Nav(page, "APUsilicon")
-      .setClassList("navbar navbar-expand-sm bg-dark navbar-dark sticky-top")
-      .addLink("Youtube", "http://www.youtube.com", "blank")
-      .addFunction("New Post", "page.createNewPost().update()")
-      .addFunction("New DB", "page.viewDbEntry().update()")
-      .addFunction("esss", "page.createNewPost().update()");
+<head>
+  <title>APUsilicon</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4-4.1.1/dt-1.10.18/cr-1.5.0/r-2.2.2/datatables.min.css" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <link href="//cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/default.min.css" />
+  <!-- <link  rel="stylesheet" type="text/css" href="https://raw.githubusercontent.com/highlightjs/highlight.js/master/src/styles/nord.css"/> -->
+  <link rel="stylesheet" href="/blog/src/main/resources/static/style/style.css" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <link rel="stylesheet" href="/blog/src/main/resources/static/style/style.css" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/v/bs4-4.1.1/dt-1.10.18/cr-1.5.0/r-2.2.2/datatables.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
+  <script src="//cdn.quilljs.com/1.3.6/quill.js"></script>
+  <script src="/blog/src/main/resources/static/script/functions.js"></script>
+  <script src="/blog/src/main/resources/static/script/NewPost.js"></script>
+  <script src="/blog/src/main/resources/static/script/Post.js"></script>
+  <script src="/blog/src/main/resources/static/script/User.js"></script>
+  <script src="/blog/src/main/resources/static/script/login.js"></script>
+  <script src="/blog/src/main/resources/static/script/nav.js"></script>
+  <script src="/blog/src/main/resources/static/script/page.js"></script>
+  <script src="/blog/src/main/resources/static/script/PageBuilder.js"></script>
+  <script src="/blog/src/main/resources/static/script/database.js"></script>
+  <script src="/blog/src/main/resources/static/script/ModelViewer.js"></script>
+  <script src="/blog/src/main/resources/static/script/DatabaseForm.js"></script>
+  <script src="/blog/src/main/resources/static/script/RequestManager.js"></script>
+  <script src="/blog/src/main/resources/static/script/pagination.js"></script>
+</head>
 
-    page.addNav(nav).update();
+<body></body>
+<script>
+  let page = new Pagebuilder();
 
-    // let newPost = new NewPost(page)
-    //   .setClassList('row m-0 w-100');
+  let nav = new Nav(page, "APUsilicon")
+    .setClassList("navbar navbar-expand-sm bg-dark navbar-dark col-sm-12 sticky-top")
+    .addLink("Youtube", "http://www.youtube.com", "blank")
+    .addFunction("New Post", "page.createNewPost().update()")
+    .addFunction("New DB", "page.viewDbEntry().update()");
 
-    // page.addNewPost(newPost).update().update();
-    var testimage1 =
-      "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/image/AppleInc/aos/published/images/m/bp/mbp13touch/space/mbp13touch-space-select-201807?wid=452&hei=420&fmt=jpeg&qlt=95&op_usm=0.5,0.5&.v=1529520060550";
-    var placeholder = "https://via.placeholder.com/300/000";
+  page.addNav(nav);
+  
+  //fetch panels from api server, applies filter from nav
+  page.fetchPanels();
 
-    let post = new Post(page)
-      .setheadLine("Test headline")
-      .setClassList("row m-0 w-100")
-      .setAuthor("Monstercameron")
-      .setDate("1/19/2019")
-      .setTags("apu, laptop, brand")
-      .setCategory("news")
-      .setBody("this is the body, will get from restful resource")
-      .setImg(testimage1)
-      .toggleSize();
+  let requests = new RequestMan(page);
+  requests.fetchBlogs("");
 
-    //tests
-    var col = [
-      { title: "Image", visible: true, width: "200px", className: "text-center" },
-      { title: "Brand", visible: true, className: "text-center align-middle" },
-      { title: "SKU", visible: true, className: "text-center align-middle" },
-      { title: "APU", visible: true, className: "text-center align-middle" },
-      { title: "RAM", visible: true, className: "text-center align-middle" },
-      { title: "Storage", visible: true, className: "text-center align-middle" }
-    ];
-    var dataSet = [
-      [
-        `<img
+  // let newPost = new NewPost(page)
+  //   .setClassList('row m-0 w-100');
+
+  // page.addNewPost(newPost).update().update();
+  //var testimage1 =
+  // "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/image/AppleInc/aos/published/images/m/bp/mbp13touch/space/mbp13touch-space-select-201807?wid=452&hei=420&fmt=jpeg&qlt=95&op_usm=0.5,0.5&.v=1529520060550";
+  var placeholder = "https://via.placeholder.com/300/000";
+
+  // let post = new Post(page)
+  //   .setheadLine("Test headline")
+  //   .setClassList("row m-0 w-100")
+  //   .setAuthor("Monstercameron")
+  //   .setDate("1/19/2019")
+  //   .setTags("apu, laptop, brand")
+  //   .setCategory("news")
+  //   .setBody("this is the body, will get from restful resource")
+  //   .setImg(testimage1)
+  //   .toggleSize();
+
+  //tests
+  var col = [{
+      title: "Image",
+      visible: true,
+      width: "200px",
+      className: "text-center"
+    },
+    {
+      title: "Brand",
+      visible: true,
+      className: "text-center align-middle"
+    },
+    {
+      title: "SKU",
+      visible: true,
+      className: "text-center align-middle"
+    },
+    {
+      title: "APU",
+      visible: true,
+      className: "text-center align-middle"
+    },
+    {
+      title: "RAM",
+      visible: true,
+      className: "text-center align-middle"
+    },
+    {
+      title: "Storage",
+      visible: true,
+      className: "text-center align-middle"
+    }
+  ];
+  var dataSet = [
+    [
+      `<img
           src="https://via.placeholder.com/300"
           class="rounded"
           width="150px"
           height="150px"
           onclick="page.newViewer().getViewer().inject();"
         />`,
-        "HP",
-        "Envy 15",
-        "R7-2700u",
-        "16",
-        "256"
-      ],
-      [
-        `<img
+      "HP",
+      "Envy 15",
+      "R7-2700u",
+      "16",
+      "256"
+    ],
+    [
+      `<img
           src="https://via.placeholder.com/300"
           class="rounded"
           width="150px"
           height="150px"
           onclick="page.newViewer().getViewer().inject();"
         />`,
-        "HP",
-        "Envy 13",
-        "R5-2500u",
-        "8",
-        "128"
-      ]
-    ];
-    
-    page
-      .newDb()
-      .getDb()
-      .setClassList("row m-0 w-100")
-      .setCols(col)
-      .setDataSet(dataSet)
-      .getParent()
-      .update();
+      "HP",
+      "Envy 13",
+      "R5-2500u",
+      "8",
+      "128"
+    ]
+  ];
 
-    // page
-    //   .getDb()
-    //   .setDataSet(dataSet2)
-    //   .getParent()6
-    //   .update();
+  // page
+  //   .newDb()
+  //   .getDb()
+  //   .setClassList("row m-0 w-100")
+  //   .setCols(col)
+  //   .setDataSet(dataSet)
+  //   .getParent()
+  //   .update();
 
-    //page.addPanel(post, 1).addPanel(post2, 1).update();
-    page.addPanels(post).update();
-    //page.addPanels(post).createNewPost().update();
-    //page.addPanels([post,post2]).update();
+  // page
+  //   .getDb()
+  //   .setDataSet(dataSet2)
+  //   .getParent()6
+    // .update();
 
-    //console.log(page);
-  </script>
+  //page.addPanel(post, 1).addPanel(post2, 1).update();
+  //page.addPanels(post).update();
+  //page.addPanels(post).createNewPost().update();
+  //page.addPanels([post,post2]).update();
+
+  //console.log(page);
+</script>
+
 </html>

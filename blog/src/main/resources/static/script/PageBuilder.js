@@ -4,7 +4,9 @@ class Pagebuilder {
     this.root = root;
     this.panelList = [];
     this.admin = null;
-    this.view = VIEW.DATABASE;
+    this.view = VIEW.POSTS;
+    this.pageSize = 5;
+    this.pageNo = 0;
     console.log("Building Page:     : " + this.id);
     //method chaining
     return this;
@@ -15,6 +17,9 @@ class Pagebuilder {
     //   return true;
     // } else return false;
     return true;
+  }
+  getAdminToken() {
+    return this.token;
   }
   //page
   getId() {
@@ -72,7 +77,9 @@ class Pagebuilder {
     return this;
   }
   createNewPost() {
-    this.newPost = new NewPost(this).setClassList("row m-0 w-100");
+    this.newPost = new NewPost(this)
+      .setClassList("row m-0 w-100")
+      .setAction(ACTION.ADD);
     this.view = VIEW.NEWPOST;
     //method chaining
     return this;
@@ -80,14 +87,25 @@ class Pagebuilder {
   editPost(id) {
     console.info("Editing Post        :" + id);
     let data = this.getPanel(id).buildDict();
+    console.log(data);
 
-    this.newPost = new NewPost(this)
+    this.newPost = null;
+
+    let editPost = new NewPost(this)
       .setClassList("row m-0 w-100")
       .setTitle("Edit")
       .setHead(data["head"])
+      .setImage(data["image"])
       .setTags(data["tags"])
       .setCategory(data["category"])
-      .setBody(data["body"]);
+      .setBody(data["body"])
+      .setHash(data["hash"])
+      .setAction(ACTION.EDIT);
+
+    this.newPost = editPost;
+
+    console.info('edited post')
+    console.info(editPost);
 
     this.view = VIEW.NEWPOST;
     //method chaining
@@ -136,7 +154,7 @@ class Pagebuilder {
   getDbEntryForm() {
     return this.dbentry;
   }
-  removeDbEntryForm(){
+  removeDbEntryForm() {
     this.view = VIEW.POSTS;
     return this;
   }
@@ -223,6 +241,13 @@ class Pagebuilder {
     //method chaining
     return this;
   }
+  removeAllPanels() {
+    console.info("Removing all Posts");
+    this.panelList = [];
+
+    //method chaining
+    return this;
+  }
   getPanel(id) {
     for (let index = 0; index < this.panelList.length; index++) {
       if (this.panelList[index].getId() == id) {
@@ -236,7 +261,44 @@ class Pagebuilder {
   getPanelList() {
     return this.panelList;
   }
+  fetchPanels() {
+    let requests = new RequestMan(this);
+    requests.fetchBlogs(this.nav.getSearch(), this.nav.getSearchType());
+  }
   //page display
+  setPageSize(size) {
+    this.pageSize = size;
+    //method chaining
+    return this;
+  }
+  getPageSize() {
+    return this.pageSize;
+  }
+  setPageNumber(no) {
+    this.pageNo = no;
+    //method chaining
+    return this;
+  }
+  getPageNumber() {
+    return this.pageNo;
+  }
+  setPageCount(count) {
+    this.pageCount = count;
+    //method chaining
+    return this;
+  }
+  getPageCount() {
+    return this.pageCount;
+  }
+  setView(view) {
+    this.view = view;
+    this.nav.setSearch("");
+    this.setPageNumber(0);
+    let requests = new RequestMan(page);
+    requests.fetchBlogs();
+
+    return this;
+  }
   clear() {
     this.html = document.querySelector(this.root);
     while (this.html.firstChild) {
@@ -274,6 +336,9 @@ class Pagebuilder {
     switch (this.view) {
       case 1:
         if (this.newPost == null || typeof this.newPost === "undefined") {
+          console.error(
+            "this.newPost is undefined or null, redirecting to panels."
+          );
           this.view = VIEW.POSTS;
           this.update();
           break;
@@ -290,7 +355,6 @@ class Pagebuilder {
         }
         //panel info
         div.id = this.newPost.getId();
-        div.classList.add("row");
         div.innerHTML = this.newPost.template();
         document.querySelector(this.root).append(div);
         //starting the editor after the html is inplace
@@ -319,10 +383,19 @@ class Pagebuilder {
           div.innerHTML = this.panelList[index].template();
           document.querySelector(this.root).append(div);
         }
+
+        let pagination = new Pagination(this);
+
+        let pages = document.createElement("div");
+        pages.id = pagination.getId();
+        pages.innerHTML = pagination.template();
+        document.querySelector(this.root).append(pages);
+
         ////////////////////////////////////////////////////////
         break;
       case 3:
         if (this.db == null || typeof this.db === "undefined") {
+          console.error("DB is Null.");
           this.view = VIEW.POSTS;
           this.update();
           break;
@@ -372,7 +445,7 @@ class Pagebuilder {
         document.querySelector(this.root).append(div);
         ////////////////////////////////////////////////////////
         break;
-        case 5:
+      case 5:
         ////////////////////////////////////////////////////////
         //              database entry
         ////////////////////////////////////////////////////////
@@ -430,4 +503,9 @@ const VIEW = {
   DATABASE: 3,
   DATABASEENTRY: 4,
   EDITPOST: 5
+};
+
+const ACTION = {
+  EDIT: "edit",
+  ADD: "add"
 };
