@@ -228,7 +228,7 @@ class Post {
             .join('')}
           </div>
         <!-- body -->
-        <div class="p-2 post-body text-left">${this.body}</div>
+        <div class="p-2 post-body">${this.body}</div>
         <!-- scroll to top -->
         <div>
           <a href="#${this.getId()}">

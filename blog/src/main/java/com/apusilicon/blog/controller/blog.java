@@ -56,7 +56,7 @@ public class blog {
             case "category":
                 return blogSafe.findByCategoryContaining(filter, PageRequest.of(pageno, pageSize));
             default:
-            System.out.println("default");
+                //System.out.println("default");
                 return blogSafe.findAll(PageRequest.of(pageno,pageSize));
         }
     }

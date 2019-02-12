@@ -182,7 +182,8 @@ class NewPost {
     console.info('building Post         :' + this.id);
     let obj = {
       author: this.author,
-      body: this.getBodyHTML().hexEncode(),
+      body: this.getBodyHTML(),
+      //body: this.getBodyHTML().hexEncode(),
       head: this.getHeadVal(),
       tags: this.getTagsVal(),
       category: this.getCategoryVal(),

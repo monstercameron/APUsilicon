@@ -155,7 +155,7 @@ class Nav {
             .map(key => {
               return `
               <li
-                class="nav-link text-white" 
+                class="nav-link text-white pointer" 
                 onclick="window.open(
                   '${this.links[key]["url"]}',
                   '_${this.links[key]["target"]}'

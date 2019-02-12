@@ -28,7 +28,8 @@ class RequestMan {
                 .setTags(blogs[index].tags)
                 .setCategory(blogs[index].category)
                 .setRemote(blogs[index].hash)
-                .setBody(blogs[index].body.hexDecode());
+                .setBody(blogs[index].body);
+                //.setBody(blogs[index].body.hexDecode());
                 // .toggleSize();
 
             //console.info(this.parent);
@@ -83,7 +84,7 @@ class RequestMan {
                 this.parent.setPageCount(myJson.totalPages);
                 this.parent.update();
                 this.parent.getNav().searchFocus();
-                console.info("page count --> "+this.parent.getPageNumber());
+                //console.info("page count --> "+this.parent.getPageNumber());
             });
         return this;
     }
