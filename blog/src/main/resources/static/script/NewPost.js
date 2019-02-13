@@ -18,7 +18,7 @@ class NewPost {
     //method chaining
     return this;
   }
-  getparent() {
+  getParent() {
     return this.parent;
   }
   getId() {
@@ -260,8 +260,8 @@ class NewPost {
     div.id = viewer.getId();
     div.innerHTML = viewer.template();
 
-    let newpost = document.querySelector('#'+this.getId());
-    newpost.append(div);
+    let root = document.querySelector(this.getParent().getRoot());
+    root.append(div);
 
     console.log("here works");
 
