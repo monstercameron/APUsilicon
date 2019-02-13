@@ -253,6 +253,23 @@ class NewPost {
       console.error("Can Not Save New Post, There Are Still Errors, Enable Notifications To See Errors.");
     return this;
   }
+  openImageSelector(){
+    let viewer = new ImageViewer(page);
+
+    let div = document.createElement('div');
+    div.id = viewer.getId();
+    div.innerHTML = viewer.template();
+
+    let newpost = document.querySelector('#'+this.getId());
+    newpost.append(div);
+
+    console.log("here works");
+
+    return this;
+  }
+  closeImageSelector(){
+
+  }
   template() {
     return `<div
     class="col-sm-8 mx-auto border shadow rounded p-1 mt-1 mb-5"
@@ -271,6 +288,23 @@ class NewPost {
     <div class="text-center mt-1 mb-1" style="font-size: 26px;">
       ${this.title}
     </div>
+    <!-- image -->
+    <div class="row ml-0 mr-1 mt-1 mb-1">
+      <input
+        id="${this.postValues["image"]}"
+        type="text"
+        class="col-sm-10 form-control" 
+        placeholder="Add Image Url"
+        value="${this.getImage()}"
+      />
+      <button 
+        class="col-sm-2 btn btn-block bg-dark text-white" 
+        onclick="page.getNewPost('${this.id}').openImageSelector()">
+        <i class="material-icons">
+          add_box
+        </i>
+      </button>
+    </div>
     <!-- heading -->
     <div class="mt-1 mb-1">
       <input
@@ -279,16 +313,6 @@ class NewPost {
         class="form-control"
         placeholder="Add Heading"
         value="${this.getHead()}"
-      />
-    </div>
-    <!-- image -->
-    <div class="mt-1 mb-1">
-      <input
-        id="${this.postValues["image"]}"
-        type="text"
-        class="form-control"
-        placeholder="Add Heading"
-        value="${this.getImage()}"
       />
     </div>
     <!-- tags -->

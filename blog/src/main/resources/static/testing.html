@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>file uploader</title>
+</head>
+
+<body>
+    <input type="file" id="file">
+    <br>
+    <input type="button" value="upload" id="send" onclick="uploadImage()">
+</body>
+<script>
+    const uploadImage = () => {
+        let file = document.querySelector('#file').files;
+        console.log(file)
+        let b64 = getBase64(file[0], uploadFile);
+    };
+
+    const getBase64 = (file, callBack) => {
+        var reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function () {
+            console.log(reader.result);
+            callBack(reader.result, file.name);
+        };
+        reader.onerror = function (error) {
+            console.log('Error: ', error);
+        };
+    }
+
+    const uploadFile = (data, name) => {
+        fetch('http://localhost:8080/image/upload', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "name": name
+                },
+                body: data,
+            })
+            .then((response) => console.log(response));
+    };
+</script>
+
+</html>

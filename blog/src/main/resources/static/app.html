@@ -32,6 +32,7 @@
   <script src="/blog/src/main/resources/static/script/DatabaseForm.js"></script>
   <script src="/blog/src/main/resources/static/script/RequestManager.js"></script>
   <script src="/blog/src/main/resources/static/script/pagination.js"></script>
+  <script src="/blog/src/main/resources/static/script/ImageViewer.js"></script>
 </head>
 
 <body></body>
@@ -51,6 +52,8 @@
 
   let requests = new RequestMan(page);
   requests.fetchBlogs("");
+
+  page.createNewPost();
 
   // let newPost = new NewPost(page)
   //   .setClassList('row m-0 w-100');
