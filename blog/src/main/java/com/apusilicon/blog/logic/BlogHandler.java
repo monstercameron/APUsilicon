@@ -1,4 +1,4 @@
-package logic;
+package com.apusilicon.blog.logic;
 
 /**
  *

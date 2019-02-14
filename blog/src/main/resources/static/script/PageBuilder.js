@@ -7,6 +7,7 @@ class Pagebuilder {
     this.view = VIEW.POSTS;
     this.pageSize = 5;
     this.pageNo = 0;
+    this.admin = new Admin(this);
     console.log("Building Page:     : " + this.id);
     //method chaining
     return this;
@@ -17,6 +18,9 @@ class Pagebuilder {
     //   return true;
     // } else return false;
     return true;
+  }
+  getAdmin(){
+    return this.admin;
   }
   getAdminToken() {
     return this.token;
@@ -316,7 +320,7 @@ class Pagebuilder {
     this.clear();
 
     //declaring vars
-    let nav, div, classList;
+    let nav, modal, div, classList;
 
     //appending nav
     nav = document.createElement("nav");
@@ -330,7 +334,11 @@ class Pagebuilder {
     } else {
       nav.innerHTML = "Nav Missing. Or default Nav template?";
     }
+    modal = document.createElement('div');
+    modal.innerHTML = this.nav.loginModal();
+
     document.querySelector(this.root).prepend(nav);
+    document.querySelector(this.root).prepend(modal);
 
     //drawing view
     switch (this.view) {

@@ -91,11 +91,11 @@ class Nav {
   getSearch() {
     return this.search;
   }
-  setSearchType(type){
+  setSearchType(type) {
     this.searchType = type;
     return this;
   }
-  getSearchType(){
+  getSearchType() {
     return this.searchType;
   }
   filterPage(e) {
@@ -165,13 +165,60 @@ class Nav {
             .join("")}
             ${this.addAdminpanel()}
           </ul>
+            <div class="form-inline ml-auto">
             <input 
               id="${this.searchId}" 
-              class="form-control col-sm-2 ml-auto" 
+              class="form-control col-sm-auto" 
               type="text" placeholder="Search" 
               value="${this.search}"
               onkeyup="page.getNav().filterPage(this).getParent().update()">
-        </div>`;
+        
+              <!-- Button Modal -->
+              <button type="button" class="btn btn-outline-light btn-sm m-1" data-toggle="modal" data-target="#loginModal">
+                <i class="material-icons">
+                  person
+                </i>
+              </button>
+              </div>
+
+              </div>`;
+  }
+  loginModal() {
+    this.email = "EML"+uuid();
+    this.credentials = "PWD"+uuid();
+    return `
+    <!-- The Modal -->
+    <div class="modal fade" id="loginModal">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+  
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">Login</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+  
+          <!-- Modal body -->
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="email">Email address:</label>
+              <input id="${this.email}"  type="email" class="form-control" id="email">
+            </div>
+            <div class="form-group">
+              <label for="pwd">Password:</label>
+              <input id="${this.credentials}" type="password" class="form-control" id="pwd">
+            </div>
+          </div>
+  
+          <!-- Modal footer -->
+          <div class="modal-footer">
+            <button class="btn btn-primary" onclick="page.getAdmin().fetchToken()">Login</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          </div>
+  
+        </div>
+      </div>
+    </div>`;
   }
   print() {
     console.info(this)
