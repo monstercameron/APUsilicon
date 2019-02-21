@@ -4,10 +4,12 @@ class Nav {
     this.parent = parent;
     this.brand = brand;
     this.links = {};
+    this.linkFunctions= {};
     this.functions = {};
     this.search = '';
+    this.navModal = new NavModal(this.getParent());
     this.searchId = "SCH" + uuid();
-    console.info("Building Nav       : " + this.id);
+    console.info("Building Nav        : " + this.id);
     //method chaining
     return this;
   }
@@ -39,7 +41,15 @@ class Nav {
     //method chaining
     return this;
   }
-  addFunction(title, func) {
+  addFunction(title, onclick){
+    //console.log(arguments);
+    this.linkFunctions[title] = {
+      onclick: onclick
+    };
+    //method chaining
+    return this;
+  }
+  addAdminFunction(title, func) {
     this.functions[title] = func;
     //method chaining
     return this;
@@ -49,7 +59,7 @@ class Nav {
     return this;
   }
   addAdminpanel() {
-    if (this.parent.hasAdmin()) {
+    if (this.parent.getAdmin().hasToken()) {
       let rv = Object.keys(this.functions).map(func => {
         return `
           <a 
@@ -64,18 +74,20 @@ class Nav {
       <a
         class="nav-link dropdown-toggle text-white"
         href="#"
+        style="text-transform:Capitalize;"
         id="navbarDropdown"
         role="button"
         data-toggle="dropdown"
         aria-haspopup="true"
         aria-expanded="false"
       >
-        Admin
+        ${this.parent.getAdmin().getLocalEmail().getEmail()}
       </a>
       <div class="dropdown-menu" aria-labelledby="navbarDropdown">
         ${rv}
         <div class="dropdown-divider"></div>
-        <a class="dropdown-item" href="#">Logout</a>
+        <a onclick="page.getAdmin().deleteTokenAndEmail().getParent().update()"
+          class="dropdown-item" href="#">Logout</a>
       </div>
     </li>`;
 
@@ -114,9 +126,6 @@ class Nav {
     //method chaining;
     return this;
   }
-  /**
-   * Sets the cursor to the end of the input
-   */
   setCaretPosition(elem, caretPos) {
     var range;
 
@@ -161,9 +170,18 @@ class Nav {
                   '_${this.links[key]["target"]}'
                 );"
               >${key}</li>`;
-            })
-            .join("")}
-            ${this.addAdminpanel()}
+            }).join("")}
+
+          ${Object.keys(this.linkFunctions)
+            .map(key => {
+              return`
+              <li
+                class="nav-link text-white pointer" 
+                onclick="${this.linkFunctions[key].onclick}"
+              >${key}</li>`
+            }).join("")}
+
+          ${this.addAdminpanel()}
           </ul>
             <div class="form-inline ml-auto">
             <input 
@@ -183,14 +201,53 @@ class Nav {
 
               </div>`;
   }
+  setModalTemplate(template) {
+    this.modalTemplate = template;
+    return this;
+  }
+  getModalTemplate() {
+    return this.modalTemplate;
+  }
+  isModalTemplate(template) {
+    return (template == this.modalTemplate) ? 'Active' : '';
+  }
+  getNavModal() {
+    console.log(this.navModal);
+    return this.NavModal;
+  }
   loginModal() {
-    this.email = "EML"+uuid();
-    this.credentials = "PWD"+uuid();
+    this.email = "EML" + uuid();
+    this.credentials = "PWD" + uuid();
+    this.navModal
+      .setEmailId(this.email)
+      .setPwdId(this.credentials);
+    return this.navModal.template();
+  }
+  loginModalBK() {
+    if (this.modalTemplate == null || typeof this.modalTemplate === 'undefined') {
+      console.log('Modal template: ' + this.modalTemplate)
+      this.modalTemplate = 'login';
+    }
+    this.email = "EML" + uuid();
+    this.credentials = "PWD" + uuid();
     return `
     <!-- The Modal -->
     <div class="modal fade" id="loginModal">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
+
+          <!-- Model Menu -->
+          <ul class="nav nav-tabs">
+            <li class="nav-item"
+            onclick="page.getNav().setModalTemplate('login')">
+              <a class="nav-link ${this.isModalTemplate('login')}" href="#" >Login</a>
+            </li>
+            <li class="nav-item"
+            onclick="page.getNav().setModalTemplate('signup').update()">
+              <a class="nav-link ${this.isModalTemplate('signup')}" href="#">Sign Up</a>
+            </li>
+            </li>
+          </ul>
   
           <!-- Modal Header -->
           <div class="modal-header">

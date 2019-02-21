@@ -2,7 +2,7 @@ class RequestMan {
     constructor(parent) {
         this.parent = parent;
         this.id = 'RMN' + uuid();
-        console.info("Request manager:    :" + this.id);
+        console.info("Request manager:    : " + this.id);
         return this;
     }
     setParent() {
@@ -43,6 +43,8 @@ class RequestMan {
                 method: 'post',
                 headers: {
                     "Content-type": "application/json",
+                    "email": this.parent.getAdmin().getEmail(),
+                    "token": this.parent.getAdmin().getToken(),
                     "head": data["head"],
                     "image": data["image"],
                     "author": data["author"],
@@ -50,8 +52,6 @@ class RequestMan {
                     "tags": data["tags"],
                     "category": data["category"],
                     "hash": data["hash"]
-                    //,
-                    //"auth": this.parent.getAdminToken
                 },
                 body: data["body"]
             })
@@ -60,6 +60,8 @@ class RequestMan {
                 if (!response.ok) {
                     throw new Error(json.message);
                 }
+                console.log(json)
+                this.getParent().notify(json.message);
             })
             .catch(exception => {
                 var errorMap = new Map([

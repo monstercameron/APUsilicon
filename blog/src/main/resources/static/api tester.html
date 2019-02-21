@@ -23,6 +23,11 @@
     <input type="text" placeholder="header 1" id="header1value" value="9831b642-b9e2-42f4-9530-c0bb7037b649">
     <br>
     <button id="myButton">send</button>
+    <hr>
+    <h2>test auth</h2>
+    <input type="text" id="token" value="Ri7LbNN0FNl72Io4g6LoDyR+6djXx/slSDuZllmhnEnnKjQWL0ZKQeLbzQyFO3ZT"><br>
+    <input type="text" id="email" value="test"><br>
+    <input type="button" value="send" onclick="testAuth()"><br>
 
 </body>
 <script>
@@ -66,7 +71,32 @@
                     [Error, exception.message]
                 ]).get(exception.constructor);
             });
-
+    }
+    let testAuth = () => {
+        console.info('Saving Blog Post');
+        fetch('http://localhost:8080/blog/', {
+                method: 'post',
+                headers: {
+                    "Content-type": "application/json",
+                    "email": document.querySelector('#email').value,
+                    "auth": document.querySelector('#token').value
+                }
+            })
+            .then(response => Promise.all([response, response.json()]))
+            .then(([response, json]) => {
+                if (!response.ok) {
+                    throw new Error(json.message);
+                }
+                console.log(json);
+            })
+            .catch(exception => {
+                var errorMap = new Map([
+                    [TypeError, "There was a problem fetching the response."],
+                    [SyntaxError, "There was a problem parsing the response."],
+                    [Error, exception.message]
+                ]).get(exception.constructor);
+            });
+        return this;
     }
 </script>
 

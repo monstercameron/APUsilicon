@@ -1,7 +1,9 @@
 class DatabaseForm {
   constructor(parent) {
-    this.id = "TBL" + uuid();
+    this.id = "DBF" + uuid();
     this.parent = parent;
+    this.input = [];
+    console.log("Database form       : " + this.id);
   }
   setParent(parent) {
     this.parent = parent;
@@ -22,13 +24,22 @@ class DatabaseForm {
   getClassList() {
     return this.classList;
   }
-  print(){
+  fetchInputs(id) {
+    let dbFormMan = new DatabaseMan(this.getParent());
+    dbFormMan.fetchInputFields(id);
+    return '';
+  }
+  buildDict(){
+
+  }
+  print() {
     console.info(this)
     //method chaining
     return this;
   }
   template() {
-    return `<div class="col-sm-8 mx-auto border rounded shadow m-2 p-2">
+    return `
+      <div class="col-sm-8 mx-auto border rounded shadow m-2 p-2">
         <!-- window action -->
         <div class="col-sm-12 p-0">
           <div class="col-sm-auto ml-auto p-1">
@@ -42,43 +53,16 @@ class DatabaseForm {
         <!-- title -->
         <div class="text-center mt-3 mb-3"><h3>Database Entry Form</h3></div>
         <!-- form -->
+        <button class="btn btn-primary btn-block">Submit For Approval</button>
         <!-- image selection -->
+        <!-- remote fields -->
         <input
+          id="FLD0"
           type="file"
           class="form-control bg-secondary text-white mt-1 mb-1"
           placeholder="Brand"
         />
-        <!-- brand -->
-        <input type="text" class="form-control mt-1 mb-1" placeholder="Brand" />
-        <!-- family -->
-        <input
-          type="text"
-          class="form-control mt-1 mb-1"
-          placeholder="Family"
-        />
-        <!-- SKU -->
-        <input type="text" class="form-control mt-1 mb-1" placeholder="SKU" />
-        <!-- Apu selection -->
-        <select class="form-control">
-          <option value="" disabled selected>APU</option>
-          <option value="">opt a</option>
-          <option value="">opt a</option>
-        </select>
-        <!-- RAM -->
-        <input type="text" class="form-control mt-1 mb-1" placeholder="RAM" />
-        <!--  -->
-        <input
-          type="text"
-          class="form-control mt-1 mb-1"
-          placeholder="Storage"
-        />
-        <!-- display -->
-        <input
-          type="text"
-          class="form-control mt-1 mb-1"
-          placeholder="Display"
-        />
-        <!-- and more -->
-      </div>`;
+        ${this.fetchInputs(this.getId())}
+        </div>`;
   }
 }

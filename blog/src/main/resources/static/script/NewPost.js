@@ -18,7 +18,7 @@ class NewPost {
     //method chaining
     return this;
   }
-  getparent() {
+  getParent() {
     return this.parent;
   }
   getId() {
@@ -247,7 +247,7 @@ class NewPost {
   }
   sendNewPost() {
     if (this.validateNewPost()) {
-      requests = new RequestMan();
+      requests = new RequestMan(this.getParent());
       requests.sendPost(this.action,this.buildDict());
     }else
       console.error("Can Not Save New Post, There Are Still Errors, Enable Notifications To See Errors.");
