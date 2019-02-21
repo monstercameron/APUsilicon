@@ -30,46 +30,36 @@
   <script src="/blog/src/main/resources/static/script/database.js"></script>
   <script src="/blog/src/main/resources/static/script/ModelViewer.js"></script>
   <script src="/blog/src/main/resources/static/script/DatabaseForm.js"></script>
+  <script src="/blog/src/main/resources/static/script/DatabaseFormManager.js"></script>
   <script src="/blog/src/main/resources/static/script/RequestManager.js"></script>
   <script src="/blog/src/main/resources/static/script/pagination.js"></script>
+  <script src="/blog/src/main/resources/static/script/Admin.js"></script>
+  <script src="/blog/src/main/resources/static/script/NavModal.js"></script>
 </head>
 
 <body></body>
 <script>
   let page = new Pagebuilder();
 
+  page.newDb();
+
   let nav = new Nav(page, "APUsilicon")
     .setClassList("navbar navbar-expand-sm bg-dark navbar-dark col-sm-12 sticky-top")
     .addLink("Youtube", "http://www.youtube.com", "blank")
-    .addFunction("New Post", "page.createNewPost().update()")
-    .addFunction("New DB", "page.viewDbEntry().update()");
+    .addLink("Reddit", "https://www.reddit.com/r/APUsilicon", "blank")
+    .addLink("Amazon Affiliate", "https://amzn.to/2X9nHIU", "blank")
+    .addFunction("View DB", "page.viewDb().update()")
+    .addFunction("New Device", "page.newDbEntryForm().viewDbEntryForm().getDbEntryForm().getParent().update()")
+    .addAdminFunction("Add Post", "page.createNewPost().update()")
+    .addAdminFunction("New DB", "page.viewDb().update()");
 
   page.addNav(nav);
   
   //fetch panels from api server, applies filter from nav
   page.fetchPanels();
 
-  let requests = new RequestMan(page);
-  requests.fetchBlogs("");
-
-  // let newPost = new NewPost(page)
-  //   .setClassList('row m-0 w-100');
-
-  // page.addNewPost(newPost).update().update();
-  //var testimage1 =
-  // "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/image/AppleInc/aos/published/images/m/bp/mbp13touch/space/mbp13touch-space-select-201807?wid=452&hei=420&fmt=jpeg&qlt=95&op_usm=0.5,0.5&.v=1529520060550";
-  var placeholder = "https://via.placeholder.com/300/000";
-
-  // let post = new Post(page)
-  //   .setheadLine("Test headline")
-  //   .setClassList("row m-0 w-100")
-  //   .setAuthor("Monstercameron")
-  //   .setDate("1/19/2019")
-  //   .setTags("apu, laptop, brand")
-  //   .setCategory("news")
-  //   .setBody("this is the body, will get from restful resource")
-  //   .setImg(testimage1)
-  //   .toggleSize();
+  // let requests = new RequestMan(page);
+  // requests.fetchBlogs("");
 
   //tests
   var col = [{
@@ -154,8 +144,6 @@
   //page.addPanels(post).update();
   //page.addPanels(post).createNewPost().update();
   //page.addPanels([post,post2]).update();
-
-  //console.log(page);
 </script>
 
 </html>

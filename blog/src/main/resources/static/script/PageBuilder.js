@@ -7,19 +7,17 @@ class Pagebuilder {
     this.view = VIEW.POSTS;
     this.pageSize = 5;
     this.pageNo = 0;
-    console.log("Building Page:     : " + this.id);
+    this.admin = new Admin(this);
+    console.log("Building Page       : " + this.id);
     //method chaining
     return this;
   }
   //admin
   hasAdmin() {
-    // if (this.admin != null) {
-    //   return true;
-    // } else return false;
-    return true;
+    return this.admin.hasToken();
   }
-  getAdminToken() {
-    return this.token;
+  getAdmin(){
+    return this.admin;
   }
   //page
   getId() {
@@ -120,12 +118,11 @@ class Pagebuilder {
   newDb() {
     if (this.db == null || typeof this.db === "undefined") {
       this.db = new DB(this);
-      console.info("DB Instantiated     :" + this.db.getId());
+      console.info("DB Instantiated     : " + this.db.getId());
     } else {
       console.error("DB is not null nor undefined");
     }
     //console.log(this.db);
-    this.view = VIEW.DATABASE;
     //method chaining
     return this;
   }
@@ -140,13 +137,16 @@ class Pagebuilder {
   getDb() {
     return this.db;
   }
-  veiwDb() {
+  viewDb() {
     this.view = VIEW.DATABASE;
     //method chaining
     return this;
   }
-  viewDbEntry() {
+  newDbEntryForm(){
     this.dbentry = new DatabaseForm(this);
+    return this;
+  }
+  viewDbEntryForm() {
     this.view = VIEW.DATABASEENTRY;
     //method chaining
     return this;
@@ -309,14 +309,14 @@ class Pagebuilder {
     return this;
   }
   draw() {
-    console.info("Drawing Page        :" + this.id);
-    console.info("With View ID        :" + this.view);
+    console.info("Drawing Page        : " + this.id);
+    console.info("With View ID        : " + this.view);
 
     //clearing display
     this.clear();
 
     //declaring vars
-    let nav, div, classList;
+    let nav, modal, div, classList;
 
     //appending nav
     nav = document.createElement("nav");
@@ -330,7 +330,11 @@ class Pagebuilder {
     } else {
       nav.innerHTML = "Nav Missing. Or default Nav template?";
     }
-    document.querySelector(this.root).prepend(nav);
+    modal = document.createElement('div');
+    modal.innerHTML = this.nav.loginModal();
+
+    document.querySelector(this.root).prepend(modal)
+    document.querySelector(this.root).prepend(nav);;
 
     //drawing view
     switch (this.view) {
@@ -405,6 +409,7 @@ class Pagebuilder {
         ////////////////////////////////////////////////////////
         div = document.createElement("div");
 
+        /*
         //adding to class list
         classList = this.getDb()
           .getClassList()
@@ -413,6 +418,7 @@ class Pagebuilder {
         for (let index = 0; index < classList.length; index++) {
           div.classList.add(classList[index]);
         }
+        */
 
         //panel info
         div.id = this.getDb().getId();
@@ -430,6 +436,7 @@ class Pagebuilder {
         }
         div = document.createElement("div");
 
+        /*
         //adding to class list
         classList = this.getDb()
           .getClassList()
@@ -438,6 +445,7 @@ class Pagebuilder {
         for (let index = 0; index < classList.length; index++) {
           div.classList.add(classList[index]);
         }
+        */
 
         //panel info
         div.id = this.dbentry.getId();
@@ -458,7 +466,7 @@ class Pagebuilder {
     return this;
   }
   update() {
-    console.info("Updating Page       :" + this.id);
+    console.info("Updating Page       : " + this.id);
     this.clear();
     this.draw();
 

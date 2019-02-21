@@ -5,7 +5,7 @@ class Post {
     //deafult post size refering to preview size
     this.size = 1;
     this.fullScreen = false;
-    console.info("Building Post       :" + this.id);
+    console.info("Building Post       : " + this.id);
     //method chaining
     return this;
   }

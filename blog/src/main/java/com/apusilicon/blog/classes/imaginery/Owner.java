@@ -1,10 +1,10 @@
 package com.apusilicon.blog.classes.imaginery;
 
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
@@ -30,6 +30,7 @@ public class Owner {
     private String hash;
     
     @NotNull
+    @Column(unique = true)
     private String email;
 
     @NotNull
