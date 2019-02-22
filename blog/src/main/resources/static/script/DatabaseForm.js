@@ -3,6 +3,7 @@ class DatabaseForm {
     this.id = "DBF" + uuid();
     this.parent = parent;
     this.input = [];
+    this.dbFormMan = new DatabaseMan(this.getParent());
     console.log("Database form       : " + this.id);
   }
   setParent(parent) {
@@ -25,9 +26,11 @@ class DatabaseForm {
     return this.classList;
   }
   fetchInputs(id) {
-    let dbFormMan = new DatabaseMan(this.getParent());
-    dbFormMan.fetchInputFields(id);
+    this.dbFormMan.fetchInputFields(id);
     return '';
+  }
+  getDbFormMan(){
+    return this.dbFormMan;
   }
   buildDict(){
 
@@ -53,15 +56,27 @@ class DatabaseForm {
         <!-- title -->
         <div class="text-center mt-3 mb-3"><h3>Database Entry Form</h3></div>
         <!-- form -->
-        <button class="btn btn-primary btn-block">Submit For Approval</button>
+        <!-- submit button -->
+        <button 
+          class="btn btn-success btn-block disabled"
+          onclick="page.getDbEntryForm().getDbFormMan().inputFieldValidator()"
+        >
+          Upload
+        </button>
+        <button 
+          class="btn btn-info btn-block"
+          onclick="page.getDbEntryForm().getDbFormMan().inputFieldValidator()"
+        >
+          Validate
+        </button>
         <!-- image selection -->
-        <!-- remote fields -->
         <input
           id="FLD0"
           type="file"
           class="form-control bg-secondary text-white mt-1 mb-1"
           placeholder="Brand"
         />
+        <!-- remote fields -->
         ${this.fetchInputs(this.getId())}
         </div>`;
   }
