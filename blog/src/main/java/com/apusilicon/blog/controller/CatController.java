@@ -97,26 +97,31 @@ public class CatController {
         
         map.put(autoCounter++, new HashMap<String, Object>(){{
             put("text", "Brand");
+            put("field", "Brand");
             put("rules", Arrays.asList("notnull", "20char", "alpha"));
         }});
         
         map.put(autoCounter++, new HashMap<String, Object>(){{
             put("text", "SKU");
+            put("field", "sku");
             put("rules", Arrays.asList("notnull", "20char", "alphanum"));
         }});
         
         map.put(autoCounter++, new HashMap<String, Object>(){{
             put("text", "Family");
+            put("field", "family");
             put("rules", Arrays.asList("notnull", "20char", "alpha"));
         }});
         
         map.put(autoCounter++, new HashMap<String, Object>(){{
             put("text", "Weight in Lbs");
+            put("field", "weight");
             put("rules", Arrays.asList("nullable", "5char", "num"));
         }});
         
         map.put(autoCounter++, new HashMap<String, Object>(){{
             put("text", "Price in $ From Manufacturers Website");
+            put("field", "price");
             put("rules", Arrays.asList("notnull", "8char", "num"));
         }});
         
@@ -125,16 +130,24 @@ public class CatController {
         }});
         
         map.put(autoCounter++, new HashMap<String, Object>(){{
-            put("text", "link");
+            put("text", "Website link");
+            put("field", "link");
             put("rules", Arrays.asList("nullable", "anychar", "alpha"));
         }});
         
         map.put(autoCounter++, new HashMap<String, Object>(){{
-            put("divider", "APU");
+            put("divider", "APU & Graphics");
         }});
         
-        map.put(autoCounter++, new HashMap<String, List>(){{
+        map.put(autoCounter++, new HashMap<String, Object>(){{
+            put("field", "apu");
             put("Select", Arrays.asList("Select an APU","A","B","C"));
+        }});
+        
+        map.put(autoCounter++, new HashMap<String, Object>(){{
+            put("text", "External Graphics");
+            put("field", "extgraphics");
+            put("rules", Arrays.asList("nullable", "20char", "alphanum"));
         }});
         
         map.put(autoCounter++, new HashMap<String, Object>(){{
@@ -143,41 +156,49 @@ public class CatController {
         
         map.put(autoCounter++, new HashMap<String, Object>(){{
             put("text", "Display size in inches");
+            put("field", "dispsize");
             put("rules", Arrays.asList("notnull", "4char", "num"));
         }});
         
         map.put(autoCounter++, new HashMap<String, Object>(){{
             put("text", "Display X Pixels");
+            put("field", "dispx");
             put("rules", Arrays.asList("notnull", "4char", "num"));
         }});
         
         map.put(autoCounter++, new HashMap<String, Object>(){{
             put("text", "Display Y Pixels");
+            put("field", "dispy");
             put("rules", Arrays.asList("notnull", "4char", "num"));
         }});
         
         map.put(autoCounter++, new HashMap<String, Object>(){{
             put("text", "Display Brand ex. AO optronics, Samsung, LG");
+            put("field", "dispbrand");
             put("rules", Arrays.asList("nullabe", "20char", "alpha"));
         }});
         
         map.put(autoCounter++, new HashMap<String, Object>(){{
             put("text", "Display SKU");
+            put("field", "dispsku");
             put("rules", Arrays.asList("nullable", "20char", "alphanum"));
         }});
         
         map.put(autoCounter++, new HashMap<String, Object>(){{
             put("text", "Refresh rate in Hz");
+            put("field", "disprefresh");
             put("rules", Arrays.asList("nullable", "3char", "num"));
         }});
         
         map.put(autoCounter++, new HashMap<String, Object>(){{
             put("text", "Variable refresh range max Hz");
+            put("field", "disprefreshmin");
             put("rules", Arrays.asList("nullable", "3char", "num"));
         }});
         
         map.put(autoCounter++, new HashMap<String, Object>(){{
             put("text", "Variable refresh range max Hz");
+            put("field", "disprefreshmax");
             put("rules", Arrays.asList("nullable", "3char", "num"));
         }});
         
@@ -187,24 +208,35 @@ public class CatController {
         
         map.put(autoCounter++, new HashMap<String, Object>(){{
             put("text", "Ram Brand");
+            put("field", "rambrand");
             put("rules", Arrays.asList("nullable", "20char", "alpha"));
         }});
         
         map.put(autoCounter++, new HashMap<String, Object>(){{
             put("text", "Ram SKU");
+            put("field", "ramsku");
             put("rules", Arrays.asList("nullable", "20char", "alphanum"));
         }});
         
-        map.put(autoCounter++, new HashMap<String, List>(){{
+        map.put(autoCounter++, new HashMap<String, Object>(){{
+            put("field", "ramchannel");
             put("Select", Arrays.asList("Select RAM Channels","Single","Dual"));
         }});
         
-        map.put(autoCounter++, new HashMap<String, List>(){{
+        map.put(autoCounter++, new HashMap<String, Object>(){{
+            put("field", "ramtech");
             put("Select", Arrays.asList("Select RAM Type","DDR3","DDR4","LPDDR4","HBM"));
         }});
         
         map.put(autoCounter++, new HashMap<String, Object>(){{
+            put("text", "RAM Speed In Mhz");
+            put("field", "ramspeed");
+            put("rules", Arrays.asList("notnull", "5char", "num"));
+        }});
+        
+        map.put(autoCounter++, new HashMap<String, Object>(){{
             put("text", "RAM Capacity in GB");
+            put("field", "ramcap");
             put("rules", Arrays.asList("notnull", "5char", "num"));
         }});
         
@@ -214,27 +246,38 @@ public class CatController {
         
         map.put(autoCounter++, new HashMap<String, Object>(){{
             put("text", "Storage Brand");
+            put("field", "storbrand");
             put("rules", Arrays.asList("nullable", "20char", "alpha"));
         }});
         
         map.put(autoCounter++, new HashMap<String, Object>(){{
             put("text", "Storage SKU");
+            put("field", "storsku");
             put("rules", Arrays.asList("nullable", "20char", "alphanum"));
         }});
         
-        map.put(autoCounter++, new HashMap<String, List>(){{
+        map.put(autoCounter++, new HashMap<String, Object>(){{
+            put("field", "storphysical");
             put("Select", Arrays.asList("Select Storage Type",
                     "7MM", "9.5MM", "MSATA", "M22280", "M22260", "M22240"));
         }});
         
-        map.put(autoCounter++, new HashMap<String, List>(){{
+        map.put(autoCounter++, new HashMap<String, Object>(){{
+            put("field", "stortype");
             put("Select", Arrays.asList("Select Storage Format",
                     "SSD", "SSHD", "HDD"));
         }});
         
-        map.put(autoCounter++, new HashMap<String, List>(){{
+        map.put(autoCounter++, new HashMap<String, Object>(){{
+            put("field", "storconnector");
             put("Select", Arrays.asList("Select Storage Connector",
                     "M2NVME", "M2SATA", "MSATA", "SATA"));
+        }});
+        
+        map.put(autoCounter++, new HashMap<String, Object>(){{
+            put("text", "Storage Capacity in GB");
+            put("field", "storcap");
+            put("rules", Arrays.asList("notnull", "6char", "num"));
         }});
         
         map.put(autoCounter++, new HashMap<String, Object>(){{
@@ -243,31 +286,37 @@ public class CatController {
         
         map.put(autoCounter++, new HashMap<String, Object>(){{
             put("text", "Battery Brand");
+            put("field", "batbrand");
             put("rules", Arrays.asList("nullable", "20char", "alpha"));
         }});
         
         map.put(autoCounter++, new HashMap<String, Object>(){{
             put("text", "Battery SKU");
+            put("field", "batsku");
             put("rules", Arrays.asList("nullable", "20char", "alphanum"));
         }});
         
         map.put(autoCounter++, new HashMap<String, Object>(){{
             put("text", "Storage Voltage");
+            put("field", "batvol");
             put("rules", Arrays.asList("nullable", "5char", "num"));
         }});
         
         map.put(autoCounter++, new HashMap<String, Object>(){{
-            put("text", "Storage Capacity");
-            put("rules", Arrays.asList("notnull", "6char", "num"));
+            put("text", "Battery Capacity in Wh");
+            put("field", "batcap");
+            put("rules", Arrays.asList("notnull", "5char", "num"));
         }});
         
         map.put(autoCounter++, new HashMap<String, Object>(){{
             put("text", "Battery Cell Count");
+            put("field", "batcell");
             put("rules", Arrays.asList("nullable", "2char", "num"));
         }});
         
         map.put(autoCounter++, new HashMap<String, Object>(){{
             put("text", "Battery Chemistry");
+            put("field", "batchem");
             put("rules", Arrays.asList("nullable", "20char", "alpha"));
         }});
         
@@ -277,21 +326,31 @@ public class CatController {
         
         map.put(autoCounter++, new HashMap<String, Object>(){{
             put("text", "SD card");
+            put("field", "sdcard");
             put("rules", Arrays.asList("nullable", "20char", "alpha"));
         }});
         
         map.put(autoCounter++, new HashMap<String, Object>(){{
             put("text", "DVD Drive");
+            put("field", "dvd");
+            put("rules", Arrays.asList("nullable", "20char", "alpha"));
+        }});
+        
+        map.put(autoCounter++, new HashMap<String, Object>(){{
+            put("text", "Bluray Drive");
+            put("field", "bluray");
             put("rules", Arrays.asList("nullable", "20char", "alpha"));
         }});
         
         map.put(autoCounter++, new HashMap<String, Object>(){{
             put("text", "Finger Print Scanner");
+            put("field", "finger");
             put("rules", Arrays.asList("nullable", "20char", "alpha"));
         }});
         
         map.put(autoCounter++, new HashMap<String, Object>(){{
             put("text", "Windows Hello Camera");
+            put("field", "faceunlock");
             put("rules", Arrays.asList("nullable", "20char", "alpha"));
         }});
         

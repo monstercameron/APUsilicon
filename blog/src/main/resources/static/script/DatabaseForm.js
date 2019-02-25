@@ -3,7 +3,7 @@ class DatabaseForm {
     this.id = "DBF" + uuid();
     this.parent = parent;
     this.input = [];
-    this.dbFormMan = new DatabaseMan(this.getParent());
+    this.dbFormMan = new DatabaseMan(parent);
     console.log("Database form       : " + this.id);
   }
   setParent(parent) {
@@ -27,16 +27,13 @@ class DatabaseForm {
   }
   fetchInputs(id) {
     this.dbFormMan.fetchInputFields(id);
-    return '';
+    return "";
   }
-  getDbFormMan(){
+  getDbFormMan() {
     return this.dbFormMan;
   }
-  buildDict(){
-
-  }
   print() {
-    console.info(this)
+    console.info(this);
     //method chaining
     return this;
   }
@@ -59,7 +56,7 @@ class DatabaseForm {
         <!-- submit button -->
         <button 
           class="btn btn-success btn-block disabled"
-          onclick="page.getDbEntryForm().getDbFormMan().inputFieldValidator()"
+          onclick="page.getDbEntryForm().getDbFormMan().buildDict()"
         >
           Upload
         </button>
