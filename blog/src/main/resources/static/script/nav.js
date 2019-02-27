@@ -74,14 +74,14 @@ class Nav {
       <a
         class="nav-link dropdown-toggle text-white"
         href="#"
-        style="text-transform:Capitalize;"
+        style="text-transform:uppercase;"
         id="navbarDropdown"
         role="button"
         data-toggle="dropdown"
         aria-haspopup="true"
         aria-expanded="false"
       >
-        ${this.parent.getAdmin().getLocalEmail().getEmail()}
+        ${this.parent.getAdmin().getLocalEmail().getEmail().split("@")[0]}
       </a>
       <div class="dropdown-menu" aria-labelledby="navbarDropdown">
         ${rv}
@@ -213,15 +213,10 @@ class Nav {
   }
   getNavModal() {
     console.log(this.navModal);
-    return this.NavModal;
+    return this.navModal;
   }
   loginModal() {
-    this.email = "EML" + uuid();
-    this.credentials = "PWD" + uuid();
-    this.navModal
-      .setEmailId(this.email)
-      .setPwdId(this.credentials);
-    return this.navModal.template();
+    return this.navModal;
   }
   loginModalBK() {
     if (this.modalTemplate == null || typeof this.modalTemplate === 'undefined') {

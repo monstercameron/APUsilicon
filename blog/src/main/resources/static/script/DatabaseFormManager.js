@@ -226,8 +226,8 @@ class DatabaseMan {
     fetch('http://localhost.:8080/database/add',{
         method: "POST",
         headers:{
-            "email":"",
-            "token":""
+            "email": this.getParent().getAdmin().getEmail(),
+            "token": localStorage.token
         },
         body:JSON.stringify(dict)
     })

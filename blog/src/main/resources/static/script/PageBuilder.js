@@ -330,11 +330,14 @@ class Pagebuilder {
     } else {
       nav.innerHTML = "Nav Missing. Or default Nav template?";
     }
-    modal = document.createElement('div');
-    modal.innerHTML = this.nav.loginModal();
 
-    document.querySelector(this.root).prepend(modal)
-    document.querySelector(this.root).prepend(nav);;
+    let modalObj = this.nav.loginModal();
+    modal = document.createElement('div');
+    modal.innerHTML = modalObj.template();
+    modal.id = modalObj.getId();
+
+    document.querySelector(this.root).prepend(modal);
+    document.querySelector(this.root).prepend(nav);
 
     //drawing view
     switch (this.view) {
@@ -388,13 +391,13 @@ class Pagebuilder {
           document.querySelector(this.root).append(div);
         }
 
-        let pagination = new Pagination(this);
-
-        let pages = document.createElement("div");
-        pages.id = pagination.getId();
-        pages.innerHTML = pagination.template();
-        document.querySelector(this.root).append(pages);
-
+        if(this.panelList.length > 0){
+          let pagination = new Pagination(this);
+          let pages = document.createElement("div");
+          pages.id = pagination.getId();
+          pages.innerHTML = pagination.template();
+          document.querySelector(this.root).append(pages);
+        }
         ////////////////////////////////////////////////////////
         break;
       case 3:

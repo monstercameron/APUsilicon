@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("blog")
-public class blog {
+public class blogController {
 
     @Autowired
     private BlogDao blogSafe;
@@ -41,7 +41,7 @@ public class blog {
     @Autowired
     private AuthMan auth;
 
-    Logger logger = LoggerFactory.getLogger(blog.class);
+    Logger logger = LoggerFactory.getLogger(blogController.class);
 
     @CrossOrigin
     @RequestMapping(value = "/", method = RequestMethod.POST)
@@ -52,7 +52,7 @@ public class blog {
             Owner owner = owners.findFirstByEmail(request.getHeader("email"));
 
             String token = request.getHeader("auth");
-            Map<String, String> map = auth.parseToken(token, owner.getHash());
+            Map<String, String> map = auth.parseToken(token, owner.getSaltedPassword());
 
             System.out.println(map.toString());
 
@@ -98,7 +98,7 @@ public class blog {
         Map<String, String> map = new HashMap<>();
         //return error message is parsig token fails
         try {
-            map = auth.parseToken(token, owner.getHash());
+            map = auth.parseToken(token, owner.getSaltedPassword());
         } catch (Exception ex) {
             ex.printStackTrace();
             logger.warn("Could not parse incoming token.");
@@ -149,7 +149,7 @@ public class blog {
         Map<String, String> map = new HashMap<>();
         //return error message is parsig token fails
         try {
-            map = auth.parseToken(token, owner.getHash());
+            map = auth.parseToken(token, owner.getSaltedPassword());
         } catch (Exception ex) {
             ex.printStackTrace();
             logger.warn("Could not parse incoming token.");
