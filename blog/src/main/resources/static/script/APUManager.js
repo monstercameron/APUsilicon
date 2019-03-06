@@ -15,7 +15,7 @@ class APUManager {
 
     }
     sendAPU() {
-        fetch('http://localhost.:8080/database/apu/add', {
+        fetch('http://apusilicon.com/database/apu/add', {
             method: "POST",
             headers: {
               "email": this.getParent().getAdmin().getEmail(),

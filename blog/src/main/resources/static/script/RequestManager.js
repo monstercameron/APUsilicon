@@ -39,7 +39,7 @@ class RequestMan {
     }
     sendPost(action, data) {
         console.info('Saving Blog Post');
-        fetch('http://localhost:8080/blog/' + action, {
+        fetch('http://apusilicon.com/blog/' + action, {
                 method: 'post',
                 headers: {
                     "Content-type": "application/json",
@@ -74,7 +74,7 @@ class RequestMan {
     }
     fetchBlogs(filter = '', type = '') {
         console.info("Request Filter      :" + filter);
-        fetch(`http://localhost:8080/blog/all/${this.parent.getPageNumber()}?filter=${filter}&type=${type}&pageSize=${this.parent.getPageSize()}`)
+        fetch(`http://apusilicon.com/blog/all/${this.parent.getPageNumber()}?filter=${filter}&type=${type}&pageSize=${this.parent.getPageSize()}`)
             .then(function (response) {
                 return response.json();
             }).then((myJson) => {

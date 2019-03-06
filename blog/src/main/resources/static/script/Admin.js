@@ -78,7 +78,7 @@ class Admin {
         return (localStorage.token != "") ? true : false;
     }
     fetchToken(){
-        fetch('http://localhost:8080/auth/login',{
+        fetch('http://apusilicon.com/auth/login',{
             method:'POST',
             headers:{
                 email: document.querySelector('#'+this.getParent().getNav().loginModal().inputIds.loginEmail).value,
@@ -108,7 +108,7 @@ class Admin {
         });
     }
     register(){
-        fetch('http://localhost:8080/auth/signup',{
+        fetch('http://apusilicon.com/auth/signup',{
             method:'POST',
             headers:{
                 email: document.querySelector('#'+this.getParent().getNav().loginModal().inputIds.signinEmail).value,

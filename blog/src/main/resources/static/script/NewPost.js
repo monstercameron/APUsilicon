@@ -123,7 +123,7 @@ class NewPost {
      //clearing current cat data
      this.category = [];
     //fetch request to category api
-    fetch('http://localhost:8080/category/')
+    fetch('http://apusilicon.com/category/')
     .then((response) => response.json())
     .then((data) => {
       //console.log(data);
@@ -159,7 +159,7 @@ class NewPost {
     //add category to list if not empty
     if (cat != ''){
       this.category.push(cat);
-      fetch(`http://localhost:8080/category/add`,{
+      fetch(`http://apusilicon.com/category/add`,{
         method:'POST',
         headers:{
           "email": this.getParent().getAdmin().getEmail(),

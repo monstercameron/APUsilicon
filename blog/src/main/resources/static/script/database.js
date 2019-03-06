@@ -26,7 +26,7 @@ class DB {
     return this.classList;
   }
   initTable() {
-    fetch("http://localhost:8080/database/laptops/0")
+    fetch("http://apusilicon.com/database/laptops/0")
       .then(response => response.json())
       .then(response => {
 

@@ -9,7 +9,7 @@ class DatabaseMan {
     return this.parent;
   }
   fetchInputFields(id) {
-    fetch("http://localhost.:8080/category/databaseform", {
+    fetch("http://apusilicon.com/category/databaseform", {
         method: "GET"
       })
       .then(response => Promise.all([response, response.json()]))
@@ -199,7 +199,7 @@ class DatabaseMan {
     let file = document.querySelector("#FLD0").files[0];
     getBase64(file)
       .then(data => {
-        fetch('http://localhost.:8080/image/upload', {
+        fetch('http://apusilicon.com/image/upload', {
           method: "POST",
           headers: {
             "email": this.getParent().getAdmin().getEmail(),
@@ -243,7 +243,7 @@ class DatabaseMan {
     }
   }
   sendBuiltDict(dict) {
-    fetch('http://localhost.:8080/database/add', {
+    fetch('http://apusilicon.com/database/add', {
         method: "POST",
         headers: {
           "email": this.getParent().getAdmin().getEmail(),
