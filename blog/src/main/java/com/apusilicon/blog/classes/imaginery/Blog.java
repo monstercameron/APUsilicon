@@ -28,9 +28,6 @@ public class Blog implements Serializable{
     @NotNull
     private String title, date, tags, category, preview, hash;;
     
-    @NotNull
-    @Lob
-    @Column(columnDefinition="LONGTEXT")
     private String titleImage;
 
     @NotNull

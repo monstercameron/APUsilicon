@@ -121,6 +121,7 @@ class Admin {
                 throw new Error(json.message);
             }
             console.log(json);
+            this.getParent().notify(json.message);
             this.getParent().update();
         });
         // .catch(exception => {

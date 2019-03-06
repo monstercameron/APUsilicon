@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.apusilicon.blog.logic.AuthMan;
 import com.apusilicon.blog.classes.imaginery.Owner;
+import com.apusilicon.blog.classes.imaginery.Token;
+import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,7 +44,6 @@ public class AdminController {
             HttpServletRequest request) {
         //hashmap to store json response
         HashMap<String, String> map = new HashMap<>();
-        HashMap<String, String> responseMap = new HashMap<>();
 
         // store header info in intermediate variable
         String email = request.getHeader("email");
@@ -56,38 +57,38 @@ public class AdminController {
 
         //verify users credentials by comparing to user in database
         if (authMan.match(passwordString, owner.getSaltedPassword())) {
+            Token token = new Token();
+            Gson gson = new Gson();
             //success message
             map.put("isSuccess", "true");
-            
             //access directives for the blog
             //w = write
             //p = publish
             //d = delete
             //c = create
-            if(owner.getRole().ordinal() == 0)
-                map.put("blog", "w/p/d/c");
-            else
-                map.put("blog", "");
-                
+            if (owner.getRole().ordinal() == 0) {
+                token.setBlog("wpdc");
+            } else {
+                token.setBlog("");
+            }
             //access directives for the database
-            if(owner.getRole().ordinal() == 0)
-                map.put("db", "w/p/d/c");
-            else
-                map.put("db", "c");
-             
+            if (owner.getRole().ordinal() == 0) {
+                token.setDatabase("wpdc");
+            } else {
+                token.setDatabase("c");
+            }
             // saving email
-            responseMap.put("email", owner.getEmail());
+            map.put("email", owner.getEmail());
             // saving role
-            responseMap.put("role", owner.getRole().toString());
+            map.put("role", owner.getRole().toString());
             // return new map with the token
-            responseMap.put("token", authMan.createToken(map, owner.getSaltedPassword()));
-            return responseMap;
+            map.put("token", authMan.createToken(gson.toJson(token), owner.getSaltedPassword()));
+            return map;
         } else {
             map.put("isSuccess", "false");
             map.put("message", "Email or Password was incorrect.");
             return map;
         }
-
     }
 
     @CrossOrigin
@@ -114,7 +115,7 @@ public class AdminController {
             return new HashMap<String, String>() {
                 {
                     put("isSuccess", "True");
-                    put("message", "User Saved!");
+                    put("message", "User Sucessfully Signed Up!");
                 }
             };
 

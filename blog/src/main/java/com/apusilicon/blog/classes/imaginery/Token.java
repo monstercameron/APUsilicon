@@ -1,55 +1,37 @@
 package com.apusilicon.blog.classes.imaginery;
 
 import java.io.Serializable;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import javax.validation.constraints.NotNull;
+
 /*
 *
-*   Passes object to view to authorize certain actions
+*   encrypted string that store access directives.
 *
-*/
-@Entity
-public class Token implements Serializable{
-    @Id
-    @GeneratedValue
-    private int id;
+ */
+public class Token implements Serializable {
 
-    @NotNull
-    private String jwt;
+    String blog, database;
 
-    @OneToOne
-    private Owner owner;
-
-    public Token(){
+    public Token() {
     }
 
-    public int getId() {
-        return id;
+    @Override
+    public String toString() {
+        return "Token{" + "blog=" + blog + ", database=" + database + '}';
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public String getBlog() {
+        return blog;
     }
 
-    public String getHash() {
-        return jwt;
+    public void setBlog(String blog) {
+        this.blog = blog;
     }
 
-    public void setHash(String hash) {
-        this.jwt = hash;
+    public String getDatabase() {
+        return database;
     }
 
-    public Owner getOwner() {
-        return owner;
+    public void setDatabase(String database) {
+        this.database = database;
     }
-
-    public void setOwner(Owner owner) {
-        this.owner = owner;
-    }
-
-    
-
 }

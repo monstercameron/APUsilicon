@@ -3,13 +3,13 @@ package com.apusilicon.blog.logic;
 import org.springframework.stereotype.Component;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
+import com.apusilicon.blog.classes.imaginery.Token;
+import com.google.gson.Gson;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
-import java.util.HashMap;
-import java.util.Map;
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
@@ -31,7 +31,7 @@ public class AuthMan {
     }
 
     /**
-     * Check is two cryptographically signed hashes are the same
+     * Check if two cryptographically signed hashes are the same
      *
      * @param input users email and password raw text
      * @param storage database stored cryto sign hash of user
@@ -43,23 +43,15 @@ public class AuthMan {
     }
 
     /**
-     * Deserializes Map from String
+     * Deserializes json into object
      *
-     * @param kvPairsList key value pair map representation
-     * @return Map<String, String> built from serialized map string
+     * @param json
+     * @return token object
      */
-    public Map<String, String> stringToMap(String kvPairsList) {
-        // Init Return Map
-        Map<String, String> map = new HashMap<>();
-        // Removes the outer braces
-        kvPairsList = kvPairsList.substring(1, kvPairsList.length() - 1);
-        // Splits the kvPairsList based on the comma and iterates over single pairs
-        for (String kvPairs : kvPairsList.split(",")) {
-            // Splits the kvPairsList based on the comma and iterates over single pairs
-            String[] kv = kvPairs.split("=");
-            map.put(kv[0], kv[1]);
-        }
-        return map;
+    public Token getTokenObject(String json) {
+        Gson gson = new Gson();
+        Token token = gson.fromJson(json, Token.class);
+        return token;
     }
 
     /**
@@ -76,13 +68,11 @@ public class AuthMan {
      * @throws javax.crypto.BadPaddingException
      * @throws javax.crypto.IllegalBlockSizeException
      */
-    public Map<String, String> parseToken(String token, String key) throws IllegalArgumentException,
+    public Token parseToken(String token, String key) throws IllegalArgumentException,
             InvalidKeyException, NoSuchAlgorithmException, UnsupportedEncodingException, NoSuchPaddingException,
             InvalidAlgorithmParameterException, BadPaddingException, IllegalBlockSizeException {
         //first 16 chars
         key = key.substring(0, 16);
-        // Init hashmap
-        HashMap<String, String> map = new HashMap<>();
         // setting the initialization vector
         String initVector = "16 chars minimum";
         IvParameterSpec iv = new IvParameterSpec(initVector.getBytes("UTF-8"));
@@ -92,21 +82,21 @@ public class AuthMan {
         cipher.init(Cipher.DECRYPT_MODE, skeySpec, iv);
         byte[] original = cipher.doFinal(Base64.getDecoder().decode(token));
 
-        return stringToMap(new String(original));
+        return getTokenObject(new String(original));
     }
 
     /**
      * Creates Encrypted token
      *
-     * @param map stores user directives
+     * @param json serialized token object to be encrypted
      * @param key database stored cryto sign hash of user
      * @return String encrypted password
      */
-    public String createToken(HashMap<String, String> map, String key) {
+    public String createToken(String json, String key) {
         //first 16 chars
         key = key.substring(0, 16);
         //Converting the hash map to string repr
-        String hashSerial = map.toString();
+        String hashSerial = json;
         // setting the initialization vector
         String initVector = "16 chars minimum";
         // Try to encrypt the data
@@ -130,11 +120,22 @@ public class AuthMan {
     /**
      * Can write
      *
-     * @param map stores the current user permissions
+     * @param token
      * @return boolean returns write permissions
      */
-    public Boolean canWrite(Map<String, String> map) {
-        System.out.println(map.toString());
-        return map.get("blog").contains("w");
+    public Boolean canWriteBlog(Token token) {
+        System.out.println(token.toString());
+        return token.getBlog().contains("w");
+    }
+
+    /**
+     * Can write to database
+     *
+     * @param token
+     * @return boolean returns write permissions
+     */
+    public Boolean canCreateDb(Token token) {
+        System.out.println(token.toString());
+        return token.getDatabase().contains("c");
     }
 }

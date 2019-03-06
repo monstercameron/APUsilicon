@@ -55,14 +55,15 @@ class DatabaseForm {
         <!-- form -->
         <!-- submit button -->
         <button 
-          class="btn btn-success btn-block disabled"
-          onclick="page.getDbEntryForm().getDbFormMan().buildDict()"
+          id="uploadForm"
+          class="btn btn-secondary btn-block disabled"
+          onclick=""
         >
           Upload
         </button>
         <button 
           class="btn btn-info btn-block"
-          onclick="page.getDbEntryForm().getDbFormMan().inputFieldValidator()"
+          onclick="page.getDbEntryForm().getDbFormMan().validate('uploadForm')"
         >
           Validate
         </button>
@@ -71,7 +72,6 @@ class DatabaseForm {
           id="FLD0"
           type="file"
           class="form-control bg-secondary text-white mt-1 mb-1"
-          placeholder="Brand"
         />
         <!-- remote fields -->
         ${this.fetchInputs(this.getId())}

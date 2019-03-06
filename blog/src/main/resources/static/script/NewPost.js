@@ -295,7 +295,7 @@ class NewPost {
         id="${this.postValues["image"]}"
         type="text"
         class="form-control"
-        placeholder="Add Heading"
+        placeholder="Add Image URL"
         value="${this.getImage()}"
       />
     </div>

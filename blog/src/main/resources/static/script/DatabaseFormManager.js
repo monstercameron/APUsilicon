@@ -10,8 +10,8 @@ class DatabaseMan {
   }
   fetchInputFields(id) {
     fetch("http://localhost.:8080/category/databaseform", {
-      method: "GET"
-    })
+        method: "GET"
+      })
       .then(response => Promise.all([response, response.json()]))
       .then(([response, json]) => {
         if (!response.ok) {
@@ -77,6 +77,10 @@ class DatabaseMan {
   inputFieldValidator() {
     console.log(this.fieldList);
     console.log("inside the validator");
+
+    let file = document.querySelector("#FLD0");
+    console.log(file);
+
     let pass = true;
 
     //fields
@@ -87,8 +91,8 @@ class DatabaseMan {
         let elemId = this.fieldList[index].id;
         console.log(
           "===================Input Id: " +
-            elemId +
-            "============================="
+          elemId +
+          "============================="
         );
         let inputElem = document.querySelector("#" + elemId);
         //console.log(inputElem);
@@ -97,9 +101,7 @@ class DatabaseMan {
 
         //rules
         for (
-          let ruleIndex = 0;
-          ruleIndex < this.fieldList[index].rules.length;
-          ruleIndex++
+          let ruleIndex = 0; ruleIndex < this.fieldList[index].rules.length; ruleIndex++
         ) {
           let rules = this.fieldList[index].rules[ruleIndex];
           //console.log("-"+rules);
@@ -135,10 +137,10 @@ class DatabaseMan {
             if (charCount == 0 && !nullable) {
               pass = false;
               inputElem.placeholder += inputElem.placeholder.includes(
-                " | Can Not Be Empty!"
-              )
-                ? ""
-                : " | Can Not Be Empty!";
+                  " | Can Not Be Empty!"
+                ) ?
+                "" :
+                " | Can Not Be Empty!";
               inputElem.classList.add("is-invalid");
               console.error("Field Empty");
             } else if (charCount > ruleCount && !nullable) {
@@ -164,8 +166,8 @@ class DatabaseMan {
         let elemId = this.fieldList[index].id;
         console.log(
           "===================Select Id: " +
-            elemId +
-            "============================="
+          elemId +
+          "============================="
         );
         let inputElem = document.querySelector("#" + elemId);
         let selected = inputElem.options[inputElem.selectedIndex].value;
@@ -183,55 +185,73 @@ class DatabaseMan {
 
     return pass;
   }
+  validate(id) {
+    if (this.inputFieldValidator()) {
+      let upload = document.querySelector('#' + id);
+      upload.classList.remove('btn-secondary');
+      upload.classList.remove('disabled');
+      upload.classList.add('btn-success');
+      upload.onclick = new Function('event', "page.getDbEntryForm().getDbFormMan().buildDict()");
+      console.log(upload);
+    }
+  }
   buildDict() {
     let file = document.querySelector("#FLD0").files[0];
     getBase64(file)
       .then(data => {
-        let dict = {};
-        dict["img"] = "data";
-        this.buildDictFields(dict);
-      })
-      .catch(error => {
-
+        fetch('http://localhost.:8080/image/upload', {
+          method: "POST",
+          headers: {
+            "email": this.getParent().getAdmin().getEmail(),
+            "token": localStorage.token,
+            "img": file.name
+          },
+          body: data
+        }).then(response => {
+          let dict = {};
+          dict['img'] = file.name;
+          this.buildDictFields(dict);
+        }).catch(error => {
+          console.log(error);
+          this.getParent().notify(error);
+        });
+      }).catch(error => {
         console.log(error);
         this.getParent().notify("Must Upload An Image Of The Laptop!")
-      
       });
   }
   buildDictFields(dict) {
-    //let dict = {};
-    let pass = this.inputFieldValidator();
-    if (!pass) {
-      for (let index = 0; index < this.fieldList.length; index++) {
-        let id = this.fieldList[index].id;
-        let field = this.fieldList[index].field;
-        let input = document.querySelector("#" + id);
+    for (let index = 0; index < this.fieldList.length; index++) {
+      let id = this.fieldList[index].id;
+      let field = this.fieldList[index].field;
+      let input = document.querySelector("#" + id);
 
-        console.log(this.fieldList[index].type);
+      console.log(this.fieldList[index].type);
 
-        switch (this.fieldList[index].type) {
-          case "text":
-            dict[field] = input.value;
-            break;
-          case "select":
-            dict[field] = input.options[input.selectedIndex].value;
-            break;
-        }
+      switch (this.fieldList[index].type) {
+        case "text":
+          dict[field] = input.value;
+          break;
+        case "select":
+          dict[field] = input.options[input.selectedIndex].value;
+          break;
       }
     }
     console.log(dict);
-    this.sendBuiltDict(dict);
+    if (this.inputFieldValidator()) {
+      this.sendBuiltDict(dict);
+    }
   }
-  sendBuiltDict(dict){
-    fetch('http://localhost.:8080/database/add',{
+  sendBuiltDict(dict) {
+    fetch('http://localhost.:8080/database/add', {
         method: "POST",
-        headers:{
-            "email": this.getParent().getAdmin().getEmail(),
-            "token": localStorage.token
+        headers: {
+          "email": this.getParent().getAdmin().getEmail(),
+          "token": localStorage.token
         },
-        body:JSON.stringify(dict)
-    })
-    .then(response => console.log(response))
-    .catch(error => console.log(error));
+        body: JSON.stringify(dict)
+      })
+      .then(response => console.log(response))
+      .catch(error => console.log(error));
   }
 }

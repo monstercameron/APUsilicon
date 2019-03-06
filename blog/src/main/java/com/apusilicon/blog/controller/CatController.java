@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import com.apusilicon.blog.classes.imaginery.Category;
 import com.apusilicon.blog.classes.imaginery.Owner;
+import com.apusilicon.blog.classes.imaginery.Response;
+import com.apusilicon.blog.classes.imaginery.Token;
 import com.apusilicon.blog.data.AdminDao;
 import com.apusilicon.blog.data.CategoryDao;
 import com.apusilicon.blog.logic.AuthMan;
@@ -51,73 +53,57 @@ public class CatController {
      */
     @CrossOrigin
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public Map<String, String> addCats(
+    public String addCats(
             HttpServletRequest request) {
 
         // store header info into intermediate variables
         String email = request.getHeader("email");
         String token = request.getHeader("token");
         String category = request.getHeader("category");
-        //query database for owner matching email
-        Owner owner = owners.findFirstByEmail(email);
-        //parsing encrypted token
-        Map<String, String> map = new HashMap<>();
-        //return error message is parsig token fails
-        try {
-            map = auth.parseToken(token, owner.getSaltedPassword());
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            logger.warn("Could not parse incoming token.");
-            return new HashMap<String, String>() {
-                {
-                    put("isSuccess", "False");
-                    put("message", "Bad Token/Email");
-                }
-            };
-        }
+        // query database for owner matching email
+        Owner owner;
+        // declare the token
+        Token tokenObj;
+        // init custom lightweight response class
+        Response response = new Response();
 
-        if (auth.canWrite(map)) {
-            try {
-                //checks to see if the category already exists
+        try {
+            owner = owners.findFirstByEmail(email);
+            tokenObj = auth.parseToken(token, owner.getSaltedPassword());
+
+            if (auth.canWriteBlog(tokenObj)) {
+                // checks to see if the category already exists
                 for (Category cat : cats.findAll()) {
                     if (cat.getCategory().equals(category)) {
-                        return new HashMap<String, String>() {
-                            {
-                                put("isSuccess", "False");
-                                put("message", "Category already Exists");
-                            }
-                        };
+                        return response
+                                .setError("Category already exists")
+                                .setSuccess("false")
+                                .send();
                     }
                 }
-                //if the category doesnt exist then add to database
+                // if the category doesnt exist then add to database
                 Category theCat = new Category();
                 theCat.setCategory(category);
                 cats.save(theCat);
-                return new HashMap<String, String>() {
-                    {
-                        put("isSuccess", "True");
-                        put("message", category + " saved!");
-                    }
-                };
-            } catch (Exception e) {
-                //if the category param is missing return error message
-                return new HashMap<String, String>() {
-                    {
-                        put("isSuccess", "False");
-                        put("error", e.toString());
-                        put("message", "error saving to database, bad parameter");
-                    }
-                };
-            }
-        } else {
-            return new HashMap<String, String>() {
-                {
-                    put("isSuccess", "False");
-                    put("message", "No Write Permissions");
-                }
-            };
-        }
+                return response
+                        .setMessage("Category Saved!")
+                        .setSuccess("true")
+                        .send();
 
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            // if error
+            return response
+                    .setError(e.toString())
+                    .setStatus("false")
+                    .send();
+        }
+        // if no write permissions
+        return response
+                .setError("No Write Permissions")
+                .setStatus("false")
+                .send();
     }
 
     /**
@@ -128,69 +114,51 @@ public class CatController {
      */
     @CrossOrigin
     @RequestMapping(value = "/remove", method = RequestMethod.GET)
-    public Map<String, String> removeCats(
+    public String removeCats(
             HttpServletRequest request) {
-        // store header info in intermediate variable
+        
+        // store header info into intermediate variables
         String email = request.getHeader("email");
         String token = request.getHeader("token");
         String category = request.getHeader("category");
-        //query database for owner matching email
-        Owner owner = owners.findFirstByEmail(email);
-        //parsing encrypted token
-        Map<String, String> map = new HashMap<>();
-        //return error message is parsig token fails
-        try {
-            map = auth.parseToken(token, owner.getSaltedPassword());
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            logger.warn("Could not parse incoming token.");
-            return new HashMap<String, String>() {
-                {
-                    put("isSuccess", "False");
-                    put("message", "Bad Token/Email");
-                }
-            };
-        }
+        // query database for owner matching email
+        Owner owner;
+        // declare the token
+        Token tokenObj;
+        // init custom lightweight response class
+        Response response = new Response();
 
-        //check to see if category exists
-        if (auth.canWrite(map)) {
-            try {
+        try {
+            owner = owners.findFirstByEmail(email);
+            tokenObj = auth.parseToken(token, owner.getSaltedPassword());
+
+            if (auth.canWriteBlog(tokenObj)) {
+                //delete cat if found in list
                 for (Category cat : cats.findAll()) {
                     if (cat.getCategory().equals(category)) {
                         cats.delete(cat);
                         break;
                     }
                 }
-
-                return new HashMap<String, String>() {
-                    {
-                        put("isSuccess", "True");
-                        put("message", category + " Removed!");
-                    }
-                };
-            } catch (Exception e) {
-                //if the category param is missing return error message
-                return new HashMap<String, String>() {
-                    {
-                        put("isSuccess", "False");
-                        put("error", e.toString());
-                        put("message", "error Removing from database, bad parameter");
-                    }
-                };
             }
-        } else {
-            return new HashMap<String, String>() {
-                {
-                    put("isSuccess", "False");
-                    put("message", "No Write Permissions");
-                }
-            };
+        } catch (Exception e) {
+            e.printStackTrace();
+            // if error
+            return response
+                    .setError(e.toString())
+                    .setStatus("false")
+                    .send();
         }
+        // if no write permissions
+        return response
+                .setError("No Write Permissions")
+                .setStatus("false")
+                .send();
     }
 
     /**
      * database form
-     * 
+     *
      * @return list of text and select fields from database
      */
     @CrossOrigin
@@ -210,7 +178,7 @@ public class CatController {
         map.put(autoCounter++, new HashMap<String, Object>() {
             {
                 put("text", "Brand");
-                put("field", "Brand");
+                put("field", "brand");
                 put("rules", Arrays.asList("notnull", "20char", "alpha"));
             }
         });
