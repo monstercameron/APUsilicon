@@ -24,10 +24,7 @@ public class Owner {
     private int id;
     
     @NotNull
-    private String name;
-    
-    @NotNull
-    private String hash;
+    private String saltedPassword;
     
     @NotNull
     @Column(unique = true)
@@ -42,14 +39,6 @@ public class Owner {
     public Owner() {
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -62,12 +51,12 @@ public class Owner {
         return id;
     }
 
-    public void setHash(String hash) {
-        this.hash = hash;
+    public void setSaltedPassword(String SaltedPassword) {
+        this.saltedPassword = SaltedPassword;
     }
     
-    public String getHash() {
-        return hash;
+    public String getSaltedPassword() {
+        return this.saltedPassword;
     }
 
     public Role getRole() {
@@ -80,7 +69,7 @@ public class Owner {
     
     @Override
     public String toString() {
-        return "Owner{" + "id=" + id + ", name=" + name + ", hash=" + hash + ", email=" + email + '}';
+        return "Owner{" + "id=" + id + ", saltedPassword=" + saltedPassword + ", email=" + email + '}';
     }
     
     public enum Role{

@@ -3,10 +3,10 @@ class Admin {
         this.id = "ADM" + uuid();
         this.parent = parent;
         // check local storage for a token
-        //console.log(this.checkLocalToken());
         if(this.checkLocalToken()){
             this.token = localStorage.token;
-            //console.log(this.token);
+            this.email = localStorage.email;
+            this.role = localStorage.role;
         }
         //method chaining
         return this;
@@ -59,6 +59,17 @@ class Admin {
         localStorage.setItem("token", token);
         return this;
     }
+    setRole(Role){
+        this.role = Role;
+        return this;
+    }
+    getRole(){
+        return this.role;
+    }
+    saveRole(Role){
+        localStorage.setItem("role", Role);
+        return this;
+    }
     getLocalToken(){
         this.token = localStorage.getItem("token");
         return this;
@@ -70,8 +81,8 @@ class Admin {
         fetch('http://localhost:8080/auth/login',{
             method:'POST',
             headers:{
-                email: document.querySelector('#'+this.getParent().getNav().email).value,
-                creds: document.querySelector('#'+this.getParent().getNav().credentials).value
+                email: document.querySelector('#'+this.getParent().getNav().loginModal().inputIds.loginEmail).value,
+                password: document.querySelector('#'+this.getParent().getNav().loginModal().inputIds.loginPassword).value
             }
         })
         .then(response => Promise.all([response, response.json()]))
@@ -84,7 +95,9 @@ class Admin {
             this.saveToken(json.token);
             this.setEmail(json.email)
             this.saveEmail(json.email)
-            this.parent.update();
+            this.setRole(json.role)
+            this.saveRole(json.role)
+            this.getParent().update();
         })
         .catch(exception => {
             var errorMap = new Map([
@@ -93,6 +106,32 @@ class Admin {
                 [Error, exception.message]
             ]).get(exception.constructor);
         });
+    }
+    register(){
+        fetch('http://localhost:8080/auth/signup',{
+            method:'POST',
+            headers:{
+                email: document.querySelector('#'+this.getParent().getNav().loginModal().inputIds.signinEmail).value,
+                password: document.querySelector('#'+this.getParent().getNav().loginModal().inputIds.signinPassword).value
+            }
+        })
+        .then(response => Promise.all([response, response.json()]))
+        .then(([response, json]) => {
+            if (!response.ok) {
+                throw new Error(json.message);
+            }
+            console.log(json);
+            this.getParent().notify(json.message);
+            this.getParent().update();
+        });
+        // .catch(exception => {
+        //     var errorMap = new Map([
+        //         [TypeError, "There was a problem fetching the response."],
+        //         [SyntaxError, "There was a problem parsing the response."],
+        //         [Error, exception.message]
+        //     ]).get(exception.constructor);
+        // });
+
     }
     print() {
         console.info(this)

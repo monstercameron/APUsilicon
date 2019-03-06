@@ -8,9 +8,9 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
   <link href="//cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet" />
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/default.min.css" />
-  <link rel="stylesheet" href="/blog/src/main/resources/static/style/style.css" />
+  <link rel="stylesheet" href="style/style.css" />
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-  <link rel="stylesheet" href="/blog/src/main/resources/static/style/style.css" />
+  <link rel="stylesheet" href="style/style.css" />
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script type="text/javascript" src="https://cdn.datatables.net/v/bs4-4.1.1/dt-1.10.18/cr-1.5.0/r-2.2.2/datatables.min.js"></script>
@@ -18,22 +18,24 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/highlight.min.js"></script>
   <script src="//cdn.quilljs.com/1.3.6/quill.js"></script>
-  <script src="/blog/src/main/resources/static/script/functions.js"></script>
-  <script src="/blog/src/main/resources/static/script/NewPost.js"></script>
-  <script src="/blog/src/main/resources/static/script/Post.js"></script>
-  <script src="/blog/src/main/resources/static/script/User.js"></script>
-  <script src="/blog/src/main/resources/static/script/login.js"></script>
-  <script src="/blog/src/main/resources/static/script/nav.js"></script>
-  <script src="/blog/src/main/resources/static/script/page.js"></script>
-  <script src="/blog/src/main/resources/static/script/PageBuilder.js"></script>
-  <script src="/blog/src/main/resources/static/script/database.js"></script>
-  <script src="/blog/src/main/resources/static/script/ModelViewer.js"></script>
-  <script src="/blog/src/main/resources/static/script/DatabaseForm.js"></script>
-  <script src="/blog/src/main/resources/static/script/DatabaseFormManager.js"></script>
-  <script src="/blog/src/main/resources/static/script/RequestManager.js"></script>
-  <script src="/blog/src/main/resources/static/script/pagination.js"></script>
-  <script src="/blog/src/main/resources/static/script/Admin.js"></script>
-  <script src="/blog/src/main/resources/static/script/NavModal.js"></script>
+  <script src="script/functions.js"></script>
+  <script src="script/NewPost.js"></script>
+  <script src="script/Post.js"></script>
+  <script src="script/User.js"></script>
+  <script src="script/login.js"></script>
+  <script src="script/nav.js"></script>
+  <script src="script/page.js"></script>
+  <script src="script/PageBuilder.js"></script>
+  <script src="script/database.js"></script>
+  <script src="script/ModelViewer.js"></script>
+  <script src="script/DatabaseForm.js"></script>
+  <script src="script/DatabaseFormManager.js"></script>
+  <script src="script/RequestManager.js"></script>
+  <script src="script/pagination.js"></script>
+  <script src="script/Admin.js"></script>
+  <script src="script/NavModal.js"></script>
+  <script src="script/apu.js"></script>
+  <script src="script/apumanager.js"></script>
 </head>
 
 <body></body>
@@ -47,14 +49,14 @@
     .addLink("Youtube", "http://www.youtube.com", "blank")
     .addLink("Reddit", "https://www.reddit.com/r/APUsilicon", "blank")
     .addLink("Amazon Affiliate", "https://amzn.to/2X9nHIU", "blank")
-    .addFunction("Database", "page.viewDb().update()")
+    .addFunction("Database", "page.newDb().viewDb().update()")
     .addAdminFunction("New Device", "page.newDbEntryForm().viewDbEntryForm().getDbEntryForm().getParent().update()")
-    .addAdminFunction("Add Post", "page.createNewPost().update()");
+    .addAdminFunction("Add Post", "page.createNewPost().update()")
+    .addAdminFunction("Add APU", "page.getAPUMan().viewForm()");
 
   page.addNav(nav);
 
   //fetch panels from api server, applies filter from nav
   page.fetchPanels();
 </script>
-
 </html>

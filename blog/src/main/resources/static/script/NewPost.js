@@ -159,8 +159,16 @@ class NewPost {
     //add category to list if not empty
     if (cat != ''){
       this.category.push(cat);
-      fetch(`http://localhost:8080/category/add?category=${cat}`)
-      .then((response) => console.log(response));
+      fetch(`http://localhost:8080/category/add`,{
+        method:'POST',
+        headers:{
+          "email": this.getParent().getAdmin().getEmail(),
+          "token": this.getParent().getAdmin().getToken(),
+          "category": category.value
+        }
+      })
+      .then(response => response.json())
+      .then(data => console.log(data));
     }
 
     //console.log(this.category);
@@ -247,7 +255,7 @@ class NewPost {
   }
   sendNewPost() {
     if (this.validateNewPost()) {
-      requests = new RequestMan(this.getParent());
+      let requests = new RequestMan(this.getParent());
       requests.sendPost(this.action,this.buildDict());
     }else
       console.error("Can Not Save New Post, There Are Still Errors, Enable Notifications To See Errors.");
@@ -287,7 +295,7 @@ class NewPost {
         id="${this.postValues["image"]}"
         type="text"
         class="form-control"
-        placeholder="Add Heading"
+        placeholder="Add Image URL"
         value="${this.getImage()}"
       />
     </div>
@@ -337,7 +345,16 @@ class NewPost {
         onclick="page.getNewPost().sendNewPost()"
       >Save</button>
     </div>
-  </div>`;
+  </div>
+  ${this.checkRole()}`;
+  }
+  checkRole(){
+    let role = this.getParent().getAdmin().getRole();
+    console.log('the role: '+role);
+    if(role != 'ADMIN' && role != 'CONTRIBUTER' ){
+      this.getParent().notify("You Don't have permission to save this post.");
+    }
+    return '';
   }
   print() {
     console.info(this)

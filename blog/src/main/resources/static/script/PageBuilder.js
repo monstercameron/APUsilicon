@@ -8,6 +8,7 @@ class Pagebuilder {
     this.pageSize = 5;
     this.pageNo = 0;
     this.admin = new Admin(this);
+    this.APUMan = new APUManager(this);
     console.log("Building Page       : " + this.id);
     //method chaining
     return this;
@@ -158,6 +159,10 @@ class Pagebuilder {
     this.view = VIEW.POSTS;
     return this;
   }
+  // APU management
+  getAPUMan(){
+    return this.APUMan;
+  }
   //model viewer
   newViewer() {
     if (this.viewer == null || typeof this.viewer === "undefined") {
@@ -290,6 +295,10 @@ class Pagebuilder {
   getPageCount() {
     return this.pageCount;
   }
+  setViewOnly(view){
+    this.view = view;
+    return this;
+  }
   setView(view) {
     this.view = view;
     this.nav.setSearch("");
@@ -330,11 +339,14 @@ class Pagebuilder {
     } else {
       nav.innerHTML = "Nav Missing. Or default Nav template?";
     }
-    modal = document.createElement('div');
-    modal.innerHTML = this.nav.loginModal();
 
-    document.querySelector(this.root).prepend(modal)
-    document.querySelector(this.root).prepend(nav);;
+    let modalObj = this.nav.loginModal();
+    modal = document.createElement('div');
+    modal.innerHTML = modalObj.template();
+    modal.id = modalObj.getId();
+
+    document.querySelector(this.root).prepend(modal);
+    document.querySelector(this.root).prepend(nav);
 
     //drawing view
     switch (this.view) {
@@ -388,13 +400,13 @@ class Pagebuilder {
           document.querySelector(this.root).append(div);
         }
 
-        let pagination = new Pagination(this);
-
-        let pages = document.createElement("div");
-        pages.id = pagination.getId();
-        pages.innerHTML = pagination.template();
-        document.querySelector(this.root).append(pages);
-
+        if(this.panelList.length > 0){
+          let pagination = new Pagination(this);
+          let pages = document.createElement("div");
+          pages.id = pagination.getId();
+          pages.innerHTML = pagination.template();
+          document.querySelector(this.root).append(pages);
+        }
         ////////////////////////////////////////////////////////
         break;
       case 3:
@@ -460,6 +472,16 @@ class Pagebuilder {
 
         ////////////////////////////////////////////////////////
         break;
+        case 6:
+          ////////////////////////////////////////////////////////
+          //              APU Entry
+          ////////////////////////////////////////////////////////
+          let form = this.getAPUMan().getAPU().template()
+          document.querySelector(this.root).append(form)
+          ////////////////////////////////////////////////////////
+          break;
+          
+
     }
 
     //method chaining
@@ -510,7 +532,8 @@ const VIEW = {
   POSTS: 2,
   DATABASE: 3,
   DATABASEENTRY: 4,
-  EDITPOST: 5
+  EDITPOST: 5,
+  ADDAPU:6
 };
 
 const ACTION = {

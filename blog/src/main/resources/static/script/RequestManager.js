@@ -87,6 +87,10 @@ class RequestMan {
                 this.parent.update();
                 this.parent.getNav().searchFocus();
                 //console.info("page count --> "+this.parent.getPageNumber());
+            }).catch(error => {
+                this.getParent().notify(`Can't Connect To Server | ${error}`);
+                console.error(error);
+                this.getParent().update();
             });
         return this;
     }

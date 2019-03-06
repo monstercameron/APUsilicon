@@ -11,6 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Repository
 @Transactional
-public interface AdminDao  extends CrudRepository<Owner, Integer> {
+public interface AdminDao extends CrudRepository<Owner, Integer> {
     public Owner findFirstByEmail(String email);
 }

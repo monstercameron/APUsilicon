@@ -26,11 +26,49 @@ class DB {
     return this.classList;
   }
   initTable() {
-    this.table = $("#" + this.tableId).DataTable({
-      data: this.data,
-      columns: this.columns,
-      responsive: true
-    });
+    fetch("http://localhost:8080/database/laptops/0")
+      .then(response => response.json())
+      .then(response => {
+
+        this.columns = []
+        // let keys = Object.keys(response.content[0])
+        // for (let index = 0; index < keys.length; index++) {
+        //   this.columns.push({title:keys[index]});
+        // }
+
+        this.data = {
+          "data": []
+        };
+        // for (let index = 0; index < response.content.length; index++) {
+        //   this.data["data"].push(Object.values(response.content[index]));
+        // }
+
+        let colList = ["Image", "Brand", "SKU", "APU", "Resolution", "RAM", "Storage"]
+        let colListKeys = ["brand", "sku", "apu", "dispy", "ramcap", "storcap"];
+
+        for (let index = 0; index < colList.length; index++) {
+          this.columns.push({title:colList[index]});
+        }
+        for (let index = 0; index < response.content.length; index++) {
+          let aList = [];
+          aList.push(`<img src='images/${response.content[index].img}' height='200px' width='300px'>`);
+          for (let x = 0; x < colListKeys.length; x++) {
+            aList.push(response.content[index][colListKeys[x]])
+          }
+          this.data["data"].push(aList);
+          aList = [];
+        }
+
+        console.log(this.columns);
+        console.log(this.data);
+
+        this.table = $("#" + this.tableId).DataTable({
+          data: this.data["data"],
+          columns: this.columns,
+          responsive: true
+        });
+
+      });
     //method chaining
     return this;
   }
@@ -43,7 +81,10 @@ class DB {
     this.columns = list;
     this.filterList = [];
     for (let index = 0; index < this.columns.length; index++) {
-        this.filterList.push({name: this.columns[index].title, id: 'FLTR'+uuid()});
+      this.filterList.push({
+        name: this.columns[index].title,
+        id: 'FLTR' + uuid()
+      });
     }
     console.log(this.filterList);
     //method chaining
@@ -60,11 +101,11 @@ class DB {
   filterCols() {
     //console.log(this.columns);        
     for (let index = 0; index < this.columns.length; index++) {
-        //travering the list of filters
-        this.table.column(index).visible(document.querySelector('#'+this.filterList[index].id).checked);
+      //travering the list of filters
+      this.table.column(index).visible(document.querySelector('#' + this.filterList[index].id).checked);
     }
     //redraw table only
-    this.table.columns.adjust().draw( false );
+    this.table.columns.adjust().draw(false);
     //method chaining
     return this;
   }
@@ -75,7 +116,6 @@ class DB {
     //to be implemented
   }
   template() {
-      console.log(this.columns);
     return `
       <div class="col-sm-11 mx-auto border rounded shadow m-2 p-2">
         <!-- title -->
@@ -92,7 +132,7 @@ class DB {
         <div class="text-center"><h4>APUsilicon Database</h4></div>
         <button
           class="col-sm-2 btn btn-primary text-white mb-1"
-          onclick="page.viewDbEntry().update()"
+          onclick="page.newDbEntryForm().viewDbEntryForm().getDbEntryForm().getParent().update()"
         >
           Add New Device
         </button>
@@ -108,10 +148,6 @@ class DB {
           id="database-filter"
           class="collapse col-sm-4 mb-3 border round p-2 bg-dark text-white"
         >
-        ${this.filterList.map(filter => {
-            return `<div><input id="${filter.id}" checked type="checkbox" name="" id="" />${filter.name}</div>`;
-          })
-          .join("")}
           <button 
             class="btn btn-primary btn-block"
             onclick="page.getDb().filterCols()"

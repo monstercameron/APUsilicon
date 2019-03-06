@@ -4,6 +4,8 @@ import com.apusilicon.blog.data.BlogDao;
 import com.apusilicon.blog.data.AdminDao;
 import com.apusilicon.blog.classes.imaginery.Blog;
 import com.apusilicon.blog.classes.imaginery.Owner;
+import com.apusilicon.blog.classes.imaginery.Response;
+import com.apusilicon.blog.classes.imaginery.Token;
 import com.apusilicon.blog.logic.AuthMan;
 
 import java.util.ArrayList;
@@ -30,7 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("blog")
-public class blog {
+public class blogController {
 
     @Autowired
     private BlogDao blogSafe;
@@ -41,27 +43,13 @@ public class blog {
     @Autowired
     private AuthMan auth;
 
-    Logger logger = LoggerFactory.getLogger(blog.class);
+    Logger logger = LoggerFactory.getLogger(blogController.class);
 
     @CrossOrigin
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public String index(
             HttpServletRequest request) {
-
-        try {
-            Owner owner = owners.findFirstByEmail(request.getHeader("email"));
-
-            String token = request.getHeader("auth");
-            Map<String, String> map = auth.parseToken(token, owner.getHash());
-
-            System.out.println(map.toString());
-
-            return "{\"testing\":\"" + map.toString() + "\"}";
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return ex.toString();
-        }
+        return "testing method";
     }
 
     @CrossOrigin
@@ -78,7 +66,6 @@ public class blog {
             case "category":
                 return blogSafe.findByCategoryContaining(filter, PageRequest.of(pageno, pageSize));
             default:
-                //System.out.println("default");
                 return blogSafe.findAll(PageRequest.of(pageno, pageSize));
         }
     }
@@ -89,25 +76,22 @@ public class blog {
             HttpServletRequest request,
             @RequestBody String body) {
 
-        // store header info in intermediate variable
+        // store header info into intermediate variables
         String email = request.getHeader("email");
         String token = request.getHeader("token");
-        //query database for owner matching email
-        Owner owner = owners.findFirstByEmail(email);
-        //parsing encrypted token
-        Map<String, String> map = new HashMap<>();
-        //return error message is parsig token fails
+        // query database for owner matching email
+        Owner owner;
+        // declare the token
+        Token tokenObj;
+        // init custom lightweight response class
+        Response response = new Response();
+
         try {
-            map = auth.parseToken(token, owner.getHash());
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            logger.warn("Could not parse incoming token.");
-            return "{\"message\":\"No Write Permissions\"}";
-        }
-        try {
-            //check decrypted token for write permissions
-            if (auth.canWrite(map)) {
-                String image = "http://apusilicon.com/wp-content/uploads/2016/04/APUSILICON-LOGO-2016-563x480.png";
+            owner = owners.findFirstByEmail(email);
+            tokenObj = auth.parseToken(token, owner.getSaltedPassword());
+
+            if (auth.canWriteBlog(tokenObj)) {
+                String image = "http://via.placeholder.com/300";
                 Blog blog = new Blog();
                 blog.setBody(body);
                 blog.setTags(request.getHeader("tags"));
@@ -116,22 +100,32 @@ public class blog {
                 blog.setCategory(request.getHeader("category"));
                 blog.setPreview("preview");
                 blog.setOwner(owner);
-                if (request.getHeader("image") == null || request.getHeader("image") == "") {
-                    //use default image
+                if (request.getHeader("image") == null || request.getHeader("image").equals("")) {
                     blog.setTitleImage(image);
                 } else {
-                    //use specified image
                     blog.setTitleImage(request.getHeader("image"));
                 }
                 System.out.println(blog);
                 blogSafe.save(blog);
-                return "{\"message\":\"Blog added\"}";
+                return response
+                        .setMessage("Blog Added!")
+                        .setSuccess("true")
+                        .send();
             }
 
-        } catch (NullPointerException ex) {
-            ex.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+            // if error
+            return response
+                    .setError(e.toString())
+                    .setStatus("false")
+                    .send();
         }
-        return "{\"message\":\"No Write Permissions\"}";
+        // if no write permissions
+        return response
+                .setError("No Write Permissions")
+                .setStatus("false")
+                .send();
     }
 
     @CrossOrigin
@@ -139,25 +133,22 @@ public class blog {
     public String editBlog(
             HttpServletRequest request,
             @RequestBody String body) {
-        
-        // store header info in intermediate variable
+
+        // store header info into intermediate variables
         String email = request.getHeader("email");
         String token = request.getHeader("token");
-        //query database for owner matching email
-        Owner owner = owners.findFirstByEmail(email);
-        //parsing encrypted token
-        Map<String, String> map = new HashMap<>();
-        //return error message is parsig token fails
+        // query database for owner matching email
+        Owner owner;
+        // declare the token
+        Token tokenObj;
+        // init custom lightweight response class
+        Response response = new Response();
+
         try {
-            map = auth.parseToken(token, owner.getHash());
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            logger.warn("Could not parse incoming token.");
-            return "{\"message\":\"No Write Permissions\"}";
-        }
-        try {
-            //check decrypted token for write permissions
-            if (auth.canWrite(map)) {
+            owner = owners.findFirstByEmail(email);
+            tokenObj = auth.parseToken(token, owner.getSaltedPassword());
+
+            if (auth.canWriteBlog(tokenObj)) {
                 Blog blog = blogSafe.findFirstByHash(request.getHeader("hash")).get(0);
                 blog.setBody(body);
                 blog.setTags(request.getHeader("tags"));
@@ -166,14 +157,28 @@ public class blog {
                 blog.setDate(request.getHeader("aDate"));
                 blog.setCategory(request.getHeader("category"));
                 blog.setPreview("preview");
-                //System.out.println(blog);
+                blog.setOwner(owner);
+                System.out.println(blog);
                 blogSafe.save(blog);
-                return "{\"message\":\"Blog Updated.\"}";
+                return response
+                        .setMessage("Blog Updated!")
+                        .setSuccess("true")
+                        .send();
             }
-        } catch (NullPointerException ex) {
-            ex.printStackTrace();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            // if error
+            return response
+                    .setError(e.toString())
+                    .setStatus("false")
+                    .send();
         }
-        return "{\"message\":\"No Write Permissions\"}";
+        // if no write permissions
+        return response
+                .setError("No Write Permissions")
+                .setStatus("false")
+                .send();
     }
 
     @CrossOrigin
